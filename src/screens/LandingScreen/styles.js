@@ -26,10 +26,11 @@ export default StyleSheet.create({
     },
     button: {
         backgroundColor: '#788eec',
-        marginLeft: 30,
-        marginRight: 30,
+        marginLeft: 10,
+        marginRight: 10,
         marginTop: 20,
         height: 48,
+        width:140,
         borderRadius: 5,
         alignItems: "center",
         justifyContent: 'center'
@@ -52,5 +53,16 @@ export default StyleSheet.create({
         color: "#788eec",
         fontWeight: "bold",
         fontSize: 16
+    },
+    choice:{
+        flex: 1,
+        flexDirection: 'row',
+        //backgroundColor: 'pink',
+        justifyContent: 'space-between'
+    },
+    headline:{
+        textAlign: 'center',
+        fontSize: 24,
+        fontStyle: 'bold'
     }
 })
