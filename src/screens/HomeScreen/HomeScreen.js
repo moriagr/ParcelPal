@@ -1,10 +1,15 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+// HomeScreen.js
+import React from 'react';
+import { View, Text } from 'react-native';
+import Header from '../../components/Header/Header';
 
-export default function HomeScreen(props) {
-    return (
-        <View>
-            <Text>Home Screen</Text>
-        </View>
-    )
-}
+const HomeScreen = ({navigation}) => {
+  return (
+    <View>
+        <Header navigation={navigation}/>
+      <Text>Welcome to the Home Screen!</Text>
+    </View>
+  );
+};
+
+export default HomeScreen;
