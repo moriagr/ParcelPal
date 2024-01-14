@@ -3,7 +3,7 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 
-export default function LoginScreen({navigation}) {
+export default function LoginScreenDriver({navigation}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -27,11 +27,10 @@ export default function LoginScreen({navigation}) {
                     style={styles.logo}
                     source={require('../../../assets/ParcelPal.png')}
                 />
-                <Text style={styles.headline}>Join {clients} clients with over {totaldeliverys} successfull deliverys</Text>
-
+                <Text style={styles.headline}>Join {drivers} Delivery drivers with over {totaldeliverys} successfull deliverys</Text>
                 <Image
                     style={styles.img}
-                    source={require('../../../assets/client.png')}
+                    source={require('../../../assets/driver.png')}
                 />
                 <TextInput
                     style={styles.input}

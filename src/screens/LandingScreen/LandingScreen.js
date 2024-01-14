@@ -13,6 +13,10 @@ export default function LandingScreen({navigation}) {
         navigation.navigate('Login')
     }
 
+    const onLoginDriverPress = () =>{
+        navigation.navigate('LoginDriver')
+    }
+
     const onPackageStatus = () =>{
         navigation.navigate('PackageStatus')
     }
@@ -44,7 +48,7 @@ export default function LandingScreen({navigation}) {
                 <View style={styles.choice}>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => onLoginPress()}>
+                        onPress={() => onLoginDriverPress()}>
                         <Text style={styles.buttonTitle}>Driver Log in</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
