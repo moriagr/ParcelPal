@@ -9,3 +9,6 @@ export { default as LandingScreen } from './LandingScreen/LandingScreen'
 export { default as PackageStatusScreen } from './PackageStatusScreen/PackageStatusScreen'
 
 export { default as LoginScreenDriver } from './LoginScreenDriver/LoginScreenDriver'
+
+export { default as HomeScreenDriver } from './HomeScreenDriver/HomeScreenDriver'
+

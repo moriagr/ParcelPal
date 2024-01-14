@@ -77,7 +77,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'fff',
     borderWidth: 2,
     borderRadius: 5
-
   },
   driveActionsContainer: {
     flexDirection: 'row',

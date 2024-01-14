@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 //import { createDrawerNavigator } from '@react-navigation/drawer';
-import { LoginScreen, HomeScreen, RegistrationScreen, LandingScreen, PackageStatusScreen, LoginScreenDriver} from './src/screens'
+import { LoginScreen, HomeScreen, RegistrationScreen, LandingScreen, PackageStatusScreen, LoginScreenDriver, HomeScreenDriver} from './src/screens'
 import {decode, encode} from 'base-64'
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
@@ -30,6 +30,7 @@ export default function App() {
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="LoginDriver" component={LoginScreenDriver} />
             <Stack.Screen name="Registration" component={RegistrationScreen} />
+            <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
           </>
         )}
       </Stack.Navigator>

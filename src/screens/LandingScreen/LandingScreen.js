@@ -21,6 +21,10 @@ export default function LandingScreen({navigation}) {
         navigation.navigate('PackageStatus')
     }
 
+    const onHomeDriver = () =>{
+        navigation.navigate('HomeDriver')
+    }
+
     const onHome = () =>{
         navigation.navigate('Home')
     }
@@ -60,8 +64,8 @@ export default function LandingScreen({navigation}) {
                 <View>
                 <TouchableOpacity
                         style={styles.button}
-                        onPress={() => onPackageStatus()}>
-                        <Text style={styles.buttonTitle}>PackageStatusScreen</Text>
+                        onPress={() => onHomeDriver()}>
+                        <Text style={styles.buttonTitle}>HomeDriver</Text>
                     </TouchableOpacity>
                 </View>
                 <View>
