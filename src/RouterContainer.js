@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen, HomeScreen, RegistrationScreen, LandingScreen } from './screens';
+import { LoginScreen, HomeScreen, RegistrationScreen, LandingScreen, HomeScreenDriver, MyPointsScreen, MyDrivesScreen, PackageStatusScreen } from './screens';
 import firebase from './firebase/config'
+import { ActivityIndicator, View } from 'react-native'
+
 import { useUserContext } from './common/context/UserContext';
 
 const Stack = createStackNavigator();
@@ -54,9 +56,15 @@ export default function RouterContainer() {
     return (
         <Stack.Navigator>
             {user ? (
-                <Stack.Screen name="Home">
-                    {props => <HomeScreen {...props} extraData={user} setUser={setUser} />}
-                </Stack.Screen>
+                <>
+                    <Stack.Screen name="Home">
+                        {props => <HomeScreen {...props} extraData={user} setUser={setUser} />}
+                    </Stack.Screen>
+                    <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
+                    <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
+                    <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
+                    <Stack.Screen name="MyPoints" component={MyPointsScreen} />
+                </>
             ) : (
                 <>
                     <Stack.Screen name="Landing" component={LandingScreen} />
@@ -64,6 +72,10 @@ export default function RouterContainer() {
                     <Stack.Screen name="DriverLogin" component={LoginScreen} initialParams={{ role: 'Driver' }} />
                     <Stack.Screen name="ClientRegistration" component={RegistrationScreen} initialParams={{ role: 'Client' }} />
                     <Stack.Screen name="DriverRegistration" component={RegistrationScreen} initialParams={{ role: 'Driver' }} />
+                    <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
+                    <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
+                    <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
+                    <Stack.Screen name="MyPoints" component={MyPointsScreen} />
                 </>
             )}
         </Stack.Navigator>

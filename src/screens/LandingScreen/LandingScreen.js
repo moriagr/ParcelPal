@@ -17,6 +17,22 @@ export default function LandingScreen({ navigation }) {
         navigation.navigate('ClientLogin')
     }
 
+    const onLoginDriverPress = () =>{
+        navigation.navigate('LoginDriver')
+    }
+
+    const onPackageStatus = () =>{
+        navigation.navigate('PackageStatus')
+    }
+
+    const onHomeDriver = () =>{
+        navigation.navigate('HomeDriver')
+    }
+
+    const onHome = () =>{
+        navigation.navigate('Home')
+    }
+
     let drivers = 56;
     let clients = 130;
     let totaldeliverys = 342;
@@ -30,7 +46,13 @@ export default function LandingScreen({ navigation }) {
                     style={styles.logo}
                     source={require('../../../assets/ParcelPal.png')}
                 />
-                <Text style={styles.headline}>Welcome to ParcelPal! Join {drivers} Delivery drivers and {clients} clients with over {totaldeliverys} successfull deliverys. Login or signup to get started</Text>
+                <Text style={styles.headline}>Join {drivers} Delivery drivers and {clients} clients with over {totaldeliverys} successfull deliverys</Text>
+                <View>
+                <Image
+                    style={styles.img}
+                    source={require('../../../assets/Landingimg.png')}
+                />
+                </View>
                 <View style={styles.choice}>
                     <TouchableOpacity
                         style={styles.button}
@@ -41,6 +63,20 @@ export default function LandingScreen({ navigation }) {
                         style={styles.button}
                         onPress={() => onClientLoginPress()}>
                         <Text style={styles.buttonTitle}>Client Log in</Text>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => onHomeDriver()}>
+                        <Text style={styles.buttonTitle}>HomeDriver</Text>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => onHome()}>
+                        <Text style={styles.buttonTitle}>Home</Text>
                     </TouchableOpacity>
                 </View>
             </KeyboardAwareScrollView>

@@ -11,7 +11,6 @@ export default StyleSheet.create({
     logo: {
         flex: 1,
         alignSelf: "center",
-        margin: 30
     },
     input: {
         height: 48,
@@ -62,7 +61,12 @@ export default StyleSheet.create({
     },
     headline:{
         textAlign: 'center',
-        fontSize: 24,
-        // fontStyle: 'italic'
+        fontSize: 18,
+        fontWeight: 'bold',
+        margin: 10
+    },
+    img:{
+        width: "100%",
+        height: 400
     }
 })
