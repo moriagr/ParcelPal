@@ -12,3 +12,8 @@ export { default as LoginScreenDriver } from './LoginScreenDriver/LoginScreenDri
 
 export { default as HomeScreenDriver } from './HomeScreenDriver/HomeScreenDriver'
 
+export { default as MyDrivesScreen } from './MyDrivesScreen/MyDrivesScreen'
+
+export { default as MyPointsScreen } from './MyPoints/MyPoints'
+
+

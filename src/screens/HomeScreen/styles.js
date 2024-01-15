@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     alignItems: 'center',
-    backgroundColor: '#CDFFD7',
+    backgroundColor: '#4b6cb7',
     borderRadius: 10,
     paddingLeft: 20,
     paddingRight: 20,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     marginTop: 5,
-    color: '#333',
+    color: '#fff',
     fontWeight: 'bold'
   },
 

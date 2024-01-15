@@ -12,12 +12,12 @@ const HomeScreenDriver = ({ navigation }) => {
 
   const onMyDrives = () => {
     // Add navigation logic for My Drives
-    navigation.navigate('Login');
+    navigation.navigate('MyDrives');
   }
 
   const onMyPoints = () => {
     // Add navigation logic for My Points
-    navigation.navigate('LoginDriver');
+    navigation.navigate('MyPoints');
   }
 
   const onMyTips = () => {
@@ -57,15 +57,15 @@ const HomeScreenDriver = ({ navigation }) => {
         </View>
         <View style={styles.driveActionsContainer}>
             <TouchableOpacity style={styles.actionButton}>
-                <Icon name="road" size={30} color="#788eec" />
+                <Icon name="road" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Add Drive</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
-                <Icon name="truck" size={30} color="#788eec" />
+                <Icon name="truck" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Pick Packages</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
-                <Icon name="comments" size={30} color="#788eec" />
+                <Icon name="comments" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Chat</Text>
             </TouchableOpacity>
         </View>
