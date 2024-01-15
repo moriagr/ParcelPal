@@ -3,14 +3,18 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 
-export default function LandingScreen({navigation}) {
+export default function LandingScreen({ navigation }) {
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration')
     }
 
-    const onLoginPress = () =>{
-        navigation.navigate('Login')
+    const onDriverLoginPress = () => {
+        navigation.navigate('DriverLogin')
+    }
+
+    const onClientLoginPress = () => {
+        navigation.navigate('ClientLogin')
     }
 
     let drivers = 56;
@@ -30,12 +34,12 @@ export default function LandingScreen({navigation}) {
                 <View style={styles.choice}>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => onLoginPress()}>
+                        onPress={() => onDriverLoginPress()}>
                         <Text style={styles.buttonTitle}>Driver Log in</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => onLoginPress()}>
+                        onPress={() => onClientLoginPress()}>
                         <Text style={styles.buttonTitle}>Client Log in</Text>
                     </TouchableOpacity>
                 </View>
