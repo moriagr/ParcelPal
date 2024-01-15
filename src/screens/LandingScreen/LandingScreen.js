@@ -5,31 +5,27 @@ import styles from './styles';
 
 export default function LandingScreen({ navigation }) {
 
-    const onFooterLinkPress = () => {
-        navigation.navigate('Registration')
-    }
-
     const onDriverLoginPress = () => {
-        navigation.navigate('DriverLogin')
+        navigation.navigate('Login', { role: "Driver" })
     }
 
     const onClientLoginPress = () => {
-        navigation.navigate('ClientLogin')
+        navigation.navigate('Login', { role: "Client" })
     }
 
-    const onLoginDriverPress = () =>{
-        navigation.navigate('LoginDriver')
-    }
+    // const onLoginDriverPress = () => {
+    //     navigation.navigate('LoginDriver')
+    // }
 
-    const onPackageStatus = () =>{
-        navigation.navigate('PackageStatus')
-    }
+    // const onPackageStatus = () => {
+    //     navigation.navigate('PackageStatus')
+    // }
 
-    const onHomeDriver = () =>{
-        navigation.navigate('HomeDriver')
-    }
+    // const onHomeDriver = () => {
+    //     navigation.navigate('HomeDriver')
+    // }
 
-    const onHome = () =>{
+    const onHome = () => {
         navigation.navigate('Home')
     }
 
@@ -48,10 +44,10 @@ export default function LandingScreen({ navigation }) {
                 />
                 <Text style={styles.headline}>Join {drivers} Delivery drivers and {clients} clients with over {totaldeliverys} successfull deliverys</Text>
                 <View>
-                <Image
-                    style={styles.img}
-                    source={require('../../../assets/Landingimg.png')}
-                />
+                    <Image
+                        style={styles.img}
+                        source={require('../../../assets/Landingimg.png')}
+                    />
                 </View>
                 <View style={styles.choice}>
                     <TouchableOpacity
@@ -65,20 +61,20 @@ export default function LandingScreen({ navigation }) {
                         <Text style={styles.buttonTitle}>Client Log in</Text>
                     </TouchableOpacity>
                 </View>
-                <View>
-                <TouchableOpacity
+                {/* <View>
+                    <TouchableOpacity
                         style={styles.button}
                         onPress={() => onHomeDriver()}>
                         <Text style={styles.buttonTitle}>HomeDriver</Text>
                     </TouchableOpacity>
                 </View>
                 <View>
-                <TouchableOpacity
+                    <TouchableOpacity
                         style={styles.button}
                         onPress={() => onHome()}>
                         <Text style={styles.buttonTitle}>Home</Text>
                     </TouchableOpacity>
-                </View>
+                </View> */}
             </KeyboardAwareScrollView>
         </View>
     )

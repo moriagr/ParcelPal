@@ -31,8 +31,13 @@ const HomeScreenDriver = ({ navigation }) => {
   }
 
   const onLogout = () => {
-    // Add navigation logic for Log Out
-    navigation.navigate('Login');
+    firebase.auth()
+    .signOut()
+    .then(() => {
+      setUser(null);
+      navigation.navigate('Landing');
+      console.log('User signed out!')
+    });
   }
 
   return (

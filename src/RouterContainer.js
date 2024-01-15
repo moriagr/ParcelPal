@@ -17,8 +17,6 @@ export default function RouterContainer() {
             if (user) {
                 console.log('✌️user --->', user);
                 const usersRef = firebase.firestore().collection("users")
-                // .where("role", "==", (user?.role === "Client" ? "Driver" : "Client"));
-                console.log('✌️usersRef --->', usersRef);
                 if (usersRef) {
 
                     usersRef
@@ -53,31 +51,37 @@ export default function RouterContainer() {
             </View>
         );
     }
+    console.log('✌️user --->', user, user?.role);
     return (
         <Stack.Navigator>
-            {user ? (
-                <>
-                    <Stack.Screen name="Home">
-                        {props => <HomeScreen {...props} extraData={user} setUser={setUser} />}
-                    </Stack.Screen>
-                    <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
-                    <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
-                    <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
-                    <Stack.Screen name="MyPoints" component={MyPointsScreen} />
-                </>
-            ) : (
-                <>
-                    <Stack.Screen name="Landing" component={LandingScreen} />
-                    <Stack.Screen name="ClientLogin" component={LoginScreen} initialParams={{ role: 'Client' }} />
-                    <Stack.Screen name="DriverLogin" component={LoginScreen} initialParams={{ role: 'Driver' }} />
-                    <Stack.Screen name="ClientRegistration" component={RegistrationScreen} initialParams={{ role: 'Client' }} />
-                    <Stack.Screen name="DriverRegistration" component={RegistrationScreen} initialParams={{ role: 'Driver' }} />
-                    <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
-                    <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
-                    <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
-                    <Stack.Screen name="MyPoints" component={MyPointsScreen} />
-                </>
-            )}
+            {user ?
+                user.role == "Driver" ? (
+                    <>
+                        <Stack.Screen name="Home" component={HomeScreen} />
+                        <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
+                        <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
+                        <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
+                        <Stack.Screen name="MyPoints" component={MyPointsScreen} />
+                    </>
+                ) : (
+                    <>
+                        <Stack.Screen name="Home" component={HomeScreen} />
+                        <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
+                        <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
+                        <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
+                        <Stack.Screen name="MyPoints" component={MyPointsScreen} />
+                    </>
+                ) : (
+                    <>
+                        <Stack.Screen name="Landing" component={LandingScreen} />
+                        <Stack.Screen name="Login" component={LoginScreen} />
+                        <Stack.Screen name="Registration" component={RegistrationScreen} />
+                        {/* <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
+                        <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
+                        <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
+                        <Stack.Screen name="MyPoints" component={MyPointsScreen} /> */}
+                    </>
+                )}
         </Stack.Navigator>
     );
 }

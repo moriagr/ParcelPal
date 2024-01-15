@@ -6,18 +6,36 @@ import firebase from './../../firebase/config'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserContext } from '../../common/context/UserContext';
 
-export default function LoginScreen({ navigation, role }) {
+export default function LoginScreen({ navigation, route }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { setUser } = useUserContext();
 
-
     const onFooterLinkPress = () => {
-        navigation.navigate(role + 'Registration')
+        navigation.navigate('Registration', { role: route.params.role })
     }
 
-    const onLoginPress = () => {
+    const onLoginPress = async () => {
         try {
+            const querySnapshot = await firebase
+                .firestore()
+                .collection('users')
+                .where('email', '==', email)
+                .get()
+
+            if (querySnapshot.empty) {
+                alert('User not found');
+                return;
+            }
+
+            // Assuming there's only one user with the given email
+            const user = querySnapshot.docs[0].data();
+
+            // Check the role
+            if (user.role !== route.params.role) {
+                alert('Invalid role for this user');
+                return;
+            }
 
             firebase
                 .auth()
@@ -30,9 +48,11 @@ export default function LoginScreen({ navigation, role }) {
                     // Store the token securely
                     await AsyncStorage.setItem('userToken', userToken);
 
-                    const usersRef2222 = firebase.firestore().collection('users')
-                    console.log('✌️usersRef2222 --->', usersRef2222);
-                    usersRef2222
+                    console.log('✌️role --->', route.params.role);
+                    const usersRef = firebase.firestore().collection('users')
+                    // .where("role", "==", route.params.role);
+                    console.log('✌️usersRef1234567890 --->', usersRef);
+                    usersRef
                         .doc(uid)
                         .get()
                         .then(firestoreDocument => {
@@ -44,7 +64,7 @@ export default function LoginScreen({ navigation, role }) {
                             const user = firestoreDocument.data()
                             console.log('✌️user --->', user);
                             setUser(user);
-                            navigation.navigate('Home', { user })
+                            navigation.navigate('Home')
                         })
                         .catch(error => {
                             alert(error)

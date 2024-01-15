@@ -32,11 +32,13 @@ const HomeScreen = ({ navigation }) => {
   const onLogout = () => {
     // Add navigation logic for Log Out
     firebase.auth()
-      .signOut()
-      .then(() => {
-        setUser(null);
+    .signOut()
+    .then(() => {
+      setUser(null);
+      navigation.navigate('Landing');
         console.log('User signed out!')
       });
+
   }
 
   return (
@@ -49,7 +51,7 @@ const HomeScreen = ({ navigation }) => {
             style={styles.profileImage}
           />
           <View style={styles.profileTextContainer}>
-            <Text style={styles.profileName}>Client #1001</Text>
+            <Text style={styles.profileName}>{user?.fullName}</Text>
             <View style={styles.ratingContainer}>
               <Icon name="truck" size={20} color="#f1c40f" />
               <Text style={styles.ratingText}>152</Text>
