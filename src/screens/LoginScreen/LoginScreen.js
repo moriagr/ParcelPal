@@ -43,15 +43,11 @@ export default function LoginScreen({ navigation, route }) {
                 .then(async (response) => {
                     const uid = response.user.uid
                     const userToken = await response.user.getIdToken(); // Get user token
-                    console.log('✌️userToken --->', userToken);
 
                     // Store the token securely
                     await AsyncStorage.setItem('userToken', userToken);
 
-                    console.log('✌️role --->', route.params.role);
                     const usersRef = firebase.firestore().collection('users')
-                    // .where("role", "==", route.params.role);
-                    console.log('✌️usersRef1234567890 --->', usersRef);
                     usersRef
                         .doc(uid)
                         .get()
@@ -62,9 +58,12 @@ export default function LoginScreen({ navigation, route }) {
                                 return;
                             }
                             const user = firestoreDocument.data()
-                            console.log('✌️user --->', user);
                             setUser(user);
-                            navigation.navigate('Home')
+                            if (route.params.role == "Driver") {
+                                navigation.navigate('HomeDriver')
+                            } else {
+                                navigation.navigate('HomeClient')
+                            }
                         })
                         .catch(error => {
                             alert(error)

@@ -25,9 +25,6 @@ export default function LandingScreen({ navigation }) {
     //     navigation.navigate('HomeDriver')
     // }
 
-    const onHome = () => {
-        navigation.navigate('Home')
-    }
 
     let drivers = 56;
     let clients = 130;

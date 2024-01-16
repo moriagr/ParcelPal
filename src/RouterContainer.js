@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen, HomeScreen, RegistrationScreen, LandingScreen, HomeScreenDriver, MyPointsScreen, MyDrivesScreen, PackageStatusScreen } from './screens';
+import { LoginScreen, HomeScreenClient, RegistrationScreen, LandingScreen, HomeScreenDriver, MyPointsScreen, MyDrivesScreen, PackageStatusScreen } from './screens';
 import firebase from './firebase/config'
 import { ActivityIndicator, View } from 'react-native'
 
@@ -57,17 +57,15 @@ export default function RouterContainer() {
             {user ?
                 user.role == "Driver" ? (
                     <>
-                        <Stack.Screen name="Home" component={HomeScreen} />
-                        <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
+                        <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
                         <Stack.Screen name="MyPoints" component={MyPointsScreen} />
                     </>
                 ) : (
                     <>
-                        <Stack.Screen name="Home" component={HomeScreen} />
+                        <Stack.Screen name="HomeClient" component={HomeScreenClient} />
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
-                        <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
                         <Stack.Screen name="MyPoints" component={MyPointsScreen} />
                     </>

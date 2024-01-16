@@ -3,8 +3,11 @@ import { View, Text, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Import the FontAwesome icon
 import styles from './styles'; // Import your styles
 import Header from '../../components/Header/Header';
+import firebase from './../../firebase/config.js'
+import { useUserContext } from '../../common/context/UserContext.js';
 
 const HomeScreenDriver = ({ navigation }) => {
+  const { setUser } = useUserContext();
 
   const onPackageStatus = () => {
     navigation.navigate('PackageStatus');
@@ -22,12 +25,12 @@ const HomeScreenDriver = ({ navigation }) => {
 
   const onMyTips = () => {
     // Add navigation logic for My Tips
-    navigation.navigate('LoginDriver');
+    // navigation.navigate('LoginDriver');
   }
 
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
-    navigation.navigate('LoginDriver');
+    // navigation.navigate('LoginDriver');
   }
 
   const onLogout = () => {
