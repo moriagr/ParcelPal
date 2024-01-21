@@ -15,7 +15,6 @@ export default function RouterContainer() {
         setLoading(true);
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                console.log('✌️user --->', user);
                 const usersRef = firebase.firestore().collection("users")
                 if (usersRef) {
 
@@ -51,7 +50,7 @@ export default function RouterContainer() {
             </View>
         );
     }
-    console.log('✌️user --->', user, user?.role);
+
     return (
         <Stack.Navigator>
             {user ?

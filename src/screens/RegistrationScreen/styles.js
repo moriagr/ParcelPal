@@ -4,6 +4,8 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+        direction: "ltr",
+
     },
     title: {
 
@@ -22,7 +24,7 @@ export default StyleSheet.create({
         marginBottom: 10,
         marginLeft: 30,
         marginRight: 30,
-        paddingLeft: 16
+        paddingHorizontal: 8
     },
     button: {
         backgroundColor: '#788eec',
@@ -33,6 +35,21 @@ export default StyleSheet.create({
         borderRadius: 5,
         alignItems: "center",
         justifyContent: 'center'
+    },
+    disableButton: {
+        backgroundColor: '#d3d3d3',
+        marginLeft: 30,
+        marginRight: 30,
+        marginTop: 20,
+        height: 48,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: 'center'
+    },
+    errorText: {
+        fontSize: 16,
+        color: '#ff0000',
+        marginHorizontal: 30,
     },
     buttonTitle: {
         color: 'white',

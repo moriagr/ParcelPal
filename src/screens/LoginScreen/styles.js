@@ -34,6 +34,21 @@ export default StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center'
     },
+    disableButton: {
+        backgroundColor: '#d3d3d3',
+        marginLeft: 30,
+        marginRight: 30,
+        marginTop: 20,
+        height: 48,
+        borderRadius: 5,
+        alignItems: "center",
+        justifyContent: 'center'
+    },
+    errorText: {
+        fontSize: 16,
+        color: '#ff0000',
+        marginHorizontal: 30,
+    },
     buttonTitle: {
         color: 'white',
         fontSize: 16,
@@ -53,12 +68,12 @@ export default StyleSheet.create({
         fontWeight: "bold",
         fontSize: 16
     },
-    img:{
-        width:'100%',
+    img: {
+        width: '100%',
         height: 300,
         marginBottom: 10
     },
-    headline:{
+    headline: {
         textAlign: 'center',
         fontSize: 18,
         fontWeight: 'bold',

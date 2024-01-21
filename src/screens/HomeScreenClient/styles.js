@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
-    
+
   },
   profileContainer: {
     flexDirection: 'row',
@@ -44,9 +44,9 @@ const styles = StyleSheet.create({
     color: '#fff', // Change the text color to your preference
     fontWeight: 'bold',
     fontSize: 22,
-    
+
   },
-  menuButtonLogout:{
+  menuButtonLogout: {
     flexDirection: 'row', // Align text and arrow horizontally
     justifyContent: 'space-between', // Spread content along the row
     alignItems: 'center', // Center items vertically
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Center items vertically
     marginTop: 5, // Add margin to separate the name and rating
   },
-  ratingText:{
+  ratingText: {
     marginLeft: 5,
     fontWeight: 'bold'
   },
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: 'green',
   },
-  actionArea:{
+  actionArea: {
     height: 130,
     width: 345,
     backgroundColor: 'fff',

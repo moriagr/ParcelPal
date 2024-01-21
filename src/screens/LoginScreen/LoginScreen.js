@@ -5,6 +5,9 @@ import styles from './styles';
 import firebase from './../../firebase/config'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserContext } from '../../common/context/UserContext';
+import PasswordField from '../../components/PassswordField';
+import { Formik } from 'formik';
+import { loginValidationScheme } from '../../components/Schemes/LoginRegistrationSchemes';
 
 export default function LoginScreen({ navigation, route }) {
     const [email, setEmail] = useState('')
@@ -52,7 +55,6 @@ export default function LoginScreen({ navigation, route }) {
                         .doc(uid)
                         .get()
                         .then(firestoreDocument => {
-                            console.log('✌️firestoreDocument11111111 --->', firestoreDocument);
                             if (!firestoreDocument.exists) {
                                 alert("User does not exist anymore.")
                                 return;
@@ -97,30 +99,44 @@ export default function LoginScreen({ navigation, route }) {
                     style={styles.img}
                     source={require('../../../assets/client.png')}
                 />
-                <TextInput
-                    style={styles.input}
-                    placeholder='E-mail'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholderTextColor="#aaaaaa"
-                    secureTextEntry
-                    placeholder='Password'
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => onLoginPress()}>
-                    <Text style={styles.buttonTitle}>Log in</Text>
-                </TouchableOpacity>
+                <Formik
+                    validationSchema={loginValidationScheme}
+                    initialValues={{
+                        fullName: '',
+                        phoneNumber: '',
+                        email: '',
+                        password: '',
+                        confirmPassword: ''
+                    }}
+                    onSubmit={values => {
+                        onLoginPress(values)
+                    }}
+                >
+                    {({ handleChange, handleBlur, handleSubmit, values, errors, isValid }) => (
+
+                        <>
+                             <TextInput
+                                style={styles.input}
+                                placeholderTextColor="#aaaaaa"
+                                placeholder="Email"
+                                underlineColorAndroid="transparent"
+                                autoCapitalize="none"
+                                value={values.email}
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                            />
+                            {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
+                            <PasswordField styles={styles} name="password" title="Password" value={values.password} handleChange={handleChange} handleBlur={handleBlur} errors={errors} />
+
+                            <TouchableOpacity
+                                style={isValid ? styles.button : styles.disableButton}
+                                disabled={!isValid}
+                                onPress={handleSubmit}>
+                                <Text style={styles.buttonTitle}>Log in</Text>
+                            </TouchableOpacity>
+                        </>)}
+                </Formik>
                 <View style={styles.footerView}>
                     <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
                 </View>
