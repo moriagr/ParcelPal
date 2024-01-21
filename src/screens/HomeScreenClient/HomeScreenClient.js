@@ -34,6 +34,11 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('LoginDriver');
   }
 
+  const onEditProfile = () => {
+    // Add navigation logic for Reviews Received
+    navigation.navigate('EditProfileScreen');
+  }
+
   const onLogout = () => {
     // Add navigation logic for Log Out
     firebase.auth()
@@ -60,7 +65,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.ratingContainer}>
               <Icon name="truck" size={20} color="#f1c40f" />
               <Text style={styles.ratingText}>152</Text>
-              <TouchableOpacity style={styles.editButton}>
+              <TouchableOpacity style={styles.editButton} onPress={onEditProfile}>
                 <Text style={styles.editButtonText}>Edit Profile</Text>
               </TouchableOpacity>
             </View>

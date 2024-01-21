@@ -20,5 +20,8 @@ export { default as AddDriveScreen } from './AddDriveScreen/AddDriveScreen'
 
 export { default as NewDeliveryScreen } from './NewDeliveryScreen/NewDeliveryScreen'
 
+export { default as EditProfileScreen } from './EditProfileScreen/EditProfileScreen'
+
+
 
 
