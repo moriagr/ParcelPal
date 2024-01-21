@@ -10,20 +10,18 @@ import { Formik } from 'formik';
 import { loginValidationScheme } from '../../components/Schemes/LoginRegistrationSchemes';
 
 export default function LoginScreen({ navigation, route }) {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
     const { setUser } = useUserContext();
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration', { role: route.params.role })
     }
 
-    const onLoginPress = async () => {
+    const onLoginPress = async (values) => {
         try {
             const querySnapshot = await firebase
                 .firestore()
                 .collection('users')
-                .where('email', '==', email)
+                .where('email', '==', values.email)
                 .get()
 
             if (querySnapshot.empty) {
@@ -42,7 +40,7 @@ export default function LoginScreen({ navigation, route }) {
 
             firebase
                 .auth()
-                .signInWithEmailAndPassword(email, password)
+                .signInWithEmailAndPassword(values.email, values.password)
                 .then(async (response) => {
                     const uid = response.user.uid
                     const userToken = await response.user.getIdToken(); // Get user token
