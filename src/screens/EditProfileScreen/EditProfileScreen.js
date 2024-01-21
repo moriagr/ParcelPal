@@ -3,7 +3,8 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from 'reac
 import { useUserContext } from '../../common/context/UserContext.js';
 import { Formik } from 'formik'
 import { registrationValidationScheme } from '../../components/Schemes/LoginRegistrationSchemes.js';
-import PasswordField from '../../components/PassswordField.js';
+import firebase from './../../firebase/config'
+
 
 const EditProfileScreen = () => {
 
@@ -26,14 +27,22 @@ const EditProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleEditProfilePicture}>
-        <Image source={profilePicture} style={styles.profilePicture} />
-        <Text style={styles.editButton}>Edit</Text>
-      </TouchableOpacity>
 
-      <TouchableOpacity onPress={handleEditName}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.editButton}>Edit</Text>
+
+    <View style={styles.profileContainer}>
+      <View>
+          <Image
+            source={require('../../../assets/client.png')} // Replace with the actual path to your profile picture
+            style={styles.profileImage}
+          />
+      </View>
+          <View style={styles.profileTextContainer}>
+            <Text style={styles.profileName}>{user?.fullName}</Text>
+          </View>
+      </View>
+
+      <TouchableOpacity onPress={handleEditProfilePicture} style={styles.editButton}>
+        <Text style={styles.buttonTitle}>Change Profile Picture</Text>
       </TouchableOpacity>
       
       <Formik
@@ -53,6 +62,7 @@ const EditProfileScreen = () => {
           {({ handleChange, handleBlur, handleSubmit, values, errors, isValid }) => (
 
               <>
+                  <Text style={styles.txt}>Update Name</Text>
                   <TextInput
                       style={styles.input}
                       placeholder={user.fullName}
@@ -65,6 +75,7 @@ const EditProfileScreen = () => {
 
                   />
                   {errors.fullName && <Text style={styles.errorText}>{errors.fullName}</Text>}
+                  <Text style={styles.txt}>Update Phone Number</Text>
                   <TextInput
                       style={styles.input}
                       placeholder={user.phone}
@@ -77,29 +88,16 @@ const EditProfileScreen = () => {
                   />
                   {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber}</Text>}
 
-                  <TextInput
-                      style={styles.input}
-                      placeholderTextColor="#aaaaaa"
-                      placeholder={user.email}
-                      underlineColorAndroid="transparent"
-                      autoCapitalize="none"
-                      value={values.email}
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                  />
-                  {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-
                   <TouchableOpacity
                       style={isValid ? styles.button : styles.disableButton}
                       disabled={!isValid}
                       onPress={handleSubmit}>
-                      <Text style={styles.buttonTitle}>Create account</Text>
+                      <Text style={styles.buttonTitle}>Update Profile</Text>
                   </TouchableOpacity>
               </>
 
           )}
       </Formik>
-
 
     </View>
   );
@@ -110,6 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'left',
     padding: 16,
+    marginLeft:30
   },
   profilePicture: {
     width: 100,
@@ -123,15 +122,82 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   editButton: {
-    color: 'green',
-    marginBottom: 10,
+    backgroundColor: '#788eec',
+    marginRight: 30,
+    marginTop: 0,
+    height: 35,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: 'center',
+    width: 220,
+    marginBottom: 15
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 20,
     marginBottom: 10,
-  }
+  },
+  input: {
+    height: 48,
+    borderRadius: 5,
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    marginTop: 10,
+    marginBottom: 10,
+    marginRight: 30,
+    paddingHorizontal: 8
+},
+button: {
+    backgroundColor: '#788eec',
+    marginRight: 30,
+    marginTop: 20,
+    height: 48,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: 'center'
+},
+disableButton: {
+    backgroundColor: '#d3d3d3',
+    marginLeft: 30,
+    marginRight: 30,
+    marginTop: 20,
+    height: 48,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: 'center'
+},
+errorText: {
+    fontSize: 16,
+    color: '#ff0000',
+    marginHorizontal: 30,
+},
+buttonTitle: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: "bold"
+},
+txt:{
+  fontWeight: "bold"
+},
+profileContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 20, // Add margin to create space between the profile and menu buttons
+},
+profileImage: {
+  width: 80,
+  height: 80,
+  borderRadius: 40,
+  marginRight: 10,
+},
+profileTextContainer: {
+  justifyContent: 'center',
+},
+profileName: {
+  fontSize: 22,
+  fontWeight: 'bold',
+},
 });
 
 export default EditProfileScreen;
