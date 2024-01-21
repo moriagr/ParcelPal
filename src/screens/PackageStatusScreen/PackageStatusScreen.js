@@ -17,12 +17,34 @@ const EditDeleteButtons = ({ onDelete, onEdit }) => {
   );
 };
 
-const PackageBox = ({ packageInfo, showEditDeleteButtons, onEdit, onDelete }) => {
+const PackageDeliveredButton = ({ onDelivered }) => {
+  return (
+    <View style={styles.editDeleteButtons}>
+      <TouchableOpacity onPress={onDelivered}>
+        <Text style={styles.editButtonText}>Mark as Delivered</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const PackageReviewButton = ({ onReview }) => {
+  return (
+    <View style={styles.editDeleteButtons}>
+      <TouchableOpacity onPress={onReview}>
+        <Text style={styles.editButtonText}>Review Package</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const PackageBox = ({ packageInfo, showEditDeleteButtons, showDeliveredButton, showReviewButton, onEdit, onDelete, onDelivered, onReview }) => {
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
       <View style={styles.packageInfoContainer}>
         <Text>{packageInfo}</Text>
         {showEditDeleteButtons && <EditDeleteButtons onEdit={onEdit} onDelete={onDelete} />}
+        {showDeliveredButton && <PackageDeliveredButton onEdit={onDelivered} />}
+        {showReviewButton && <PackageReviewButton onEdit={onReview} />}
       </View>
     </TouchableOpacity>
   );
@@ -55,6 +77,8 @@ const PackageSection = ({ title, packages }) => {
   };
 
   const showEditDeleteButtons = title === 'Packages waiting for driver';
+  const showDeliveredButton = title === 'Packages in transit';
+  const showReviewButton = title === 'Packages delivered';
 
   return (
     <View style={styles.sectionContainer}>
@@ -78,8 +102,12 @@ const PackageSection = ({ title, packages }) => {
             <PackageBox
               packageInfo={selectedPackage}
               showEditDeleteButtons={showEditDeleteButtons}
+              showDeliveredButton={showDeliveredButton}
+              showReviewButton={showReviewButton}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onDelivered={handleDelete}
+              onReview={handleDelete}
             />
           </View>
         </Modal>
@@ -92,8 +120,12 @@ const PackageSection = ({ title, packages }) => {
             <PackageBox
               packageInfo={item}
               showEditDeleteButtons={showEditDeleteButtons}
+              showDeliveredButton={showDeliveredButton}
+              showReviewButton={showReviewButton}
               onEdit={() => toggleModal(item)}
               onDelete={() => toggleModal(item)}
+              onDelivered={() => toggleModal(item)}
+              onReview={() => toggleModal(item)}
             />
           )}
         />
