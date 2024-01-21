@@ -9,6 +9,11 @@ import { useUserContext } from '../../common/context/UserContext.js';
 const HomeScreenDriver = ({ navigation }) => {
   const { setUser } = useUserContext();
 
+
+  const onAddDrive = () => {
+    navigation.navigate('AddDriveScreen');
+  }
+
   const onPackageStatus = () => {
     navigation.navigate('PackageStatus');
   }
@@ -64,14 +69,17 @@ const HomeScreenDriver = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.driveActionsContainer}>
-            <TouchableOpacity style={styles.actionButton}>
-                <Icon name="road" size={30} color="#a1c4fd" />
-                <Text style={styles.actionText}>Add Drive</Text>
-            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.actionButton} onPress={onAddDrive}>
+            <Icon name="road" size={30} color="#a1c4fd" />
+            <Text style={styles.actionText}>Add Drive</Text>
+          </TouchableOpacity>
+
             <TouchableOpacity style={styles.actionButton}>
                 <Icon name="truck" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Pick Packages</Text>
             </TouchableOpacity>
+
             <TouchableOpacity style={styles.actionButton}>
                 <Icon name="comments" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Chat</Text>

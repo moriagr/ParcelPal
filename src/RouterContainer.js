@@ -1,10 +1,19 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen, HomeScreenClient, RegistrationScreen, LandingScreen, HomeScreenDriver, MyPointsScreen, MyDrivesScreen, PackageStatusScreen } from './screens';
 import firebase from './firebase/config'
 import { ActivityIndicator, View } from 'react-native'
-
 import { useUserContext } from './common/context/UserContext';
+
+import { LoginScreen,
+    HomeScreenClient,
+    RegistrationScreen,
+    LandingScreen,
+    HomeScreenDriver,
+    MyPointsScreen,
+    MyDrivesScreen,
+    PackageStatusScreen,
+    AddDriveScreen } from './screens';
+
 
 const Stack = createStackNavigator();
 
@@ -60,6 +69,8 @@ export default function RouterContainer() {
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
                         <Stack.Screen name="MyPoints" component={MyPointsScreen} />
+                        <Stack.Screen name="AddDriveScreen" component={AddDriveScreen} />
+
                     </>
                 ) : (
                     <>
