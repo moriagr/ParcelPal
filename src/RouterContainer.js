@@ -12,7 +12,9 @@ import { LoginScreen,
     MyPointsScreen,
     MyDrivesScreen,
     PackageStatusScreen,
-    AddDriveScreen } from './screens';
+    AddDriveScreen,
+    NewDeliveryScreen
+} from './screens';
 
 
 const Stack = createStackNavigator();
@@ -79,6 +81,7 @@ export default function RouterContainer() {
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
                         <Stack.Screen name="MyPoints" component={MyPointsScreen} />
+                        <Stack.Screen name="NewDeliveryScreen" component={NewDeliveryScreen} />
                     </>
                 ) : (
                     <>

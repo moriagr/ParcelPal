@@ -9,6 +9,11 @@ import { useUserContext } from '../../common/context/UserContext';
 const HomeScreen = ({ navigation }) => {
   const { setUser, user } = useUserContext();
 
+  const onNewDelivery = () => {
+    navigation.navigate('NewDeliveryScreen');
+  }
+
+
   const onMyPackages = () => {
     // Add navigation logic for My Drives
     navigation.navigate('PackageStatus');
@@ -47,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.profileContainer}>
           <Image
-            source={require('../../../assets/client.png')} // Replace with the actual path to your profile picture
+            source={require('../../../assets/client.png')}
             style={styles.profileImage}
           />
           <View style={styles.profileTextContainer}>
@@ -62,7 +67,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.driveActionsContainer}>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={onNewDelivery}>
             <Icon name="truck" size={30} color="#a1c4fd" />
             <Text style={styles.actionText}>New Delivery</Text>
           </TouchableOpacity>

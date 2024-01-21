@@ -17,10 +17,10 @@ const NewDeliveryScreen = () => {
       if (currentUser) {
         const userId = currentUser.uid;
 
-        const drivesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
-        const newDriveRef = drivesRef.doc();
+        const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
+        const newDeliveryRef = deliveriesRef.doc();
 
-        await newDriveRef.set({
+        await newDeliveryRef.set({
           source,
           destination,
           date,
