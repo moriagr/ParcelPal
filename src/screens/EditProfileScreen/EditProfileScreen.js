@@ -3,26 +3,59 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from 'reac
 import { useUserContext } from '../../common/context/UserContext.js';
 import { Formik } from 'formik'
 import { registrationValidationScheme } from '../../components/Schemes/LoginRegistrationSchemes.js';
+import styles from './styles.js';
+import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
+
 
 
 const EditProfileScreen = () => {
 
   const { setUser, user } = useUserContext();
-  
+
   const [profilePicture, setProfilePicture] = useState(require('../../../assets/icon.png'));
   const [name, setName] = useState(user?.fullName);
+  const [phone , setPhone] = useState(user?.phone)
+  const navigation = useNavigation();
 
   const handleEditProfilePicture = () => {
     // Logic to handle uploading a new profile picture
     console.log('Editing profile picture...');
-    // You can implement image upload functionality here
+    
   };
+  
 
-  const handleEditName = () => {
-    // Logic to handle editing the name
-    console.log('Editing name...');
-    // You can implement a modal or input field for editing the name
+  const saveProfile2DB = async () => {
+    try {
+      const currentUser = firebase.auth().currentUser;
+
+      if (currentUser) {
+        const userId = currentUser.uid;
+
+        const profileRef = firebase.firestore().collection('users').doc(userId);
+        
+        await profileRef.update({
+          profilePicture,
+          fullName: name,
+          phone,
+        });
+        //set up listener here to update
+        // Set up a listener for real-time updates
+        const unsubscribe = profileRef.onSnapshot((snapshot) => {
+          const updatedUserData = snapshot.data();
+          // Update your local state or context with the new data
+          setUser(updatedUserData);
+        });
+
+        console.log('Delivery saved to Firestore!');
+        navigation.goBack();
+
+      } else {
+        console.error('No current user found');
+      }
+    } catch (error) {
+      console.error('Error saving delivery to Firestore:', error);
+    }
   };
 
   return (
@@ -40,10 +73,16 @@ const EditProfileScreen = () => {
             <Text style={styles.profileName}>{user?.fullName}</Text>
           </View>
       </View>
+      <Text style={styles.txtinfo}>Change Profile Picture:</Text>
 
-      <TouchableOpacity onPress={handleEditProfilePicture} style={styles.editButton}>
-        <Text style={styles.buttonTitle}>Change Profile Picture</Text>
-      </TouchableOpacity>
+      <View style={styles.gender}>
+        <TouchableOpacity onPress={handleEditProfilePicture} style={styles.editButton}>
+          <Text style={styles.buttonTitle}>Man</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleEditProfilePicture} style={styles.editButton}>
+          <Text style={styles.buttonTitle}>Woman</Text>
+        </TouchableOpacity>
+      </View>
       
       <Formik
           validationSchema={registrationValidationScheme}
@@ -62,6 +101,10 @@ const EditProfileScreen = () => {
           {({ handleChange, handleBlur, handleSubmit, values, errors, isValid }) => (
 
               <>
+                  <View style={styles.topinfo}>
+                    <Text style={styles.txtinfo}>Role: {user.role}</Text>
+                    <Text style={styles.txtinfo}>Email: {user.email}</Text>
+                  </View>
                   <Text style={styles.txt}>Update Name</Text>
                   <TextInput
                       style={styles.input}
@@ -69,9 +112,9 @@ const EditProfileScreen = () => {
                       placeholderTextColor="#aaaaaa"
                       underlineColorAndroid="transparent"
                       autoCapitalize="none"
-                      value={values.fullName}
-                      onChangeText={handleChange('fullName')}
                       onBlur={handleBlur('fullName')}
+                      value={name}
+                      onChangeText={setName}
 
                   />
                   {errors.fullName && <Text style={styles.errorText}>{errors.fullName}</Text>}
@@ -82,16 +125,16 @@ const EditProfileScreen = () => {
                       placeholderTextColor="#aaaaaa"
                       underlineColorAndroid="transparent"
                       autoCapitalize="none"
-                      value={values.phoneNumber}
-                      onChangeText={handleChange('phoneNumber')}
                       onBlur={handleBlur('phoneNumber')}
+                      value={phone}
+                      onChangeText={setPhone}
                   />
                   {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber}</Text>}
 
                   <TouchableOpacity
                       style={isValid ? styles.button : styles.disableButton}
                       disabled={!isValid}
-                      onPress={handleSubmit}>
+                      onPress={saveProfile2DB}>
                       <Text style={styles.buttonTitle}>Update Profile</Text>
                   </TouchableOpacity>
               </>
@@ -102,102 +145,5 @@ const EditProfileScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'left',
-    padding: 16,
-    marginLeft:30
-  },
-  profilePicture: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
-  },
-  name: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  editButton: {
-    backgroundColor: '#788eec',
-    marginRight: 30,
-    marginTop: 0,
-    height: 35,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: 'center',
-    width: 220,
-    marginBottom: 15
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 20,
-    marginBottom: 10,
-  },
-  input: {
-    height: 48,
-    borderRadius: 5,
-    overflow: 'hidden',
-    backgroundColor: 'white',
-    marginTop: 10,
-    marginBottom: 10,
-    marginRight: 30,
-    paddingHorizontal: 8
-},
-button: {
-    backgroundColor: '#788eec',
-    marginRight: 30,
-    marginTop: 20,
-    height: 48,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: 'center'
-},
-disableButton: {
-    backgroundColor: '#d3d3d3',
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 20,
-    height: 48,
-    borderRadius: 5,
-    alignItems: "center",
-    justifyContent: 'center'
-},
-errorText: {
-    fontSize: 16,
-    color: '#ff0000',
-    marginHorizontal: 30,
-},
-buttonTitle: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: "bold"
-},
-txt:{
-  fontWeight: "bold"
-},
-profileContainer: {
-  flexDirection: 'row',
-  alignItems: 'center',
-  marginBottom: 20, // Add margin to create space between the profile and menu buttons
-},
-profileImage: {
-  width: 80,
-  height: 80,
-  borderRadius: 40,
-  marginRight: 10,
-},
-profileTextContainer: {
-  justifyContent: 'center',
-},
-profileName: {
-  fontSize: 22,
-  fontWeight: 'bold',
-},
-});
 
 export default EditProfileScreen;
