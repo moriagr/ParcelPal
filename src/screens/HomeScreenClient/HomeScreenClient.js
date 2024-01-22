@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.profileContainer}>
           <Image
-            source={require('../../../assets/client.png')}
+            source={user?.profilePicture}
             style={styles.profileImage}
           />
           <View style={styles.profileTextContainer}>

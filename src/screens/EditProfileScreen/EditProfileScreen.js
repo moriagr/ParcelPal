@@ -13,14 +13,30 @@ const EditProfileScreen = () => {
 
   const { setUser, user } = useUserContext();
 
-  const [profilePicture, setProfilePicture] = useState(require('../../../assets/icon.png'));
+  const [isButtonPressedMan, setIsButtonPressedMan] = useState(false);
+  const [isButtonPressedWoman, setIsButtonPressedWoman] = useState(false);
+
+  const [profilePicture, setProfilePicture] = useState(user?.profilePicture);
   const [name, setName] = useState(user?.fullName);
   const [phone , setPhone] = useState(user?.phone)
   const navigation = useNavigation();
 
-  const handleEditProfilePicture = () => {
+  const handleEditProfilePictureMan = () => {
     // Logic to handle uploading a new profile picture
-    console.log('Editing profile picture...');
+    console.log('Editing profile picture to man...');
+    const newProfilePicture = require('../../../assets/man.png');
+    setProfilePicture(newProfilePicture);
+
+    //saveProfile2DB();
+  };
+
+  const handleEditProfilePictureWoman = () => {
+    // Logic to handle uploading a new profile picture
+    console.log('Editing profile picture to woman...');
+    const newProfilePicture = require('../../../assets/woman.png');
+    setProfilePicture(newProfilePicture);
+
+    //saveProfile2DB();
     
   };
   
@@ -65,7 +81,7 @@ const EditProfileScreen = () => {
     <View style={styles.profileContainer}>
       <View>
           <Image
-            source={require('../../../assets/client.png')} // Replace with the actual path to your profile picture
+            source={user?.profilePicture} 
             style={styles.profileImage}
           />
       </View>
@@ -76,10 +92,10 @@ const EditProfileScreen = () => {
       <Text style={styles.txtinfo}>Change Profile Picture:</Text>
 
       <View style={styles.gender}>
-        <TouchableOpacity onPress={handleEditProfilePicture} style={styles.editButton}>
+        <TouchableOpacity onPress={()=>{setIsButtonPressedMan(true); setIsButtonPressedWoman(false); handleEditProfilePictureMan();}} style={[styles.editButton,isButtonPressedMan?styles.buttonPressed: null,]}>
           <Text style={styles.buttonTitle}>Man</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleEditProfilePicture} style={styles.editButton}>
+        <TouchableOpacity onPress={()=>{setIsButtonPressedWoman(true); setIsButtonPressedMan(false); handleEditProfilePictureWoman();}} style={[styles.editButton,isButtonPressedWoman?styles.buttonPressed: null,]}>
           <Text style={styles.buttonTitle}>Woman</Text>
         </TouchableOpacity>
       </View>

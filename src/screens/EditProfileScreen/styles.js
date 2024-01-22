@@ -107,6 +107,10 @@ const styles = StyleSheet.create({
   gender: {
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  buttonPressed:{
+    borderColor: '#ff7700',
+    borderWidth: 2
   }
   });
   

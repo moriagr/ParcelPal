@@ -5,7 +5,6 @@ import styles from './styles'; // Import your styles
 import Header from '../../components/Header/Header';
 import firebase from './../../firebase/config.js'
 import { useUserContext } from '../../common/context/UserContext.js';
-import EditProfileScreen from '../EditProfileScreen/EditProfileScreen.js';
 
 const HomeScreenDriver = ({ navigation }) => {
   const { setUser, user } = useUserContext();
@@ -60,7 +59,7 @@ const HomeScreenDriver = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.profileContainer}>
           <Image
-            source={require('../../../assets/client.png')} // Replace with the actual path to your profile picture
+            source={user?.profilePicture} // Replace with the actual path to your profile picture
             style={styles.profileImage}
           />
           <View style={styles.profileTextContainer}>
