@@ -4,7 +4,8 @@ import firebase from './firebase/config'
 import { ActivityIndicator, View } from 'react-native'
 import { useUserContext } from './common/context/UserContext';
 
-import { LoginScreen,
+import {
+    LoginScreen,
     HomeScreenClient,
     RegistrationScreen,
     LandingScreen,
@@ -12,7 +13,9 @@ import { LoginScreen,
     MyPointsScreen,
     MyDrivesScreen,
     PackageStatusScreen,
-    AddDriveScreen } from './screens';
+    AddDriveScreen
+} from './screens';
+import Chat from './screens/ChatsScreen/ChatScreen';
 
 
 const Stack = createStackNavigator();
@@ -70,6 +73,7 @@ export default function RouterContainer() {
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
                         <Stack.Screen name="MyPoints" component={MyPointsScreen} />
                         <Stack.Screen name="AddDriveScreen" component={AddDriveScreen} />
+                        <Stack.Screen name="ChatScreen" component={Chat} />
 
                     </>
                 ) : (
@@ -78,6 +82,7 @@ export default function RouterContainer() {
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
                         <Stack.Screen name="MyPoints" component={MyPointsScreen} />
+                        <Stack.Screen name="ChatScreen" component={Chat} />
                     </>
                 ) : (
                     <>

@@ -37,6 +37,10 @@ const HomeScreenDriver = ({ navigation }) => {
     // Add navigation logic for Reviews Received
     // navigation.navigate('LoginDriver');
   }
+  
+  const onChatScreen = () => {
+    navigation.navigate('ChatScreen');
+  }
 
   const onLogout = () => {
     firebase.auth()
@@ -80,7 +84,7 @@ const HomeScreenDriver = ({ navigation }) => {
                 <Text style={styles.actionText}>Pick Packages</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={onChatScreen}>
                 <Icon name="comments" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Chat</Text>
             </TouchableOpacity>

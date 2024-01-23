@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "575523337203",
+    "firebase_url": "https://parcelpal-85e75-default-rtdb.firebaseio.com",
+    "project_id": "parcelpal-85e75",
+    "storage_bucket": "parcelpal-85e75.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575523337203:android:5c8f2cf97147e0c4af5886",
+        "android_client_info": {
+          "package_name": "com.ParcelPal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575523337203-7769liqde5bg65jlnc69qcgiddt9gqj2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJQSnzBi3ehUDJaKAS0C9HbDpCeRjRZKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "575523337203-7769liqde5bg65jlnc69qcgiddt9gqj2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

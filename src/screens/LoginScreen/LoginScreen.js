@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
-import firebase from './../../firebase/config'
+import firebase, { auth, database } from './../../firebase/config'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserContext } from '../../common/context/UserContext';
 import PasswordField from '../../components/PassswordField';
@@ -11,12 +11,14 @@ import { loginValidationScheme } from '../../components/Schemes/LoginRegistratio
 
 export default function LoginScreen({ navigation, route }) {
     const { setUser } = useUserContext();
+    const [loading, setLoading] = useState(false);
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration', { role: route.params.role })
     }
 
     const onLoginPress = async (values) => {
+        setLoading(true)
         try {
             const querySnapshot = await firebase
                 .firestore()
@@ -25,6 +27,7 @@ export default function LoginScreen({ navigation, route }) {
                 .get()
 
             if (querySnapshot.empty) {
+                setLoading(false)
                 alert('User not found');
                 return;
             }
@@ -34,13 +37,12 @@ export default function LoginScreen({ navigation, route }) {
 
             // Check the role
             if (user.role !== route.params.role) {
+                setLoading(false)
                 alert('Invalid role for this user');
                 return;
             }
 
-            firebase
-                .auth()
-                .signInWithEmailAndPassword(values.email, values.password)
+            auth.signInWithEmailAndPassword(values.email, values.password)
                 .then(async (response) => {
                     const uid = response.user.uid
                     const userToken = await response.user.getIdToken(); // Get user token
@@ -54,11 +56,13 @@ export default function LoginScreen({ navigation, route }) {
                         .get()
                         .then(firestoreDocument => {
                             if (!firestoreDocument.exists) {
+                                setLoading(false)
                                 alert("User does not exist anymore.")
                                 return;
                             }
                             const user = firestoreDocument.data()
                             setUser(user);
+                            setLoading(true);
                             if (route.params.role == "Driver") {
                                 navigation.navigate('HomeDriver')
                             } else {
@@ -66,13 +70,16 @@ export default function LoginScreen({ navigation, route }) {
                             }
                         })
                         .catch(error => {
+                            setLoading(false)
                             alert(error)
                         });
                 })
                 .catch(error => {
+                    setLoading(false)
                     alert(error)
                 })
         } catch (error) {
+            setLoading(false)
             alert(error)
         }
 
@@ -113,7 +120,7 @@ export default function LoginScreen({ navigation, route }) {
                     {({ handleChange, handleBlur, handleSubmit, values, errors, isValid }) => (
 
                         <>
-                             <TextInput
+                            <TextInput
                                 style={styles.input}
                                 placeholderTextColor="#aaaaaa"
                                 placeholder="Email"
@@ -131,7 +138,7 @@ export default function LoginScreen({ navigation, route }) {
                                 style={isValid ? styles.button : styles.disableButton}
                                 disabled={!isValid}
                                 onPress={handleSubmit}>
-                                <Text style={styles.buttonTitle}>Log in</Text>
+                                <Text style={styles.buttonTitle}>Log in {loading ? ". . ." : ""}</Text>
                             </TouchableOpacity>
                         </>)}
                 </Formik>

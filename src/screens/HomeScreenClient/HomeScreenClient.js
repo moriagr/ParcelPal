@@ -29,13 +29,17 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('LoginDriver');
   }
 
+  const onChatScreen = () => {
+    navigation.navigate('ChatScreen');
+  }
+
   const onLogout = () => {
     // Add navigation logic for Log Out
     firebase.auth()
-    .signOut()
-    .then(() => {
-      setUser(null);
-      navigation.navigate('Landing');
+      .signOut()
+      .then(() => {
+        setUser(null);
+        navigation.navigate('Landing');
         console.log('User signed out!')
       });
 
@@ -70,7 +74,7 @@ const HomeScreen = ({ navigation }) => {
             <Icon name="fire" size={30} color="#a1c4fd" />
             <Text style={styles.actionText}>Popular</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={onChatScreen}>
             <Icon name="comments" size={30} color="#a1c4fd" />
             <Text style={styles.actionText}>Chat</Text>
           </TouchableOpacity>
