@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import styles from './styles';
 
 const EditDeleteButtons = ({ onDelete, onEdit }) => {
@@ -20,18 +19,38 @@ const EditDeleteButtons = ({ onDelete, onEdit }) => {
 const PackageDeliveredButton = ({ onDelivered }) => {
   return (
     <View style={styles.editDeleteButtons}>
-      <TouchableOpacity onPress={onDelivered}>
-        <Text style={styles.editButtonText}>Mark as Delivered</Text>
+      <TouchableOpacity onPress={onDelivered} style={styles.markbtn}>
+        <Text style={styles.reviewText}>Mark as Delivered</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
+
+
 const PackageReviewButton = ({ onReview }) => {
+
+  const [rating, setRating] = useState(0);
+
+  const handleStarPress = (selectedRating) => {
+    setRating(selectedRating);
+  };
+
   return (
     <View style={styles.editDeleteButtons}>
-      <TouchableOpacity onPress={onReview}>
-        <Text style={styles.editButtonText}>Review Package</Text>
+      <View style={styles.starsContainer}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <TouchableOpacity
+            key={star}
+            onPress={() => handleStarPress(star)}
+            style={styles.star}
+          >
+            <Text style={{ color: star <= rating ? 'gold' : 'gray' }}>★</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <TouchableOpacity onPress={onReview} style={styles.reviewbtn}>
+        <Text style={styles.reviewText}>Review</Text>
       </TouchableOpacity>
     </View>
   );
@@ -76,6 +95,18 @@ const PackageSection = ({ title, packages }) => {
     setModalVisible(false);
   };
 
+  const handleMarkAsDelivered = () => {
+    // Handle delete action
+    console.log(`Mark package as delivered: ${selectedPackage}`);
+    setModalVisible(false);
+  };
+
+  const handleReview = () => {
+    // Handle delete action
+    console.log(`Review package: ${selectedPackage}`);
+    setModalVisible(false);
+  };
+
   const showEditDeleteButtons = title === 'Packages waiting for driver';
   const showDeliveredButton = title === 'Packages in transit';
   const showReviewButton = title === 'Packages delivered';
@@ -106,8 +137,8 @@ const PackageSection = ({ title, packages }) => {
               showReviewButton={showReviewButton}
               onEdit={handleEdit}
               onDelete={handleDelete}
-              onDelivered={handleDelete}
-              onReview={handleDelete}
+              onDelivered={handleMarkAsDelivered}
+              onReview={handleReview}
             />
           </View>
         </Modal>
