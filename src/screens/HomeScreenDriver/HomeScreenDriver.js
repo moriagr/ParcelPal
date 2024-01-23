@@ -39,7 +39,7 @@ const HomeScreenDriver = ({ navigation }) => {
   }
   
   const onChatScreen = () => {
-    navigation.navigate('ChatScreen');
+    navigation.navigate('ChatsScreen');
   }
 
   const onEditProfile = () => {

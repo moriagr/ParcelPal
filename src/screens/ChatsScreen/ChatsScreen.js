@@ -1,11 +1,11 @@
 import React, { useLayoutEffect, useState } from "react";
 import CurrentChat from "../../components/CurrentChat/CurrentChat";
 
-const Chat = ({ navigation }) => {
+const ChatsScreen = ({ navigation }) => {
 
     return (
         <CurrentChat />
     )
 }
 
-export default Chat;
+export default ChatsScreen;
