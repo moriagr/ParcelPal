@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     marginRight: 10,
+    borderColor: '#788eec',
+    borderWidth: 2
   },
   profileTextContainer: {
     justifyContent: 'center',

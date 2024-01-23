@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
 import styles from './styles';
 
 const EditDeleteButtons = ({ onDelete, onEdit }) => {
@@ -17,12 +16,54 @@ const EditDeleteButtons = ({ onDelete, onEdit }) => {
   );
 };
 
-const PackageBox = ({ packageInfo, showEditDeleteButtons, onEdit, onDelete }) => {
+const PackageDeliveredButton = ({ onDelivered }) => {
+  return (
+    <View style={styles.editDeleteButtons}>
+      <TouchableOpacity onPress={onDelivered} style={styles.markbtn}>
+        <Text style={styles.reviewText}>Mark as Delivered</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+
+
+const PackageReviewButton = ({ onReview }) => {
+
+  const [rating, setRating] = useState(0);
+
+  const handleStarPress = (selectedRating) => {
+    setRating(selectedRating);
+  };
+
+  return (
+    <View style={styles.editDeleteButtons}>
+      <View style={styles.starsContainer}>
+        {[1, 2, 3, 4, 5].map((star) => (
+          <TouchableOpacity
+            key={star}
+            onPress={() => handleStarPress(star)}
+            style={styles.star}
+          >
+            <Text style={{ color: star <= rating ? 'gold' : 'gray' }}>★</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <TouchableOpacity onPress={onReview} style={styles.reviewbtn}>
+        <Text style={styles.reviewText}>Review</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+const PackageBox = ({ packageInfo, showEditDeleteButtons, showDeliveredButton, showReviewButton, onEdit, onDelete, onDelivered, onReview }) => {
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
       <View style={styles.packageInfoContainer}>
         <Text>{packageInfo}</Text>
         {showEditDeleteButtons && <EditDeleteButtons onEdit={onEdit} onDelete={onDelete} />}
+        {showDeliveredButton && <PackageDeliveredButton onEdit={onDelivered} />}
+        {showReviewButton && <PackageReviewButton onEdit={onReview} />}
       </View>
     </TouchableOpacity>
   );
@@ -54,7 +95,21 @@ const PackageSection = ({ title, packages }) => {
     setModalVisible(false);
   };
 
+  const handleMarkAsDelivered = () => {
+    // Handle delete action
+    console.log(`Mark package as delivered: ${selectedPackage}`);
+    setModalVisible(false);
+  };
+
+  const handleReview = () => {
+    // Handle delete action
+    console.log(`Review package: ${selectedPackage}`);
+    setModalVisible(false);
+  };
+
   const showEditDeleteButtons = title === 'Packages waiting for driver';
+  const showDeliveredButton = title === 'Packages in transit';
+  const showReviewButton = title === 'Packages delivered';
 
   return (
     <View style={styles.sectionContainer}>
@@ -78,8 +133,12 @@ const PackageSection = ({ title, packages }) => {
             <PackageBox
               packageInfo={selectedPackage}
               showEditDeleteButtons={showEditDeleteButtons}
+              showDeliveredButton={showDeliveredButton}
+              showReviewButton={showReviewButton}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onDelivered={handleMarkAsDelivered}
+              onReview={handleReview}
             />
           </View>
         </Modal>
@@ -92,8 +151,12 @@ const PackageSection = ({ title, packages }) => {
             <PackageBox
               packageInfo={item}
               showEditDeleteButtons={showEditDeleteButtons}
+              showDeliveredButton={showDeliveredButton}
+              showReviewButton={showReviewButton}
               onEdit={() => toggleModal(item)}
               onDelete={() => toggleModal(item)}
+              onDelivered={() => toggleModal(item)}
+              onReview={() => toggleModal(item)}
             />
           )}
         />

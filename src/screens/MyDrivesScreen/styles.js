@@ -38,16 +38,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  editDeleteButtons: {
-    flexDirection: 'row',
-  },
-  editButtonText: {
-    marginRight: 10,
-    color: 'green',
-  },
-  deleteButtonText: {
-    color: 'red',
-  },
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -57,6 +47,21 @@ const styles = StyleSheet.create({
     marginTop: windowHeight / 3, // Centered position for the modal
     padding: 20,
   },
+  reviewText:{
+    color: 'white',
+    fontWeight: 'bold',
+    alignItems: "center",
+  },
+  markbtn:{
+    backgroundColor: '#788eec',
+    height: 25,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: 'center',
+    width: 140,
+    paddingBottom: 2,
+    paddingTop: 2
+  }
 });
 
 export default styles;

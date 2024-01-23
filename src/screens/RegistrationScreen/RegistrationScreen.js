@@ -11,6 +11,7 @@ import { registrationValidationScheme } from '../../components/Schemes/LoginRegi
 export default function RegistrationScreen({ navigation, route }) {
     const { setUser } = useUserContext();
 
+    const DefaultProfilePicture = require('../../../assets/defaultPP.png');
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
     }
@@ -28,7 +29,8 @@ export default function RegistrationScreen({ navigation, route }) {
                     email: values.email,
                     role: route.params.role,
                     fullName: values.fullName,
-                    phone: values.phoneNumber
+                    phone: values.phoneNumber,
+                    profilePicture: DefaultProfilePicture
                 };
                 const usersRef = firebase.firestore().collection('users')
 

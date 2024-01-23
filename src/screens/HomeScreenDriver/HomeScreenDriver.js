@@ -7,7 +7,7 @@ import firebase from './../../firebase/config.js'
 import { useUserContext } from '../../common/context/UserContext.js';
 
 const HomeScreenDriver = ({ navigation }) => {
-  const { setUser } = useUserContext();
+  const { setUser, user } = useUserContext();
 
 
   const onAddDrive = () => {
@@ -42,6 +42,11 @@ const HomeScreenDriver = ({ navigation }) => {
     navigation.navigate('ChatScreen');
   }
 
+  const onEditProfile = () => {
+    // Add navigation logic for Reviews Received
+    navigation.navigate('EditProfileScreen');
+  }
+
   const onLogout = () => {
     firebase.auth()
     .signOut()
@@ -58,15 +63,15 @@ const HomeScreenDriver = ({ navigation }) => {
       <View style={styles.header}>
         <View style={styles.profileContainer}>
           <Image
-            source={require('../../../assets/client.png')} // Replace with the actual path to your profile picture
+            source={user?.profilePicture} // Replace with the actual path to your profile picture
             style={styles.profileImage}
           />
           <View style={styles.profileTextContainer}>
-            <Text style={styles.profileName}>Driver #1001</Text>
+            <Text style={styles.profileName}>{user?.fullName}</Text>
             <View style={styles.ratingContainer}>
               <Icon name="star" size={20} color="#f1c40f" />
               <Text style={styles.ratingText}>4.6</Text>
-              <TouchableOpacity style={styles.editButton}>
+              <TouchableOpacity style={styles.editButton} onPress={onEditProfile}>
                 <Text style={styles.editButtonText}>Edit Profile</Text>
               </TouchableOpacity>
             </View>
