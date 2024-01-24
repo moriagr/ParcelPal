@@ -90,14 +90,14 @@ const HomeScreen = ({ navigation }) => {
             <Text style={styles.menuButtonText}>My Packages</Text>
             <Icon name="chevron-right" size={20} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menuButton} onPress={onMyPoints}>
+          {/*<TouchableOpacity style={styles.menuButton} onPress={onMyPoints}>
             <Text style={styles.menuButtonText}>My Points</Text>
             <Icon name="chevron-right" size={20} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuButton} onPress={onMyTips}>
             <Text style={styles.menuButtonText}>Tips Given</Text>
             <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
           <TouchableOpacity style={styles.menuButton} onPress={onReviewsReceived}>
             <Text style={styles.menuButtonText}>Reviews Given</Text>
             <Icon name="chevron-right" size={20} color="#000" />
