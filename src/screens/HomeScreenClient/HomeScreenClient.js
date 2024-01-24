@@ -73,12 +73,12 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.driveActionsContainer}>
           <TouchableOpacity style={styles.actionButton} onPress={onNewDelivery}>
-            <Icon name="truck" size={30} color="#a1c4fd" />
+            <Icon name="cubes" size={30} color="#a1c4fd" />
             <Text style={styles.actionText}>New Delivery</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
-            <Icon name="fire" size={30} color="#a1c4fd" />
-            <Text style={styles.actionText}>Popular</Text>
+            <Icon name="truck" size={30} color="#a1c4fd" />
+            <Text style={styles.actionText}>Pick Driver</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton}>
             <Icon name="comments" size={30} color="#a1c4fd" />

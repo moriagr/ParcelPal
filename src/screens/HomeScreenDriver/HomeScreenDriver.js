@@ -81,7 +81,7 @@ const HomeScreenDriver = ({ navigation }) => {
           </TouchableOpacity>
 
             <TouchableOpacity style={styles.actionButton}>
-                <Icon name="truck" size={30} color="#a1c4fd" />
+                <Icon name="archive" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Pick Packages</Text>
             </TouchableOpacity>
 
