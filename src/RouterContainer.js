@@ -71,7 +71,6 @@ export default function RouterContainer() {
                         <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
-                        <Stack.Screen name="MyPoints" component={MyPointsScreen} />
                         <Stack.Screen name="AddDriveScreen" component={AddDriveScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
 
@@ -82,7 +81,6 @@ export default function RouterContainer() {
                         <Stack.Screen name="HomeClient" component={HomeScreenClient} />
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
-                        <Stack.Screen name="MyPoints" component={MyPointsScreen} />
                         <Stack.Screen name="NewDeliveryScreen" component={NewDeliveryScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
                     </>

@@ -24,7 +24,7 @@ export default function RegistrationScreen({ navigation, route }) {
             .createUserWithEmailAndPassword(values.email, values.password)
             .then((response) => {
                 const uid = response.user.uid
-                const data = {
+                let data = {
                     id: uid,
                     email: values.email,
                     role: route.params.role,
@@ -32,6 +32,20 @@ export default function RegistrationScreen({ navigation, route }) {
                     phone: values.phoneNumber,
                     profilePicture: DefaultProfilePicture
                 };
+                // ADD fields based on role
+                if (route.params.role === 'Driver') {
+                    // If the role is Driver, add avgReview field
+                    data = {
+                      ...data,
+                      reviews: [],
+                    };
+                  } else {
+                    // If the role is not Driver, add packagesSent field
+                    data = {
+                      ...data,
+                      packagesSent: 0,
+                    };
+                  }
                 const usersRef = firebase.firestore().collection('users')
 
                 usersRef

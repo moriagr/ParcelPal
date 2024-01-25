@@ -53,6 +53,12 @@ const HomeScreenDriver = ({ navigation }) => {
     });
   }
 
+  let avgReview = 0.0;
+  if(user?.reviews.length === 0 ){
+    avgReview = 0.0;
+  }else
+    avgReview = user?.reviews.reduce((sum, review) => sum + review.rating, 0) / user?.reviews.length;
+
   return (
     <View style={styles.container}>
       <Header />
@@ -66,7 +72,7 @@ const HomeScreenDriver = ({ navigation }) => {
             <Text style={styles.profileName}>{user?.fullName}</Text>
             <View style={styles.ratingContainer}>
               <Icon name="star" size={20} color="#f1c40f" />
-              <Text style={styles.ratingText}>4.6</Text>
+              <Text style={styles.ratingText}>{avgReview}</Text>
               <TouchableOpacity style={styles.editButton} onPress={onEditProfile}>
                 <Text style={styles.editButtonText}>Edit Profile</Text>
               </TouchableOpacity>

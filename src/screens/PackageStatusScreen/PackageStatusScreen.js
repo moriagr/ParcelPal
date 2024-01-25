@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
+import firebase from './../../firebase/config'
 
 const EditDeleteButtons = ({ onDelete, onEdit }) => {
   return (
@@ -60,7 +61,7 @@ const PackageBox = ({ packageInfo, showEditDeleteButtons, showDeliveredButton, s
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
       <View style={styles.packageInfoContainer}>
-        <Text>{packageInfo}</Text>
+        <Text>{packageInfo.source} - {packageInfo.destination} : {packageInfo.size} </Text>
         {showEditDeleteButtons && <EditDeleteButtons onEdit={onEdit} onDelete={onDelete} />}
         {showDeliveredButton && <PackageDeliveredButton onEdit={onDelivered} />}
         {showReviewButton && <PackageReviewButton onEdit={onReview} />}
@@ -166,7 +167,37 @@ const PackageSection = ({ title, packages }) => {
 };
 
 const PackageStatusScreen = () => {
-  const packagesWaiting = ['Package 1', 'Package 2', 'Package 3'];
+  //const packagesWaiting = ['Package 1', 'Package 2', 'Package 3'];
+  //
+  const [packagesWaiting, setPackagesWaiting] = useState([]);
+
+  useEffect(() => {
+    const fetchDeliveries = async () => {
+      try {
+        const currentUser = firebase.auth().currentUser;
+
+        if (currentUser) {
+          const userId = currentUser.uid;
+
+          const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
+
+          const snapshot = await deliveriesRef.get();
+
+          const deliveries = snapshot.docs.map(doc => doc.data());
+
+          setPackagesWaiting(deliveries);
+        } else {
+          console.error('No current user found');
+        }
+      } catch (error) {
+        console.error('Error fetching deliveries from Firestore:', error);
+      }
+    };
+
+    fetchDeliveries();
+  }, []);
+
+  //
   const packagesInTransit = ['Package A', 'Package B', 'Package C'];
   const packagesDelivered = ['Package X', 'Package Y', 'Package Z'];
 
