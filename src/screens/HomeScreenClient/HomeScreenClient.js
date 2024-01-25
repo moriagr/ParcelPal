@@ -64,7 +64,7 @@ const HomeScreen = ({ navigation }) => {
             <Text style={styles.profileName}>{user?.fullName}</Text>
             <View style={styles.ratingContainer}>
               <Icon name="truck" size={20} color="#f1c40f" />
-              <Text style={styles.ratingText}>152</Text>
+              <Text style={styles.ratingText}>{user?.packagesSent}</Text>
               <TouchableOpacity style={styles.editButton} onPress={onEditProfile}>
                 <Text style={styles.editButtonText}>Edit Profile</Text>
               </TouchableOpacity>

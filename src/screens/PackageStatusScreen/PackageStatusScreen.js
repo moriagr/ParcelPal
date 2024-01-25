@@ -1,9 +1,11 @@
+// imports 
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, FlatList, TouchableWithoutFeedback } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import firebase from './../../firebase/config'
 
+//edit delete buttons for packages waiting for driver
 const EditDeleteButtons = ({ onDelete, onEdit }) => {
   return (
     <View style={styles.editDeleteButtons}>
@@ -17,6 +19,7 @@ const EditDeleteButtons = ({ onDelete, onEdit }) => {
   );
 };
 
+//Mark as delivered button for packages delivered by driver
 const PackageDeliveredButton = ({ onDelivered }) => {
   return (
     <View style={styles.editDeleteButtons}>
@@ -28,7 +31,7 @@ const PackageDeliveredButton = ({ onDelivered }) => {
 };
 
 
-
+//review button for reviewing delivered packages
 const PackageReviewButton = ({ onReview }) => {
 
   const [rating, setRating] = useState(0);
@@ -57,6 +60,7 @@ const PackageReviewButton = ({ onReview }) => {
   );
 };
 
+// package box 
 const PackageBox = ({ packageInfo, showEditDeleteButtons, showDeliveredButton, showReviewButton, onEdit, onDelete, onDelivered, onReview }) => {
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
