@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: 'white',
-    marginTop: windowHeight / 3, // Centered position for the modal
+    marginTop: 2, // Centered position for the modal
     padding: 20,
   },
   starsContainer: {

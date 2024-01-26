@@ -8,6 +8,8 @@ const NewDeliveryScreen = () => {
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
   const [size, setSize] = useState('');
+  const [packageStatus, setPackageStatus] = useState('waiting');
+  const [Driver, setDriver] = useState('');
   const navigation = useNavigation();
 
   const saveDelivery2DB = async () => {
@@ -19,12 +21,20 @@ const NewDeliveryScreen = () => {
 
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
         const newDeliveryRef = deliveriesRef.doc();
-
+        
         await newDeliveryRef.set({
           source,
           destination,
           date,
           size,
+          packageStatus,
+          Driver,
+        });
+
+        const packageid = newDeliveryRef.id;
+
+        await newDeliveryRef.update({
+          packageid,
         });
 
         console.log('Delivery saved to Firestore!');
