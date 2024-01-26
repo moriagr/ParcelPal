@@ -51,7 +51,7 @@ const PackageReviewButton = ({ onReview }) => {
             onPress={() => handleStarPress(star)}
             style={styles.star}
           >
-            <Text style={{ color: star <= rating ? 'gold' : 'gray' }}>★</Text>
+            <Text style={{ color: star <= rating ? 'gold' : 'gray', fontSize: 18 }}>★</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -159,11 +159,9 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
     try {
       const currentUser = firebase.auth().currentUser;
       
-  
       if (currentUser) {
         const userId = currentUser.uid;
         
-
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
         const userDocRef = firebase.firestore().collection('users').doc(userId);
         const userDocSnapshot = await userDocRef.get(); 
@@ -184,12 +182,26 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
         // Fetch the driver's document from the users collection
         const driverDocSnapshot = await firebase.firestore().collection('users').doc(selectedPackage.Driver).get();
         const driverDocRef = driverDocSnapshot.ref;
+        const userDocReff = userDocSnapshot.ref;
+
+        const DriverData = driverDocSnapshot.data();
+        const driverName = DriverData.fullName;
+      
+        console.log('Driver Name:', driverName);
 
         // Update the driver's review array to add the review 
         console.log(`client name and rating: ` ,clientName , " ", rating);
         await driverDocRef.update({
           reviews: firebase.firestore.FieldValue.arrayUnion({
             customerName: clientName,
+            rating: rating,
+          }),
+        });
+
+        console.log(`driver name and rating: ` ,driverName , " ", rating);
+        await userDocReff.update({
+          reviews: firebase.firestore.FieldValue.arrayUnion({
+            DriverName: driverName,
             rating: rating,
           }),
         });

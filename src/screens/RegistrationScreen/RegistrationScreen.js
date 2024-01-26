@@ -44,6 +44,7 @@ export default function RegistrationScreen({ navigation, route }) {
                     data = {
                       ...data,
                       packagesSent: 0,
+                      reviews: [],
                     };
                   }
                 const usersRef = firebase.firestore().collection('users')

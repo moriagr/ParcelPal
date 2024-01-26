@@ -31,7 +31,7 @@ const HomeScreen = ({ navigation }) => {
 
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
-    navigation.navigate('LoginDriver');
+    navigation.navigate('Login');
   }
 
   const onEditProfile = () => {
