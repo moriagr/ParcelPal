@@ -24,6 +24,8 @@ export { default as EditProfileScreen } from './EditProfileScreen/EditProfileScr
 
 export { default as EditDeliveryScreen } from './EditDeliveryScreen/EditDeliveryScreen'
 
+export { default as PickDriveScreen } from './PickDriveScreen/PickDriveScreen'
+
 
 
 

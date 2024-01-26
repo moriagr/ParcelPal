@@ -13,6 +13,10 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('NewDeliveryScreen');
   }
 
+  const onPickDriver = () =>{
+    navigation.navigate('PickDriveScreen');
+  }
+
 
   const onMyPackages = () => {
     // Add navigation logic for My Drives
@@ -76,7 +80,7 @@ const HomeScreen = ({ navigation }) => {
             <Icon name="cubes" size={30} color="#a1c4fd" />
             <Text style={styles.actionText}>New Delivery</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
+          <TouchableOpacity style={styles.actionButton} onPress={onPickDriver}>
             <Icon name="truck" size={30} color="#a1c4fd" />
             <Text style={styles.actionText}>Pick Driver</Text>
           </TouchableOpacity>

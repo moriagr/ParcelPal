@@ -15,7 +15,8 @@ import { LoginScreen,
     AddDriveScreen,
     NewDeliveryScreen,
     EditProfileScreen,
-    EditDeliveryScreen
+    EditDeliveryScreen,
+    PickDriveScreen
 } from './screens';
 
 
@@ -85,6 +86,7 @@ export default function RouterContainer() {
                         <Stack.Screen name="NewDeliveryScreen" component={NewDeliveryScreen} />
                         <Stack.Screen name="EditDeliveryScreen" component={EditDeliveryScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+                        <Stack.Screen name="PickDriveScreen" component={PickDriveScreen} />
                     </>
                 ) : (
                     <>
