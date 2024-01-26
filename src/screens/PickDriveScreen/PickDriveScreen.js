@@ -183,7 +183,7 @@ const PickDriveScreen = ({ navigation }) => {
         />
       </View>
       <View style={{marginTop: 20, marginBottom: 40}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Client Packages:</Text>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>My Packages:</Text>
         <FlatList
             data={clientPackages}
             keyExtractor={(item) => item.id}
