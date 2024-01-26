@@ -7,6 +7,7 @@ const AddDriveScreen = () => {
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
+  const [driveStatus, setDriveStatus] = useState('current drive');
   const navigation = useNavigation();
 
   const saveDrive2DB = async () => {
@@ -23,6 +24,13 @@ const AddDriveScreen = () => {
           source,
           destination,
           date,
+          driveStatus,
+        });
+
+        const driveid = newDriveRef.id;
+
+        await newDriveRef.update({
+          driveid,
         });
 
         console.log('Drive saved to Firestore!');

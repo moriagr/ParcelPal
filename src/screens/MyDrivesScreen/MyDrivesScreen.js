@@ -20,13 +20,13 @@ const DriveBox = ({ packageInfo,  showEndDriveButton, onDelivered }) => {
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
       <View style={styles.packageInfoContainer}>
         <Text>{packageInfo.source} - {packageInfo.destination} </Text>
-        {showEndDriveButton && <CurrentDrivesButton onEdit={onDelivered} />}
+        {showEndDriveButton && <CurrentDrivesButton onDelivered={onDelivered} />}
       </View>
     </TouchableOpacity>
   );
 };
 
-const PackageSection = ({ title, packages }) => {
+const PackageSection = ({ title, packages, onFetchDrives }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -40,10 +40,34 @@ const PackageSection = ({ title, packages }) => {
     setModalVisible(!isModalVisible);
   };
 
-  const handleEndDrive = () => {
-    // Handle delete action
-    console.log(`Mark package as delivered: ${selectedPackage}`);
-    setModalVisible(false);
+  const handleEndDrive = async () => {
+    try {
+      const currentUser = firebase.auth().currentUser;
+  
+      if (currentUser) {
+        const userId = currentUser.uid;
+        const drivesRef = firebase.firestore().collection(`users/${userId}/drives`);
+  
+        // Assuming selectedPackage.driveid is the attribute that uniquely identifies the drive
+        const drivesDocRef = drivesRef.doc(selectedPackage.driveid);
+  
+        // Update the PackageStatus field to "delivered"
+        await drivesDocRef.update({
+          driveStatus: "past drive",
+        });
+  
+        console.log(`drive marked as ended: ${selectedPackage.driveid}`);
+        setModalVisible(false);
+        // trigers a refetch od data to update flatlist
+        
+        onFetchDrives();
+        
+      } else {
+        console.error('No current user found');
+      }
+    } catch (error) {
+      console.error('Error marking package as delivered:', error);
+    }
   };
 
   const showEndDriveButton = title === 'Current Drives';
@@ -54,10 +78,10 @@ const PackageSection = ({ title, packages }) => {
         <Text style={styles.sectionTitle}>{title}</Text>
         <Icon name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color="black" />
       </TouchableOpacity>
-      {isModalVisible && selectedPackage && showEndDriveButton && (
+      {isModalVisible && selectedPackage && (
         <Modal
           animationType="slide"
-          transparent={true}
+          transparent={false}
           visible={isModalVisible}
           onRequestClose={() => {
             setModalVisible(false);
@@ -95,40 +119,45 @@ const PackageSection = ({ title, packages }) => {
 const MyDriveScreen = () => {
 
   const [CurrentDrives, setCurrentDrives] = useState([]);
+  const [PastDrives, setPastDrives] = useState([]);
+
+  
+  const fetchDrives = async () => {
+    try {
+      const currentUser = firebase.auth().currentUser;
+
+      if (currentUser) {
+        const userId = currentUser.uid;
+
+        const drivesRef = firebase.firestore().collection(`users/${userId}/drives`);
+
+        const snapshotCurrentDrives = await drivesRef.where('driveStatus', '==', 'current drive').get();
+        const snapshotPastDrives = await drivesRef.where('driveStatus', '==', 'past drive').get();
+
+        const currentDrives = snapshotCurrentDrives.docs.map(doc => doc.data());
+        const pastDrives = snapshotPastDrives.docs.map(doc => doc.data());
+
+        setCurrentDrives(currentDrives);
+        setPastDrives(pastDrives);
+
+      } else {
+        console.error('No current user found');
+      }
+    } catch (error) {
+      console.error('Error fetching deliveries from Firestore:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchDeliveries = async () => {
-      try {
-        const currentUser = firebase.auth().currentUser;
-
-        if (currentUser) {
-          const userId = currentUser.uid;
-
-          const drivesRef = firebase.firestore().collection(`users/${userId}/drives`);
-
-          const snapshot = await drivesRef.get();
-
-          const drives = snapshot.docs.map(doc => doc.data());
-
-          setCurrentDrives(drives);
-        } else {
-          console.error('No current user found');
-        }
-      } catch (error) {
-        console.error('Error fetching deliveries from Firestore:', error);
-      }
-    };
-
-    fetchDeliveries();
+    // Fetch deliveries when the component mounts
+    fetchDrives();
   }, []);
   
-  //const CurrentDrives = ['Drive A', 'Drive B', 'Drive C'];
-  const PastDrives = ['Drive 1', 'Drive 2', 'Drive 3'];
 
   return (
     <View style={styles.container}>
-      <PackageSection title="Current Drives" packages={CurrentDrives} />
-      <PackageSection title="Past Drives" packages={PastDrives} />
+      <PackageSection title="Current Drives" packages={CurrentDrives} onFetchDrives={fetchDrives}/>
+      <PackageSection title="Past Drives" packages={PastDrives} onFetchDrives={fetchDrives}/>
     </View>
   );
 };

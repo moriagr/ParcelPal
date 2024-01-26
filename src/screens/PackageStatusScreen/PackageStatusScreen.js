@@ -277,7 +277,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
   );
 };
 
-const PackageStatusScreen = (navigation) => {
+const PackageStatusScreen = () => {
 
   const [packagesWaiting, setPackagesWaiting] = useState([]);
   const [packagesInTransit, setPackagesInTransit] = useState([]);
