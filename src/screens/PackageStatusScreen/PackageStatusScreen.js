@@ -95,10 +95,31 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
     setModalVisible(false);
   };
 
-  const handleDelete = () => {
-    // Handle delete action
-    console.log(`Delete package: ${selectedPackage}`);
-    setModalVisible(false);
+  const handleDelete = async () => {
+    try {
+      const currentUser = firebase.auth().currentUser;
+  
+      if (currentUser) {
+        const userId = currentUser.uid;
+        const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
+  
+        // Assuming selectedPackage.packageid is the attribute that uniquely identifies the package
+        const deliveryDocRef = deliveriesRef.doc(selectedPackage.packageid);
+        console.log(`Deleting package with ID: , ${selectedPackage.packageid}`);
+        
+        // Delete the document from the 'deliveries' collection
+        await deliveryDocRef.delete();
+  
+        console.log(`Package deleted: ${selectedPackage.packageid}`);
+        setModalVisible(false);
+        // Triggers a refetch of data to update flatlist
+        onFetchDeliveries();
+      } else {
+        console.error('No current user found');
+      }
+    } catch (error) {
+      console.error('Error deleting package:', error);
+    }
   };
 
   const handleMarkAsDelivered = async () => {
@@ -107,7 +128,6 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
   
       if (currentUser) {
         const userId = currentUser.uid;
-  
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
   
         // Assuming selectedPackage.packageId is the attribute that uniquely identifies the package
