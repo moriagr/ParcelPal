@@ -1,12 +1,204 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, TextInput, Modal } from 'react-native';
 import firebase from './../../firebase/config';
+import styles from './styles';
 
 const PickDriveScreen = ({ navigation }) => {
+  const [availableDrives, setAvailableDrives] = useState([]);
+  const [selectedDrive, setSelectedDrive] = useState(null);
+  const [clientPackages, setClientPackages] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState('all');
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [selectedPackages, setSelectedPackages] = useState([]);
+
+  useEffect(() => {
+    // Fetch available drives from the database
+    const fetchAvailableDrives = async () => {
+      try {
+        const role = 'Driver';
+
+        const driversRef = firebase.firestore().collection('users').where('role', '==', role);
+        const driversSnapshot = await driversRef.get();
+
+        const drivesDataPromises = driversSnapshot.docs.map(async (driverDoc) => {
+            console.log('Fetching drives for driver:', driverDoc.id);
+            const drivesRef = driverDoc.ref.collection('drives');
+            const drivesSnapshot = await drivesRef.where('driveStatus', '==', 'current drive').get();
+            console.log('Drives fetched:', drivesSnapshot.docs.length);
   
+            const drivesData = drivesSnapshot.docs.map((driveDoc) => driveDoc.data());
+            return drivesData;
+        });
+
+        const allDrivesData = await Promise.all(drivesDataPromises);
+        const flattenedDrives = allDrivesData.flat();
+
+        console.log('Setting drives:', flattenedDrives.length);
+        setAvailableDrives(flattenedDrives);
+
+      } catch (error) {
+        console.error('Error fetching available drives:', error);
+      }
+    };
+
+    // Fetch client's packages from the database
+    const fetchClientPackages = async () => {
+      try {
+        
+        const clientId = firebase.auth().currentUser.uid;
+        const packagesRef = firebase.firestore().collection(`users/${clientId}/deliveries`);
+        const snapshot = await packagesRef.get();
+        const packages = snapshot.docs.map(doc => doc.data());
+
+        setClientPackages(packages);
+      } catch (error) {
+        console.error('Error fetching client packages:', error);
+      }
+    };
+
+    fetchAvailableDrives();
+    fetchClientPackages();
+  }, []);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+    setFilterModalVisible(false);
+  };
+
+  const handleSortOrderChange = (order) => {
+    setSortOrder(order);
+  };
+
+  const togglePackageSelection = (packageItem) => {
+    const isSelected = selectedPackages.includes(packageItem.id);
+
+    if (isSelected) {
+      setSelectedPackages(selectedPackages.filter(id => id !== packageItem.id));
+    } else {
+      setSelectedPackages([...selectedPackages, packageItem.id]);
+    }
+  };
+  // TODO ///////////////////////////////////
+  //////////////////////////////////////////
+  /////////////////////////////////////////
+  const assignPackagesToDrive = async () => {
+    try {
+      if (selectedDrive) {
+        const driveRef = firebase.firestore().collection('availableDrives').doc(selectedDrive.id);
+
+        // Update the drive in the database
+        await driveRef.update({
+          // Update drive information based on assigned packages
+          // For example, you might update the available space, list of assigned packages, etc.
+        });
+
+        // Update the client's packages with the selected drive information
+        const clientId = '123'; // Example client ID
+        const packagesRef = firebase.firestore().collection(`clients/${clientId}/packages`);
+
+        for (const packageId of selectedPackages) {
+          const packageRef = packagesRef.doc(packageId);
+
+          // Update the package with the drive information
+          await packageRef.update({
+            driveId: selectedDrive.id,
+            // Add other drive-related information to the package
+          });
+        }
+
+        // Provide feedback to the client
+        alert('Packages assigned to the drive successfully!');
+      } else {
+        alert('Please select a drive before assigning packages.');
+      }
+    } catch (error) {
+      console.error('Error assigning packages to drive:', error);
+    }
+  };
+  /////////////////////////////////////////////
+  ////////////////////////////////////////////
+  ////////////////////////////////////////////
+
+  // Apply filters and sorting based on user input
+  const filteredAndSortedDrives = availableDrives
+    .filter(drive => drive.source.toLowerCase().includes(searchQuery.toLowerCase()))
+    .filter(drive => selectedFilter === 'all' || drive.status === selectedFilter)
+    .sort((a, b) => sortOrder === 'asc' ? a.destination.localeCompare(b.destination) : b.destination.localeCompare(a.destination));
+
   return (
-    <View>
-      <Text>PickDriveScreen:</Text>
+    <View style={{margin: 15}}>
+      <TextInput
+        style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 0, padding: 5 }}
+        placeholder="Search drives by drive source"
+        value={searchQuery}
+        onChangeText={handleSearch}
+      />
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, marginTop: 10}}>
+        <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Filter: {selectedFilter}</Text>
+        </TouchableOpacity>
+
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={filterModalVisible}
+            onRequestClose={() => setFilterModalVisible(false)}
+        >
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, elevation: 5 }}>
+                <TouchableOpacity onPress={() => handleFilterChange('all')}>
+                <Text>All</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleFilterChange('current drive')}>
+                <Text>Current Drive</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleFilterChange('past drive')}>
+                <Text>Past Drive</Text>
+                </TouchableOpacity>
+                {/* Add more filter options based on your drive statuses */}
+            </View>
+            </View>
+        </Modal>
+
+        <TouchableOpacity onPress={() => handleSortOrderChange(sortOrder === 'asc' ? 'desc' : 'asc')}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Sort Order: {sortOrder === 'asc' ? 'Ascending' : 'Descending'}</Text>
+        </TouchableOpacity>
+       </View>
+      <View style={{marginTop: 10, marginBottom: 10}}>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Available Drives:</Text>
+        <FlatList
+            data={filteredAndSortedDrives}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => setSelectedDrive(item)} style={styles.packageBox}>
+                <Text>{item.source} - {item.destination} : {item.driveStatus}</Text>
+            </TouchableOpacity>
+            )}
+        />
+      </View>
+      <View style={{marginTop: 20, marginBottom: 40}}>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Client Packages:</Text>
+        <FlatList
+            data={clientPackages}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => togglePackageSelection(item)} style={styles.packageBox}>
+                <Text>{item.source} - {item.destination} : {item.size}</Text>
+            </TouchableOpacity>
+            )}
+        />
+        </View>
+        <View style={styles.reviewbtn}>
+            <TouchableOpacity onPress={assignPackagesToDrive}>
+                <Text style={styles.reviewText}>Assign Packages to Drive</Text>
+            </TouchableOpacity>
+      </View>
     </View>
   );
 };
