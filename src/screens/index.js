@@ -22,6 +22,11 @@ export { default as NewDeliveryScreen } from './NewDeliveryScreen/NewDeliveryScr
 
 export { default as EditProfileScreen } from './EditProfileScreen/EditProfileScreen'
 
+export { default as EditDeliveryScreen } from './EditDeliveryScreen/EditDeliveryScreen'
+
+
+
+
 
 
 

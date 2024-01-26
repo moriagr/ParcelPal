@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, Modal, FlatList, TouchableWithoutFeedback
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import firebase from './../../firebase/config'
+import { useNavigation } from '@react-navigation/native';
 
 
 //edit delete buttons for packages waiting for driver
@@ -89,10 +90,12 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
     setModalVisible(!isModalVisible);
   };
 
+  const navigation = useNavigation();
   const handleEdit = () => {
     // Handle edit action
     console.log(`Edit package: ${selectedPackage}`);
     setModalVisible(false);
+    navigation.navigate('EditDeliveryScreen', { packageInfo: selectedPackage, onFetchDeliveries });
   };
 
   const handleDelete = async () => {
@@ -262,7 +265,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
   );
 };
 
-const PackageStatusScreen = () => {
+const PackageStatusScreen = (navigation) => {
 
   const [packagesWaiting, setPackagesWaiting] = useState([]);
   const [packagesInTransit, setPackagesInTransit] = useState([]);
