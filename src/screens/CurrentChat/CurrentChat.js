@@ -54,12 +54,15 @@ export default function Chat({ route }) {
                         const unsubscribe = onSnapshot(messageRef.orderBy('createdAt', 'desc'), querySnapshot => {
                             if (querySnapshot && querySnapshot.docs) {
                                 setMessages(
-                                    querySnapshot.docs.map(doc => ({
-                                        _id: doc.data()._id,
-                                        createdAt: doc.data().createdAt.toDate(),
-                                        text: doc.data().text,
-                                        user: doc.data().user
-                                    }))
+                                    querySnapshot.docs.map(doc => {
+                                        console.log('✌️doc --->', doc.data());
+                                        return {
+                                            _id: doc.data()._id,
+                                            createdAt: doc.data().createdAt.toDate(),
+                                            text: doc.data().text,
+                                            user: doc.data().user
+                                        }
+                                    })
                                 );
                             }
                         });
@@ -104,8 +107,8 @@ export default function Chat({ route }) {
     return (
         <GiftedChat
             messages={messages}
-            showAvatarForEveryMessage={true}
-            showUserAvatar={true}
+            // showAvatarForEveryMessage={true}
+            // showUserAvatar={true}
             onSend={messages => onSend(messages)}
             messagesContainerStyle={{
                 backgroundColor: '#fff'
@@ -115,10 +118,11 @@ export default function Chat({ route }) {
                 borderRadius: 20,
             }}
             user={{
-                _id: userDetails?.email,
-                avatar: userDetails?.profilePicture
+                _id: userDetails?.id,
+                // avatar: userDetails?.profilePicture
             }}
-            
+            im
+
         />
     );
 }
