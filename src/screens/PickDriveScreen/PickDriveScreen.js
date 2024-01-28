@@ -49,7 +49,7 @@ const PickDriveScreen = ({ navigation }) => {
         
         const clientId = firebase.auth().currentUser.uid;
         const packagesRef = firebase.firestore().collection(`users/${clientId}/deliveries`);
-        const snapshot = await packagesRef.get();
+        const snapshot = await packagesRef.where('packageStatus', '==', 'waiting').get();
         const packages = snapshot.docs.map(doc => doc.data());
 
         setClientPackages(packages);
@@ -90,24 +90,25 @@ const PickDriveScreen = ({ navigation }) => {
   const assignPackagesToDrive = async () => {
     try {
       if (selectedDrive) {
-        const driveRef = firebase.firestore().collection('availableDrives').doc(selectedDrive.id);
+        //const driveRef = firebase.firestore().collection(`users/${selectedDrive}/drives`).doc(selectedDrive);
 
         // Update the drive in the database
-        await driveRef.update({
+        //await driveRef.update({
           // Update drive information based on assigned packages
           // For example, you might update the available space, list of assigned packages, etc.
-        });
+        //});
 
         // Update the client's packages with the selected drive information
-        const clientId = '123'; // Example client ID
-        const packagesRef = firebase.firestore().collection(`clients/${clientId}/packages`);
+        const clientId = firebase.auth().currentUser.uid;
+        const packagesRef = firebase.firestore().collection(`users/${clientId}/deliveries`);
 
         for (const packageId of selectedPackages) {
           const packageRef = packagesRef.doc(packageId);
 
           // Update the package with the drive information
           await packageRef.update({
-            driveId: selectedDrive.id,
+            Driver: selectedDrive,
+            packageStatus: "in transit"
             // Add other drive-related information to the package
           });
         }
