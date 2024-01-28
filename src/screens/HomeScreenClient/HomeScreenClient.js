@@ -13,6 +13,10 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('NewDeliveryScreen');
   }
 
+  const onPickDriver = () =>{
+    navigation.navigate('PickDriveScreen');
+  }
+
 
   const onMyPackages = () => {
     // Add navigation logic for My Drives
@@ -31,7 +35,7 @@ const HomeScreen = ({ navigation }) => {
 
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
-    navigation.navigate('LoginDriver');
+    navigation.navigate('Login');
   }
 
   const onChatScreen = () => {
@@ -68,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
             <Text style={styles.profileName}>{user?.fullName}</Text>
             <View style={styles.ratingContainer}>
               <Icon name="truck" size={20} color="#f1c40f" />
-              <Text style={styles.ratingText}>152</Text>
+              <Text style={styles.ratingText}>{user?.packagesSent}</Text>
               <TouchableOpacity style={styles.editButton} onPress={onEditProfile}>
                 <Text style={styles.editButtonText}>Edit Profile</Text>
               </TouchableOpacity>
@@ -77,12 +81,12 @@ const HomeScreen = ({ navigation }) => {
         </View>
         <View style={styles.driveActionsContainer}>
           <TouchableOpacity style={styles.actionButton} onPress={onNewDelivery}>
-            <Icon name="truck" size={30} color="#a1c4fd" />
+            <Icon name="cubes" size={30} color="#a1c4fd" />
             <Text style={styles.actionText}>New Delivery</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.actionButton}>
-            <Icon name="fire" size={30} color="#a1c4fd" />
-            <Text style={styles.actionText}>Popular</Text>
+          <TouchableOpacity style={styles.actionButton} onPress={onPickDriver}>
+            <Icon name="truck" size={30} color="#a1c4fd" />
+            <Text style={styles.actionText}>Pick Driver</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={onChatScreen}>
             <Icon name="comments" size={30} color="#a1c4fd" />
@@ -94,14 +98,14 @@ const HomeScreen = ({ navigation }) => {
             <Text style={styles.menuButtonText}>My Packages</Text>
             <Icon name="chevron-right" size={20} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menuButton} onPress={onMyPoints}>
+          {/*<TouchableOpacity style={styles.menuButton} onPress={onMyPoints}>
             <Text style={styles.menuButtonText}>My Points</Text>
             <Icon name="chevron-right" size={20} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuButton} onPress={onMyTips}>
             <Text style={styles.menuButtonText}>Tips Given</Text>
             <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
           <TouchableOpacity style={styles.menuButton} onPress={onReviewsReceived}>
             <Text style={styles.menuButtonText}>Reviews Given</Text>
             <Icon name="chevron-right" size={20} color="#000" />

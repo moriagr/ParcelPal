@@ -57,6 +57,12 @@ const HomeScreenDriver = ({ navigation }) => {
     });
   }
 
+  let avgReview = 0.0;
+  if(user?.reviews.length === 0 ){
+    avgReview = 0.0;
+  }else
+    avgReview = user?.reviews.reduce((sum, review) => sum + review.rating, 0) / user?.reviews.length;
+
   return (
     <View style={styles.container}>
       <Header />
@@ -70,7 +76,7 @@ const HomeScreenDriver = ({ navigation }) => {
             <Text style={styles.profileName}>{user?.fullName}</Text>
             <View style={styles.ratingContainer}>
               <Icon name="star" size={20} color="#f1c40f" />
-              <Text style={styles.ratingText}>4.6</Text>
+              <Text style={styles.ratingText}>{avgReview}</Text>
               <TouchableOpacity style={styles.editButton} onPress={onEditProfile}>
                 <Text style={styles.editButtonText}>Edit Profile</Text>
               </TouchableOpacity>
@@ -85,7 +91,7 @@ const HomeScreenDriver = ({ navigation }) => {
           </TouchableOpacity>
 
             <TouchableOpacity style={styles.actionButton}>
-                <Icon name="truck" size={30} color="#a1c4fd" />
+                <Icon name="archive" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Pick Packages</Text>
             </TouchableOpacity>
 
@@ -99,14 +105,14 @@ const HomeScreenDriver = ({ navigation }) => {
             <Text style={styles.menuButtonText}>My Drives</Text>
             <Icon name="chevron-right" size={20} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.menuButton} onPress={onMyPoints}>
+          {/*<TouchableOpacity style={styles.menuButton} onPress={onMyPoints}>
             <Text style={styles.menuButtonText}>My Points</Text>
             <Icon name="chevron-right" size={20} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.menuButton} onPress={onMyTips}>
             <Text style={styles.menuButtonText}>My Tips</Text>
             <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
           <TouchableOpacity style={styles.menuButton} onPress={onReviewsReceived}>
             <Text style={styles.menuButtonText}>Reviews Received</Text>
             <Icon name="chevron-right" size={20} color="#000" />

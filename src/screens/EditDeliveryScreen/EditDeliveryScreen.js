@@ -3,13 +3,19 @@ import { View, TextInput, Button , StyleSheet, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
 
-const NewDeliveryScreen = () => {
-  const [source, setSource] = useState('');
-  const [destination, setDestination] = useState('');
-  const [date, setDate] = useState('');
-  const [size, setSize] = useState('');
-  const [packageStatus, setPackageStatus] = useState('waiting');
-  const [Driver, setDriver] = useState('');
+const EditDeliveryScreen = ({route}) => {
+  const {packageInfo} = route.params;
+  console.log('Package Info in EditDeliveryScreen:', packageInfo);
+
+  const [source, setSource] = useState(packageInfo.source);
+  const [destination, setDestination] = useState(packageInfo.destination);
+  const [date, setDate] = useState(packageInfo.date);
+  const [size, setSize] = useState(packageInfo.size);
+  const [packageStatus, setPackageStatus] = useState(packageInfo.packageStatus);
+  const [Driver, setDriver] = useState(packageInfo.Driver);
+  const [packageid, setPackageId] = useState(packageInfo.packageid);
+
+
   const navigation = useNavigation();
 
   const saveDelivery2DB = async () => {
@@ -19,26 +25,26 @@ const NewDeliveryScreen = () => {
       if (currentUser) {
         const userId = currentUser.uid;
 
-        const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
-        const newDeliveryRef = deliveriesRef.doc();
+        const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries/`);
+        const newDeliveryRef = deliveriesRef.doc(packageid);
         
-        await newDeliveryRef.set({
+        await newDeliveryRef.update({
           source,
           destination,
           date,
           size,
           packageStatus,
           Driver,
-        });
-
-        const packageid = newDeliveryRef.id;
-
-        await newDeliveryRef.update({
           packageid,
         });
 
         console.log('Delivery saved to Firestore!');
         navigation.goBack();
+
+        // Trigger fetch after going back
+        if (route.params && route.params.onFetchDeliveries) {
+            route.params.onFetchDeliveries();
+        }
 
       } else {
         console.error('No current user found');
@@ -75,7 +81,7 @@ const NewDeliveryScreen = () => {
         onChangeText={setSize}
       />
       <Button
-        title="Post"
+        title="edit package"
         onPress={saveDelivery2DB}
         style={styles.postButton}
       />
@@ -116,4 +122,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default NewDeliveryScreen;
+export default EditDeliveryScreen;

@@ -14,7 +14,7 @@ export { default as HomeScreenDriver } from './HomeScreenDriver/HomeScreenDriver
 
 export { default as MyDrivesScreen } from './MyDrivesScreen/MyDrivesScreen'
 
-export { default as MyPointsScreen } from './MyPoints/MyPoints'
+//export { default as MyPointsScreen } from './MyPoints/MyPoints'
 
 export { default as AddDriveScreen } from './AddDriveScreen/AddDriveScreen'
 
@@ -25,6 +25,10 @@ export { default as EditProfileScreen } from './EditProfileScreen/EditProfileScr
 export { default as ChatsScreen } from './ChatsScreen/ChatsScreen'
 
 export { default as CurrentChat } from './CurrentChat/CurrentChat'
+
+export { default as EditDeliveryScreen } from './EditDeliveryScreen/EditDeliveryScreen'
+
+export { default as PickDriveScreen } from './PickDriveScreen/PickDriveScreen'
 
 
 
