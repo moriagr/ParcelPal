@@ -75,13 +75,13 @@ const PickDriveScreen = ({ navigation }) => {
     setSortOrder(order);
   };
 
-  const togglePackageSelection = (packageItem) => {
-    const isSelected = selectedPackages.includes(packageItem.id);
+  const togglePackageSelection = (packageid) => {
+    const isSelected = selectedPackages.includes(packageid);
 
     if (isSelected) {
-      setSelectedPackages(selectedPackages.filter(id => id !== packageItem.id));
+      setSelectedPackages(selectedPackages.filter(id => id !== packageid));
     } else {
-      setSelectedPackages([...selectedPackages, packageItem.id]);
+      setSelectedPackages([...selectedPackages, packageid]);
     }
   };
   // TODO ///////////////////////////////////
@@ -141,7 +141,7 @@ const PickDriveScreen = ({ navigation }) => {
       />
       <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, marginTop: 10}}>
         <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Filter: {selectedFilter}</Text>
+            <Text style={{fontSize: 16, fontWeight: 'bold', color:'#788eec'}}>Filter: {selectedFilter}</Text>
         </TouchableOpacity>
 
         <Modal
@@ -151,15 +151,15 @@ const PickDriveScreen = ({ navigation }) => {
             onRequestClose={() => setFilterModalVisible(false)}
         >
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ backgroundColor: 'white', padding: 20, borderRadius: 10, elevation: 5 }}>
+            <View style={{ backgroundColor: 'white', padding: 30, borderRadius: 10, elevation: 5 }}>
                 <TouchableOpacity onPress={() => handleFilterChange('all')}>
-                <Text>All</Text>
+                <Text style={{fontSize: 16, fontWeight: 'bold', color:'#788eec', margin: 10}}>All</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleFilterChange('current drive')}>
-                <Text>Current Drive</Text>
+                <Text style={{fontSize: 16, fontWeight: 'bold', color:'#788eec', margin: 10}}>Current Drive</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => handleFilterChange('past drive')}>
-                <Text>Past Drive</Text>
+                <Text style={{fontSize: 16, fontWeight: 'bold', color:'#788eec', margin: 10}}>Past Drive</Text>
                 </TouchableOpacity>
                 {/* Add more filter options based on your drive statuses */}
             </View>
@@ -167,28 +167,40 @@ const PickDriveScreen = ({ navigation }) => {
         </Modal>
 
         <TouchableOpacity onPress={() => handleSortOrderChange(sortOrder === 'asc' ? 'desc' : 'asc')}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>Sort Order: {sortOrder === 'asc' ? 'Ascending' : 'Descending'}</Text>
+            <Text style={{fontSize: 16, fontWeight: 'bold', color:'#788eec'}}>Sort: {sortOrder === 'asc' ? 'Ascending' : 'Descending'}</Text>
         </TouchableOpacity>
        </View>
       <View style={{marginTop: 10, marginBottom: 10}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Available Drives:</Text>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Select Available Drive:</Text>
         <FlatList
             data={filteredAndSortedDrives}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.driveid}
             renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setSelectedDrive(item)} style={styles.packageBox}>
-                <Text>{item.source} - {item.destination} : {item.driveStatus}</Text>
-            </TouchableOpacity>
-            )}
-        />
+              <TouchableOpacity
+                onPress={() => setSelectedDrive(item.driveid)}
+                style={[
+                  styles.packageBox,
+                  { borderColor: selectedDrive === item.driveid ? '#ff7700' : 'lightblue',
+                    borderWidth: selectedDrive === item.driveid ? 2 : 1 },
+                ]}
+              >
+      <Text>{item.source} - {item.destination} : {item.driveStatus}</Text>
+    </TouchableOpacity>
+  )}
+/>
       </View>
       <View style={{marginTop: 20, marginBottom: 40}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>My Packages:</Text>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>Select Packages:</Text>
         <FlatList
             data={clientPackages}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.packagid}
             renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => togglePackageSelection(item)} style={styles.packageBox}>
+            <TouchableOpacity onPress={() => togglePackageSelection(item.packageid)}
+            style={[
+              styles.packageBox,
+              { borderColor: selectedPackages.includes(item.packageid) ? 'green' : 'lightblue',
+                borderWidth: selectedPackages.includes(item.packageid) ? 2 : 1 },
+            ]}>
                 <Text>{item.source} - {item.destination} : {item.size}</Text>
             </TouchableOpacity>
             )}
