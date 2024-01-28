@@ -22,6 +22,8 @@ export { default as NewDeliveryScreen } from './NewDeliveryScreen/NewDeliveryScr
 
 export { default as EditProfileScreen } from './EditProfileScreen/EditProfileScreen'
 
+export { default as ReviewsGivenScreen } from './ReviewsGivenScreen/ReviewsGivenScreen'
+
 export { default as ChatsScreen } from './ChatsScreen/ChatsScreen'
 
 export { default as CurrentChat } from './CurrentChat/CurrentChat'

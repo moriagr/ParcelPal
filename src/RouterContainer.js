@@ -15,11 +15,7 @@ import {
     PackageStatusScreen,
     AddDriveScreen,
     NewDeliveryScreen,
-    EditProfileScreen,
-    ChatsScreen,
-    CurrentChat,
-    EditDeliveryScreen,
-    PickDriveScreen
+    EditProfileScreen
 } from './screens';
 
 
@@ -71,6 +67,7 @@ export default function RouterContainer() {
     return (
         <Stack.Navigator>
             {user ?
+            // Driver Screens
                 user.role == "Driver" ? (
                     <>
                         <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
@@ -84,6 +81,7 @@ export default function RouterContainer() {
 
                     </>
                 ) : (
+                    // Client Screens
                     <>
                         <Stack.Screen name="HomeClient" component={HomeScreenClient} />
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
@@ -93,10 +91,9 @@ export default function RouterContainer() {
                         <Stack.Screen name="NewDeliveryScreen" component={NewDeliveryScreen} />
                         <Stack.Screen name="EditDeliveryScreen" component={EditDeliveryScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-                        <Stack.Screen name="CurrentChat" component={CurrentChat} />
-                        <Stack.Screen name="PickDriveScreen" component={PickDriveScreen} />
                     </>
                 ) : (
+                    // Login Screens
                     <>
                         <Stack.Screen name="Landing" component={LandingScreen} />
                         <Stack.Screen name="Login" component={LoginScreen} />
