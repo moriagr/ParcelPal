@@ -24,6 +24,7 @@ export { default as EditProfileScreen } from './EditProfileScreen/EditProfileScr
 
 export { default as ChatsScreen } from './ChatsScreen/ChatsScreen'
 
+export { default as CurrentChat } from './CurrentChat/CurrentChat'
 
 
 

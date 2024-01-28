@@ -16,7 +16,8 @@ import {
     AddDriveScreen,
     NewDeliveryScreen,
     EditProfileScreen,
-    ChatsScreen
+    ChatsScreen,
+    CurrentChat
 } from './screens';
 
 
@@ -77,6 +78,7 @@ export default function RouterContainer() {
                         <Stack.Screen name="AddDriveScreen" component={AddDriveScreen} />
                         <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+                        <Stack.Screen name="CurrentChat" component={CurrentChat}/>
 
 
                     </>
@@ -89,6 +91,8 @@ export default function RouterContainer() {
                         <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
                         <Stack.Screen name="NewDeliveryScreen" component={NewDeliveryScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
+                        <Stack.Screen name="CurrentChat" component={CurrentChat} />
+
                     </>
                 ) : (
                     <>
