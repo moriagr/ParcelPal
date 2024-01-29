@@ -88,15 +88,37 @@ const PickDriveScreen = ({ navigation }) => {
   //////////////////////////////////////////
   /////////////////////////////////////////
   const assignPackagesToDrive = async () => {
+    
     try {
       if (selectedDrive) {
-        //const driveRef = firebase.firestore().collection(`users/${selectedDrive}/drives`).doc(selectedDrive);
+        let DriverID = 0;
+        try {
+          const driversCollection = firebase.firestore().collection('users').where('role', '==', 'Driver');
+          
+          const driversSnapshot = await driversCollection.get();
+      
+          for (const driverDoc of driversSnapshot.docs) {
+            const drivesCollection = driverDoc.ref.collection('drives');
+            const driveDoc = await drivesCollection.doc(selectedDrive).get();
+      
+            if (driveDoc.exists) {
+              // Found the driver with the specified driveId
+              DriverID = driverDoc.id; // Return the driver's ID
+            }
+          }
+      
+          
+        } catch (error) {
+          console.error('Error finding driver ID by drive ID:', error);
+          return null;
+        }
+        const driveRef = firebase.firestore().collection(`users/${DriverID}/drives`).doc(selectedDrive);
 
         // Update the drive in the database
-        //await driveRef.update({
-          // Update drive information based on assigned packages
+        await driveRef.update({
+          //Update drive information based on assigned packages
           // For example, you might update the available space, list of assigned packages, etc.
-        //});
+        });
 
         // Update the client's packages with the selected drive information
         const clientId = firebase.auth().currentUser.uid;
@@ -106,8 +128,9 @@ const PickDriveScreen = ({ navigation }) => {
           const packageRef = packagesRef.doc(packageId);
 
           // Update the package with the drive information
+        
           await packageRef.update({
-            Driver: selectedDrive,
+            Driver: DriverID,
             packageStatus: "in transit"
             // Add other drive-related information to the package
           });

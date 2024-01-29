@@ -174,7 +174,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
 
         // Assuming selectedPackage.packageId is the attribute that uniquely identifies the package
         const deliveryDocRef = deliveriesRef.doc(selectedPackage.packageid);
-        // Update the PackageStatus field to "delivered"
+        // Update the PackageStatus field to "reviewed to get out of list"
         await deliveryDocRef.update({
           packageStatus: "reviewed",
         });
@@ -189,6 +189,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
       
         console.log('Driver Name:', driverName);
 
+        
         // Update the driver's review array to add the review 
         console.log(`client name and rating: ` ,clientName , " ", rating);
         await driverDocRef.update({
