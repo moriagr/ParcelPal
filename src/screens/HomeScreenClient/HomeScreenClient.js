@@ -33,9 +33,13 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('LoginDriver');
   }
 
-  const onReviewsGiven = () => {
+  const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
-    navigation.navigate('LoginDriver');
+    navigation.navigate('Login');
+  }
+
+  const onChatScreen = () => {
+    navigation.navigate('ChatsScreen');
   }
 
   const onEditProfile = () => {
@@ -101,7 +105,7 @@ const HomeScreen = ({ navigation }) => {
           <TouchableOpacity style={styles.menuButton} onPress={onMyTips}>
             <Text style={styles.menuButtonText}>Tips Given</Text>
             <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
           <TouchableOpacity style={styles.menuButton} onPress={onReviewsReceived}>
             <Text style={styles.menuButtonText}>Reviews Given</Text>
             <Icon name="chevron-right" size={20} color="#000" />
