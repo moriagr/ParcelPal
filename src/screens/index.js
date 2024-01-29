@@ -32,5 +32,7 @@ export { default as EditDeliveryScreen } from './EditDeliveryScreen/EditDelivery
 
 export { default as PickDriveScreen } from './PickDriveScreen/PickDriveScreen'
 
+export {default as ReviewsRecivedScreen} from './ReviewsRecivedScreen/ReviewsRecivedScreen'
+
 
 

@@ -35,7 +35,7 @@ const HomeScreenDriver = ({ navigation }) => {
 
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
-    // navigation.navigate('LoginDriver');
+    navigation.navigate('ReviewsRecivedScreen');
   }
   
   const onChatScreen = () => {

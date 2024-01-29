@@ -35,7 +35,7 @@ const HomeScreen = ({ navigation }) => {
 
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
-    navigation.navigate('Login');
+    navigation.navigate('ReviewsGivenScreen');
   }
 
   const onChatScreen = () => {

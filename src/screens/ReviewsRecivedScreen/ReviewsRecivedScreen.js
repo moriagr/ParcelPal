@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const RatingComponent = () => {
+const ReviewsRecivedScreen = () => {
   const [ratings, setRatings] = useState([]); // Array to store individual ratings
   const [averageRating, setAverageRating] = useState(0); // State to store the average rating
 
@@ -69,4 +69,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RatingComponent;
+export default ReviewsRecivedScreen;
