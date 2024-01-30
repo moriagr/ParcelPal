@@ -5,6 +5,7 @@ import firebase from './../../firebase/config'
 
 const AddDriveScreen = () => {
   const [source, setSource] = useState('');
+  const [packagesIds, setpackagesIds] = useState([]);
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
   const [driveStatus, setDriveStatus] = useState('current drive');
@@ -25,6 +26,7 @@ const AddDriveScreen = () => {
           destination,
           date,
           driveStatus,
+          packagesIds,
         });
 
         const driveid = newDriveRef.id;

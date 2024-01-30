@@ -113,15 +113,32 @@ const PickDriveScreen = ({ navigation }) => {
           return null;
         }
         const driveRef = firebase.firestore().collection(`users/${DriverID}/drives`).doc(selectedDrive);
+        const clientId = firebase.auth().currentUser.uid;
+        //update amount of packages sent
+        const profileRef = firebase.firestore().collection('users').doc(clientId);
+        const profileSnapshot = await profileRef.get();
+        const userData = profileSnapshot.data();
+        let current_packages_sent = userData.packagesSent;
+        console.log("user current packages", current_packages_sent);
+        current_packages_sent+=selectedPackages.length;
+        console.log("user sent #", current_packages_sent);
+        await profileRef.update({
+          packagesSent: current_packages_sent,
+        });
 
         // Update the drive in the database
+        console.log("updating driver", clientId, selectedPackages);
         await driveRef.update({
           //Update drive information based on assigned packages
           // For example, you might update the available space, list of assigned packages, etc.
+            packagesIds: firebase.firestore.FieldValue.arrayUnion({
+              clientId: clientId,
+              packageId: selectedPackages,
+          }),
         });
 
         // Update the client's packages with the selected drive information
-        const clientId = firebase.auth().currentUser.uid;
+        //const clientId = firebase.auth().currentUser.uid;
         const packagesRef = firebase.firestore().collection(`users/${clientId}/deliveries`);
 
         for (const packageId of selectedPackages) {
@@ -138,6 +155,7 @@ const PickDriveScreen = ({ navigation }) => {
 
         // Provide feedback to the client
         alert('Packages assigned to the drive successfully!');
+        
       } else {
         alert('Please select a drive before assigning packages.');
       }
@@ -194,7 +212,7 @@ const PickDriveScreen = ({ navigation }) => {
             <Text style={{fontSize: 16, fontWeight: 'bold', color:'#788eec'}}>Sort: {sortOrder === 'asc' ? 'Ascending' : 'Descending'}</Text>
         </TouchableOpacity>
        </View>
-      <View style={{marginTop: 10, marginBottom: 10}}>
+      <View style={{marginTop: 0, marginBottom: 10, height: 260}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>Select Available Drive:</Text>
         <FlatList
             data={filteredAndSortedDrives}
@@ -208,12 +226,13 @@ const PickDriveScreen = ({ navigation }) => {
                     borderWidth: selectedDrive === item.driveid ? 2 : 1 },
                 ]}
               >
-      <Text>{item.source} - {item.destination} : {item.driveStatus}</Text>
-    </TouchableOpacity>
-  )}
-/>
+                <Text>{item.source} - {item.destination} : {item.driveStatus}</Text>
+              </TouchableOpacity>
+          )}
+        />
+      
       </View>
-      <View style={{marginTop: 20, marginBottom: 40}}>
+      <View style={{ marginBottom: 20, height: 260,}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>Select Packages:</Text>
         <FlatList
             data={clientPackages}

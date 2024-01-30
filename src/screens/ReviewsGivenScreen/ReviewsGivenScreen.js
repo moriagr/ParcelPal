@@ -1,72 +1,71 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-// client
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList } from 'react-native';
+import firebase from './../../firebase/config'; // Make sure to import firebase
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import styles from './styles';
+
+// ... (import statements remain unchanged)
+
 const ReviewsGivenScreen = () => {
-  const [ratings, setRatings] = useState([]); // Array to store individual ratings
-  const [averageRating, setAverageRating] = useState(0); // State to store the average rating
+  const [pointsData, setPointsData] = useState([]);
+  const [totalRating, setTotalRating] = useState(0);
 
-  const handleRating = (value) => {
-    // Update the array of ratings with the new rating
-    const newRatings = [...ratings, value];
-    setRatings(newRatings);
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const clientId = firebase.auth().currentUser.uid;
+      try {
+        const profileRef = firebase.firestore().collection('users').doc(clientId);
+        const profileSnapshot = await profileRef.get();
+        const userData = profileSnapshot.data();
 
-    // Calculate the average rating
-    const newAverageRating =
-      newRatings.reduce((sum, rating) => sum + rating, 0) / newRatings.length;
-    setAverageRating(newAverageRating);
+        if (userData) {
+          const pointsData = userData.reviews ?? [];
+          setPointsData(pointsData);
 
-    // TODO: Add a commit message here if making changes related to rating handling
-    // [ ] Example commit message: "feat: Handle rating and calculate average"
+          // Calculate average rating
+          const totalRating = pointsData.reduce((total, review) => total + review.rating, 0);
+          setTotalRating(totalRating);
+
+          console.log("Reviews loaded successfully!");
+        } else {
+          console.error("User data not found.");
+        }
+      } catch (error) {
+        console.error("Error loading reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
+
+  const Stars = ({ rating }) => {
+    const starIcons = Array.from({ length: rating }, (_, index) => (
+      <Icon key={index} name="star" type="font-awesome" color="gold" size={20} style={{ marginRight: 7 }}/>
+    ));
+  
+    return <View style={{ flexDirection: 'row',  }}>{starIcons}</View>;
   };
+
+  
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Rate the item:</Text>
-      <View style={styles.starsContainer}>
-        {[1, 2, 3, 4, 5].map((star) => (
-          <TouchableOpacity
-            key={star}
-            onPress={() => handleRating(star)}
-            style={styles.starButton}
-          >
-            <Text style={star <= averageRating ? styles.filledStar : styles.emptyStar}>
-              ★
-            </Text>
-          </TouchableOpacity>
-        ))}
+      <FlatList
+        data={pointsData}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View style={styles.pointsBox}>
+            <Text style={styles.senderName}>{item.DriverName}</Text>
+            <Stars rating={item.rating} />
+          </View>
+        )}
+      />
+      <View style={styles.totalPointsContainer}>
+        <Text style={styles.totalPointsText}>Total Stars Given: {totalRating}</Text>
       </View>
-      <Text style={styles.averageRating}>Average Rating: {averageRating.toFixed(1)}</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  label: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  starsContainer: {
-    flexDirection: 'row',
-  },
-  starButton: {
-    marginHorizontal: 5,
-  },
-  filledStar: {
-    color: 'gold',
-    fontSize: 25,
-  },
-  emptyStar: {
-    color: 'gray',
-    fontSize: 25,
-  },
-  averageRating: {
-    marginTop: 10,
-    fontSize: 16,
-  },
-});
 
 export default ReviewsGivenScreen;

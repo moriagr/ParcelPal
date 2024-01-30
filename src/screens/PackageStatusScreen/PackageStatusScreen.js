@@ -41,7 +41,7 @@ const PackageReviewButton = ({ onReview }) => {
   const handleStarPress = (selectedRating) => {
     setRating(selectedRating);
   };
-
+  // 1- 5 stars rating 
   return (
     <View style={styles.editDeleteButtons}>
       <View style={styles.starsContainer}>
