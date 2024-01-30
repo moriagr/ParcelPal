@@ -25,7 +25,7 @@ const PickDriveScreen = ({ navigation }) => {
         const drivesDataPromises = driversSnapshot.docs.map(async (driverDoc) => {
             console.log('Fetching drives for driver:', driverDoc.id);
             const drivesRef = driverDoc.ref.collection('drives');
-            const drivesSnapshot = await drivesRef.where('driveStatus', '==', 'current drive').get();
+            const drivesSnapshot = await drivesRef.where('driveStatus', '==', 'new drive').get();
             console.log('Drives fetched:', drivesSnapshot.docs.length);
   
             const drivesData = drivesSnapshot.docs.map((driveDoc) => driveDoc.data());
@@ -251,7 +251,7 @@ const PickDriveScreen = ({ navigation }) => {
         </View>
         <View style={styles.reviewbtn}>
             <TouchableOpacity onPress={assignPackagesToDrive}>
-                <Text style={styles.reviewText}>Assign Packages to Drive</Text>
+                <Text style={styles.reviewText}>Assign {selectedPackages.length === 0? "":selectedPackages.length} Packages to Drive</Text>
             </TouchableOpacity>
       </View>
     </View>

@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 0,
   },
   sectionContainer: {
     flex: 1,
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 80, // Set a fixed height for the header within each section
+    height: 45, // Set a fixed height for the header within each section
     paddingHorizontal: 16,
   },
   arrowIcon: {
@@ -30,7 +30,10 @@ const styles = StyleSheet.create({
   packageBox: {
     borderWidth: 1,
     borderColor: 'lightblue',
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
     marginTop: 10,
     borderRadius: 5,
   },
@@ -53,15 +56,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   markbtn:{
-    backgroundColor: '#788eec',
-    height: 25,
+    backgroundColor: '#ff7700',
+    height: 50,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: 'center',
-    width: 140,
+    width: 100,
     paddingBottom: 2,
     paddingTop: 2
-  }
+  },
+  startbtn:{
+    backgroundColor: 'green',
+    height: 50,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: 'center',
+    width: 100,
+    paddingBottom: 2,
+    paddingTop: 2
+  },
+
 });
 
 export default styles;

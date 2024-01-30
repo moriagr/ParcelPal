@@ -8,7 +8,7 @@ const AddDriveScreen = () => {
   const [packagesIds, setpackagesIds] = useState([]);
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
-  const [driveStatus, setDriveStatus] = useState('current drive');
+  const [driveStatus, setDriveStatus] = useState('new drive');
   const navigation = useNavigation();
 
   const saveDrive2DB = async () => {
