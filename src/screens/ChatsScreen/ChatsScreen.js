@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import CurrentChat from "../CurrentChat/CurrentChat";
 import { useUserContext } from "../../common/context/UserContext";
 import firebase from './../../firebase/config';
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
 import styles from './styles'
 
 
@@ -10,7 +10,7 @@ const ChatsScreen = ({ navigation }) => {
     const { user } = useUserContext();
 
     const [driverMode, setDriverMode] = useState(false);
-    const [chatsArray, setChatsArray] = useState([]);
+    const [chatsArray, setChatsArray] = useState(null);
     useLayoutEffect(() => {
         (async () => {
             if (user.role && user.role === "Client") {
@@ -24,19 +24,19 @@ const ChatsScreen = ({ navigation }) => {
                         getIndexUser = getIndexUser === 1 ? 0 : 1;
 
                         if (getIndexUser !== -1) {
-                            const drivesRef = await firebase.firestore().collection('users')
+                            const drivesUserRef = await firebase.firestore().collection('users')
                                 .where('id', '==', splitUser[getIndexUser])
                                 .get();
 
-                            const drivesData = drivesRef.docs.map((driveDoc) => driveDoc.data())[0];
+                            const userChatData = drivesUserRef.docs.map((userDoc) => userDoc.data())[0];
 
                             return {
-                                id: drivesData.id,
-                                email: drivesData.email,
-                                fullName: drivesData.fullName,
-                                phone: drivesData.phone,
-                                profilePicture: drivesData.profilePicture,
-                                role: drivesData.role
+                                id: userChatData.id,
+                                email: userChatData.email,
+                                fullName: userChatData.fullName,
+                                phone: userChatData.phone,
+                                profilePicture: userChatData.profilePicture,
+                                role: userChatData.role
                             };
                         }
 
@@ -52,29 +52,47 @@ const ChatsScreen = ({ navigation }) => {
                     console.error('Error fetching chats:', error);
                 }
             } else {
-                // Code for the case when user.role is not "Client"
-                setChatsArray([{
-                    email: "client@gmail.com",
-                    fullName: "client",
-                    id: "Qz5EmQAUQedr6Dbts0y15NqyvJb2",
-                    phone: "0836271937",
-                    role: "Client",
-                    profilePicture: 12
-                }]);
+                const driveRef = await firebase.firestore().collection(`users/${user.id}/drives`).get();
+
+                // Assuming there is only one document with the specified user ID
+                const userDoc = driveRef.docs[0];
+                const drivesData = userDoc.data();
+
+                // Assuming PackagesId is an array in the document
+                const packagesIds = drivesData.packagesIds
+                if (packagesIds) {
+                    const drivesPromises = await packagesIds.map(async (packagesDoc) => {
+                        const userClient = await firebase.firestore().collection('users').where("id", "==", packagesDoc.clientId).get();
+                        console.log('✌️userClient --->', userClient.docs);
+                        const drivesData = userClient.docs.map((driveDoc) => driveDoc.data())[0];
+                        return {
+                            id: drivesData.id,
+                            email: drivesData.email,
+                            fullName: drivesData.fullName,
+                            phone: drivesData.phone,
+                            profilePicture: drivesData.profilePicture,
+                            role: drivesData.role
+                        };
+                    })
+                    const allDrivesData = await Promise.all(drivesPromises);
+
+                    // Filter out null values
+                    const filteredData = allDrivesData.filter((chat) => chat !== null);
+                    setChatsArray(filteredData);
+
+                }
             }
         })();
     }, [user.role, user.id]);
 
     const goToChat = (data) => {
-        console.log('goToChat', data)
         navigation.navigate("CurrentChat", { user: data })
-
     }
 
-    return (
+    return (chatsArray ?
         <View>
 
-            {chatsArray && chatsArray.map((data, index) => {
+            {chatsArray.map((data, index) => {
                 return <TouchableOpacity key={index} style={styles.chatBox} onPress={() => goToChat(data)}>
                     <View style={styles.chatInfoContainer}>
                         <Image
@@ -88,6 +106,9 @@ const ChatsScreen = ({ navigation }) => {
                     </View>
                 </TouchableOpacity>
             })}
+        </View> :
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" color="#0000ff" />
         </View>
     )
 }
