@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     packageBox: {
       borderWidth: 1,
       borderColor: 'lightblue',
-      padding: 10,
+      padding: 8,
       marginTop: 10,
       borderRadius: 5,
     },

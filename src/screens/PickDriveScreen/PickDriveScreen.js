@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, TextInput, Modal } from 'react-native';
 import firebase from './../../firebase/config';
 import styles from './styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const PickDriveScreen = ({ navigation }) => {
   const [availableDrives, setAvailableDrives] = useState([]);
@@ -173,6 +174,19 @@ const PickDriveScreen = ({ navigation }) => {
     .filter(drive => selectedFilter === 'all' || drive.status === selectedFilter)
     .sort((a, b) => sortOrder === 'asc' ? a.destination.localeCompare(b.destination) : b.destination.localeCompare(a.destination));
 
+    const uniquePackageIds = filteredAndSortedDrives.reduce((uniqueIds, drive) => {
+      const drivePackageIds = drive.packagesIds || [];
+      const packageIds = drivePackageIds.map(item => item.packageId);
+      return [...new Set([...uniqueIds, ...packageIds])];
+    }, []);
+    
+    const uniqueClientIds = filteredAndSortedDrives.reduce((uniqueIds, drive) => {
+      const drivePackageIds = drive.packagesIds || [];
+      const clientIds = drivePackageIds.map(item => item.clientId);
+      return [...new Set([...uniqueIds, ...clientIds])];
+    }, []);
+    
+
   return (
     <View style={{margin: 15}}>
       <TextInput
@@ -226,7 +240,8 @@ const PickDriveScreen = ({ navigation }) => {
                     borderWidth: selectedDrive === item.driveid ? 2 : 1 },
                 ]}
               >
-                <Text>{item.source} - {item.destination} : {item.driveStatus}</Text>
+                <Text style={{fontSize:18, fontWeight: 'bold',marginBottom: 3}}>{item.source} - {item.destination} : {item.driveStatus} </Text>
+                <Text style={{fontSize: 12, fontWeight:'bold'}}><Icon name="cubes" size={16} color="#788eec" /> Packages Booked: {uniquePackageIds.length }    <Icon name="users" size={16} color="#788eec" /> #Clients: {uniqueClientIds.length}</Text>
               </TouchableOpacity>
           )}
         />
