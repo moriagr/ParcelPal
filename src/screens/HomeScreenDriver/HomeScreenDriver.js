@@ -60,8 +60,10 @@ const HomeScreenDriver = ({ navigation }) => {
   let avgReview = 0.0;
   if(user?.reviews.length === 0 ){
     avgReview = 0.0;
-  }else
+  }else{
     avgReview = user?.reviews.reduce((sum, review) => sum + review.rating, 0) / user?.reviews.length;
+    avgReview = parseFloat(avgReview.toFixed(2));
+  }
 
   return (
     <View style={styles.container}>

@@ -85,9 +85,19 @@ export default function LoginScreen({ navigation, route }) {
 
     }
 
-    let drivers = 56;
-    let clients = 130;
-    let totaldeliverys = 342;
+    let drivers = route.params.driversCount;
+    let clients = route.params.clientsCount;
+    let totaldeliverys = route.params.deliveriesCount;
+
+    let Headline ="";
+    let BannerImg =""
+    if (route.params.role === "Client") {
+        Headline = `Join ${clients} clients with over ${totaldeliverys} successful deliveries`;
+        BannerImg = require('../../../assets/client.png');
+      } else { // else is driver
+        Headline = `Join ${drivers} drivers with over ${totaldeliverys} successful deliveries`;
+        BannerImg = require('../../../assets/driver.png');
+      }
 
     return (
         <View style={styles.container}>
@@ -98,11 +108,11 @@ export default function LoginScreen({ navigation, route }) {
                     style={styles.logo}
                     source={require('../../../assets/ParcelPal.png')}
                 />
-                <Text style={styles.headline}>Join {clients} clients with over {totaldeliverys} successfull deliverys</Text>
+                <Text style={styles.headline}>{Headline}</Text>
 
                 <Image
                     style={styles.img}
-                    source={require('../../../assets/client.png')}
+                    source={BannerImg}
                 />
                 <Formik
                     validationSchema={loginValidationScheme}
