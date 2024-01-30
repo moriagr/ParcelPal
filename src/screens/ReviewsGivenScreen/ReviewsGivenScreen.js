@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-
+//Trying commits
 const ReviewsGivenScreen = () => {
   const [ratings, setRatings] = useState([]); // Array to store individual ratings
   const [averageRating, setAverageRating] = useState(0); // State to store the average rating
