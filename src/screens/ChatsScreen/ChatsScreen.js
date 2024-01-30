@@ -1,38 +1,69 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import CurrentChat from "../CurrentChat/CurrentChat";
 import { useUserContext } from "../../common/context/UserContext";
+import firebase from './../../firebase/config';
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import styles from './styles'
 
 
 const ChatsScreen = ({ navigation }) => {
     const { user } = useUserContext();
+
     const [driverMode, setDriverMode] = useState(false);
     const [chatsArray, setChatsArray] = useState([]);
     useLayoutEffect(() => {
-        if (user.role && user.role == "Client") {
-            // setDriverMode(true); //All users with Packages that assigned to current user
-            setChatsArray([{
-                email: "driver@gmail.com",
-                fullName: "driver",
-                id: "eWOVdNiTUqS5vRU269jCioWksIb2",
-                phone: "0563736283",
-                profilePicture: 9,
-                role: "Driver"
-            }]);
-        }
-        else {
-            //get all start conversations for my user;
-            setChatsArray([{
-                email: "client@gmail.com",
-                fullName: "client",
-                id: "Qz5EmQAUQedr6Dbts0y15NqyvJb2",
-                phone: "0836271937",
-                role: "Client",
-                profilePicture: 12
-            }]);
-        }
-    }, [])
+        (async () => {
+            if (user.role && user.role === "Client") {
+                const chatsCollection = firebase.firestore().collection('chats');
+                const chatsSnapshot = await chatsCollection.get();
+
+                try {
+                    const chatsPromises = chatsSnapshot.docs.map(async (driverDoc) => {
+                        const splitUser = driverDoc.id.split("_");
+                        let getIndexUser = splitUser.indexOf(user.id);
+                        getIndexUser = getIndexUser === 1 ? 0 : 1;
+
+                        if (getIndexUser !== -1) {
+                            const drivesRef = await firebase.firestore().collection('users')
+                                .where('id', '==', splitUser[getIndexUser])
+                                .get();
+
+                            const drivesData = drivesRef.docs.map((driveDoc) => driveDoc.data())[0];
+
+                            return {
+                                id: drivesData.id,
+                                email: drivesData.email,
+                                fullName: drivesData.fullName,
+                                phone: drivesData.phone,
+                                profilePicture: drivesData.profilePicture,
+                                role: drivesData.role
+                            };
+                        }
+
+                        return null;
+                    });
+
+                    const allChatsData = await Promise.all(chatsPromises);
+
+                    // Filter out null values
+                    const filteredChats = allChatsData.filter((chat) => chat !== null);
+                    setChatsArray(filteredChats);
+                } catch (error) {
+                    console.error('Error fetching chats:', error);
+                }
+            } else {
+                // Code for the case when user.role is not "Client"
+                setChatsArray([{
+                    email: "client@gmail.com",
+                    fullName: "client",
+                    id: "Qz5EmQAUQedr6Dbts0y15NqyvJb2",
+                    phone: "0836271937",
+                    role: "Client",
+                    profilePicture: 12
+                }]);
+            }
+        })();
+    }, [user.role, user.id]);
 
     const goToChat = (data) => {
         console.log('goToChat', data)
@@ -43,8 +74,8 @@ const ChatsScreen = ({ navigation }) => {
     return (
         <View>
 
-            {chatsArray.map((data, index) => (
-                <TouchableOpacity key={index} style={styles.chatBox} onPress={() => goToChat(data)}>
+            {chatsArray && chatsArray.map((data, index) => {
+                return <TouchableOpacity key={index} style={styles.chatBox} onPress={() => goToChat(data)}>
                     <View style={styles.chatInfoContainer}>
                         <Image
                             source={data?.profilePicture}
@@ -56,7 +87,7 @@ const ChatsScreen = ({ navigation }) => {
 
                     </View>
                 </TouchableOpacity>
-            ))}
+            })}
         </View>
     )
 }
