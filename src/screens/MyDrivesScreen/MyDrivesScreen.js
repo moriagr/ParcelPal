@@ -108,6 +108,7 @@ const PackageSection = ({ title, packages, onFetchDrives }) => {
         });
   
         console.log(`drive marked as ended: ${selectedPackage.driveid}`);
+        console.log(`drive marked as ended: ${selectedPackage.driveid.packagesIds}`);
         //console.log(`drive marked as ended: ${selectedPackage.packagesIds}`);
         setModalVisible(false);
         // trigers a refetch od data to update flatlist

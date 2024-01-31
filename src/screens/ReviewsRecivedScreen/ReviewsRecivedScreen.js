@@ -56,7 +56,7 @@ const ReviewsRecivedScreen = () => {
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={styles.pointsBox}>
-            <Text style={styles.senderName}>{item.DriverName}</Text>
+            <Text style={styles.senderName}>{item.customerName}</Text>
             <Stars rating={item.rating} />
           </View>
         )}

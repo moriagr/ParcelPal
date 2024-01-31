@@ -30,7 +30,7 @@ export default function RegistrationScreen({ navigation, route }) {
                     role: route.params.role,
                     fullName: values.fullName,
                     phone: values.phoneNumber,
-                    profilePicture: DefaultProfilePicture
+                    profilePicture: DefaultProfilePicture,
                 };
                 // ADD fields based on role
                 if (route.params.role === 'Driver') {

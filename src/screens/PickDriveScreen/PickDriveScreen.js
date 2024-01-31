@@ -174,19 +174,6 @@ const PickDriveScreen = ({ navigation }) => {
     .filter(drive => selectedFilter === 'all' || drive.status === selectedFilter)
     .sort((a, b) => sortOrder === 'asc' ? a.destination.localeCompare(b.destination) : b.destination.localeCompare(a.destination));
 
-    const uniquePackageIds = filteredAndSortedDrives.reduce((uniqueIds, drive) => {
-      const drivePackageIds = drive.packagesIds || [];
-      const packageIds = drivePackageIds.map(item => item.packageId);
-      return [...new Set([...uniqueIds, ...packageIds])];
-    }, []);
-    
-    const uniqueClientIds = filteredAndSortedDrives.reduce((uniqueIds, drive) => {
-      const drivePackageIds = drive.packagesIds || [];
-      const clientIds = drivePackageIds.map(item => item.clientId);
-      return [...new Set([...uniqueIds, ...clientIds])];
-    }, []);
-    
-
   return (
     <View style={{margin: 15}}>
       <TextInput
@@ -229,22 +216,40 @@ const PickDriveScreen = ({ navigation }) => {
       <View style={{marginTop: 0, marginBottom: 10, height: 260}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>Select Available Drive:</Text>
         <FlatList
-            data={filteredAndSortedDrives}
-            keyExtractor={(item) => item.driveid}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                onPress={() => setSelectedDrive(item.driveid)}
-                style={[
-                  styles.packageBox,
-                  { borderColor: selectedDrive === item.driveid ? '#ff7700' : 'lightblue',
-                    borderWidth: selectedDrive === item.driveid ? 2 : 1 },
-                ]}
-              >
-                <Text style={{fontSize:18, fontWeight: 'bold',marginBottom: 3}}>{item.source} - {item.destination} : {item.driveStatus} </Text>
-                <Text style={{fontSize: 12, fontWeight:'bold'}}><Icon name="cubes" size={16} color="#788eec" /> Packages Booked: {uniquePackageIds.length }    <Icon name="users" size={16} color="#788eec" /> #Clients: {uniqueClientIds.length}</Text>
-              </TouchableOpacity>
-          )}
-        />
+  data={filteredAndSortedDrives}
+  keyExtractor={(item) => item.driveid}
+  renderItem={({ item }) => {
+    // Calculate unique package and client IDs for the current drive
+    const uniquePackageIdsForDrive = (item.packagesIds || []).reduce((uniqueIds, packageItem) => {
+      return [...new Set([...uniqueIds, packageItem.packageId])];
+    }, []);
+
+    const uniqueClientIdsForDrive = (item.packagesIds || []).reduce((uniqueIds, packageItem) => {
+      return [...new Set([...uniqueIds, packageItem.clientId])];
+    }, []);
+
+    return (
+      <TouchableOpacity
+        onPress={() => setSelectedDrive(item.driveid)}
+        style={[
+          styles.packageBox,
+          {
+            borderColor: selectedDrive === item.driveid ? '#ff7700' : 'lightblue',
+            borderWidth: selectedDrive === item.driveid ? 2 : 1,
+          },
+        ]}
+      >
+        <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 3 }}>
+          {item.source} - {item.destination} : {item.driveStatus}
+        </Text>
+        <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
+          <Icon name="cubes" size={16} color="#788eec" /> Packages Booked: {uniquePackageIdsForDrive.length}{' '}
+          <Icon name="users" size={16} color="#788eec" /> #Clients: {uniqueClientIdsForDrive.length}
+        </Text>
+      </TouchableOpacity>
+    );
+  }}
+/>
       
       </View>
       <View style={{ marginBottom: 20, height: 260,}}>
