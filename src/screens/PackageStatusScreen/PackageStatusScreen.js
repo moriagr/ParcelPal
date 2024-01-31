@@ -36,7 +36,7 @@ const PackageDeliveredButton = ({ onDelivered }) => {
 //review button for reviewing delivered packages
 const PackageReviewButton = ({ onReview }) => {
 
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(1);
 
   const handleStarPress = (selectedRating) => {
     setRating(selectedRating);

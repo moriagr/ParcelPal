@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, TextInput, Modal, Alert } from 'react-native';
 import firebase from './../../firebase/config';
 import styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
 const PickDriveScreen = ({ navigation }) => {
   const [availableDrives, setAvailableDrives] = useState([]);
@@ -155,8 +156,20 @@ const PickDriveScreen = ({ navigation }) => {
         }
 
         // Provide feedback to the client
-        alert('Packages assigned to the drive successfully!');
-        
+        Alert.alert(
+          'Success',
+          'Packages assigned to the drive successfully!',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                // go back
+                navigation.goBack();
+              },
+            },
+          ],
+          { cancelable: false }
+        );
       } else {
         alert('Please select a drive before assigning packages.');
       }
