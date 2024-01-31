@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from 'react-native';
 import { useUserContext } from '../../common/context/UserContext.js';
 import { Formik } from 'formik'
-import { registrationValidationScheme } from '../../components/Schemes/LoginRegistrationSchemes.js';
+import { editValidationScheme } from '../../components/Schemes/EditProfileSchemes.js';
 import styles from './styles.js';
 import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
@@ -17,8 +17,6 @@ const EditProfileScreen = () => {
   const [isButtonPressedWoman, setIsButtonPressedWoman] = useState(false);
 
   const [profilePicture, setProfilePicture] = useState(user?.profilePicture);
-  const [name, setName] = useState(user?.fullName);
-  const [phone , setPhone] = useState(user?.phone)
   const navigation = useNavigation();
 
   const handleEditProfilePictureMan = () => {
@@ -41,7 +39,7 @@ const EditProfileScreen = () => {
   };
   
 
-  const saveProfile2DB = async () => {
+  const saveProfile2DB = async (values) => {
     try {
       const currentUser = firebase.auth().currentUser;
 
@@ -51,9 +49,9 @@ const EditProfileScreen = () => {
         const profileRef = firebase.firestore().collection('users').doc(userId);
         
         await profileRef.update({
-          profilePicture,
-          fullName: name,
-          phone,
+          profilePicture: profilePicture,
+          fullName: values.fullName,
+          phone: values.phone,
         });
         //set up listener here to update
         // Set up a listener for real-time updates
@@ -101,17 +99,14 @@ const EditProfileScreen = () => {
       </View>
       
       <Formik
-          validationSchema={registrationValidationScheme}
+          validationSchema={editValidationScheme}
           initialValues={{
-              fullName: '',
-              phoneNumber: '',
-              email: '',
-              password: '',
-              confirmPassword: ''
+              fullName: user?.fullName,
+              phone: user?.phone,
           }}
           onSubmit={values => {
               console.log(values)
-              onRegisterPress(values)
+              saveProfile2DB(values)
           }}
       >
           {({ handleChange, handleBlur, handleSubmit, values, errors, isValid }) => (
@@ -129,8 +124,8 @@ const EditProfileScreen = () => {
                       underlineColorAndroid="transparent"
                       autoCapitalize="none"
                       onBlur={handleBlur('fullName')}
-                      value={name}
-                      onChangeText={setName}
+                      value={values.fullName}
+                      onChangeText={handleChange('fullName')}
 
                   />
                   {errors.fullName && <Text style={styles.errorText}>{errors.fullName}</Text>}
@@ -141,16 +136,16 @@ const EditProfileScreen = () => {
                       placeholderTextColor="#aaaaaa"
                       underlineColorAndroid="transparent"
                       autoCapitalize="none"
-                      onBlur={handleBlur('phoneNumber')}
-                      value={phone}
-                      onChangeText={setPhone}
+                      onBlur={handleBlur('phone')}
+                      value={values.phone}
+                      onChangeText={handleChange('phone')}
                   />
-                  {errors.phoneNumber && <Text style={styles.errorText}>{errors.phoneNumber}</Text>}
+                  {errors.phone && <Text style={styles.errorText}>{errors.phone}</Text>}
 
                   <TouchableOpacity
                       style={isValid ? styles.button : styles.disableButton}
                       disabled={!isValid}
-                      onPress={saveProfile2DB}>
+                      onPress={handleSubmit}>
                       <Text style={styles.buttonTitle}>Update Profile</Text>
                   </TouchableOpacity>
               </>
