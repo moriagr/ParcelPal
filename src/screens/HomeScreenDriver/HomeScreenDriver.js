@@ -14,23 +14,9 @@ const HomeScreenDriver = ({ navigation }) => {
     navigation.navigate('AddDriveScreen');
   }
 
-  const onPackageStatus = () => {
-    navigation.navigate('PackageStatus');
-  }
-
   const onMyDrives = () => {
     // Add navigation logic for My Drives
     navigation.navigate('MyDrives');
-  }
-
-  const onMyPoints = () => {
-    // Add navigation logic for My Points
-    navigation.navigate('MyPoints');
-  }
-
-  const onMyTips = () => {
-    // Add navigation logic for My Tips
-    // navigation.navigate('LoginDriver');
   }
 
   const onReviewsReceived = () => {

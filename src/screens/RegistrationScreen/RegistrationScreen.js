@@ -11,19 +11,20 @@ import { registrationValidationScheme } from '../../components/Schemes/LoginRegi
 export default function RegistrationScreen({ navigation, route }) {
     const { setUser } = useUserContext();
 
-    const DefaultProfilePicture = require('../../../assets/defaultPP.png');
+    
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
     }
 
     const onRegisterPress = (values) => {
         console.log('✌️values --->', values);
-
+        
         firebase
             .auth()
             .createUserWithEmailAndPassword(values.email, values.password)
             .then((response) => {
                 const uid = response.user.uid
+                const DefaultProfilePicture = require('../../../assets/defaultPP.png');
                 let data = {
                     id: uid,
                     email: values.email,
