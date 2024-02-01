@@ -4,24 +4,31 @@ import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
 
 const NewDeliveryScreen = () => {
+  //using emepty states for new delivery data that will be updated by user input in input text fields
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
   const [size, setSize] = useState('');
+  //default status of new ddelivery is 'waiting'
   const [packageStatus, setPackageStatus] = useState('waiting');
   const [Driver, setDriver] = useState('');
+  //use navigaton to navigate back to home page after posting new delivery
   const navigation = useNavigation();
 
+  // asncy function for saving the data to firebase database
   const saveDelivery2DB = async () => {
     try {
+      //define cureet user
       const currentUser = firebase.auth().currentUser;
 
       if (currentUser) {
+        //define user id
         const userId = currentUser.uid;
-
+        //define refrence doc to update
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
         const newDeliveryRef = deliveriesRef.doc();
         
+        //upfdate with current states
         await newDeliveryRef.set({
           source,
           destination,
@@ -32,12 +39,13 @@ const NewDeliveryScreen = () => {
         });
 
         const packageid = newDeliveryRef.id;
-
+        // add packageid to data
         await newDeliveryRef.update({
           packageid,
         });
 
         console.log('Delivery saved to Firestore!');
+        //navigate back home after posting
         navigation.goBack();
 
       } else {

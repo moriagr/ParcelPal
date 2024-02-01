@@ -10,50 +10,52 @@ import firebase from './../../firebase/config'
 
 
 const EditProfileScreen = () => {
-
+  //set users context using uuseUserContext
   const { setUser, user } = useUserContext();
 
+  //states for determinning if man or woman button is pressed for profile picture update
   const [isButtonPressedMan, setIsButtonPressedMan] = useState(false);
   const [isButtonPressedWoman, setIsButtonPressedWoman] = useState(false);
 
+  //state starting with users current profile picture and may be changed
   const [profilePicture, setProfilePicture] = useState(user?.profilePicture);
   const navigation = useNavigation();
 
+  //handel function for changeing user profile picture to man
   const handleEditProfilePictureMan = () => {
-    // Logic to handle uploading a new profile picture
     console.log('Editing profile picture to man...');
     const newProfilePicture = require('../../../assets/man.png');
+    //set new profile picture to man
     setProfilePicture(newProfilePicture);
-
-    //saveProfile2DB();
   };
 
+  //handel function for changeing user profile picture to woman
   const handleEditProfilePictureWoman = () => {
-    // Logic to handle uploading a new profile picture
     console.log('Editing profile picture to woman...');
     const newProfilePicture = require('../../../assets/woman.png');
+    //set new profile picture to man
     setProfilePicture(newProfilePicture);
-
-    //saveProfile2DB();
-    
   };
   
-
+  // save ascny function to firebase data base
   const saveProfile2DB = async (values) => {
     try {
+      //define current user
       const currentUser = firebase.auth().currentUser;
 
       if (currentUser) {
+        //define userid
         const userId = currentUser.uid;
-
+        //define refrence doc to user in collections of user from firebase
         const profileRef = firebase.firestore().collection('users').doc(userId);
         
+        //update prifle with values of profilepicture and values from formilk
         await profileRef.update({
           profilePicture: profilePicture,
           fullName: values.fullName,
           phone: values.phone,
         });
-        //set up listener here to update
+        
         // Set up a listener for real-time updates
         const unsubscribe = profileRef.onSnapshot((snapshot) => {
           const updatedUserData = snapshot.data();
@@ -62,6 +64,7 @@ const EditProfileScreen = () => {
         });
 
         console.log('Delivery saved to Firestore!');
+        //navigate back to home page
         navigation.goBack();
 
       } else {
@@ -72,10 +75,9 @@ const EditProfileScreen = () => {
     }
   };
 
+  // profile image and name with formik form underneath
   return (
     <View style={styles.container}>
-
-
     <View style={styles.profileContainer}>
       <View>
           <Image

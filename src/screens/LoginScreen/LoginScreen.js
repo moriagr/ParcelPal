@@ -10,13 +10,16 @@ import { Formik } from 'formik';
 import { loginValidationScheme } from '../../components/Schemes/LoginRegistrationSchemes';
 
 export default function LoginScreen({ navigation, route }) {
+    //use user context
     const { setUser } = useUserContext();
     const [loading, setLoading] = useState(false);
 
+    // navigate to registration page if user dose not have account or wants to sign up
     const onFooterLinkPress = () => {
         navigation.navigate('Registration', { role: route.params.role })
     }
 
+    // Login function 
     const onLoginPress = async (values) => {
         setLoading(true)
         try {
@@ -28,6 +31,7 @@ export default function LoginScreen({ navigation, route }) {
 
             if (querySnapshot.empty) {
                 setLoading(false)
+                // alert if user not found
                 alert('User not found');
                 return;
             }
@@ -38,6 +42,7 @@ export default function LoginScreen({ navigation, route }) {
             // Check the role
             if (user.role !== route.params.role) {
                 setLoading(false)
+                // Driver should login as driver , client as client
                 alert('Invalid role for this user');
                 return;
             }
@@ -85,10 +90,12 @@ export default function LoginScreen({ navigation, route }) {
 
     }
 
+    // dynamic paremters taken from firebase
     let drivers = route.params.driversCount;
     let clients = route.params.clientsCount;
     let totaldeliverys = route.params.deliveriesCount;
-
+    // headline and hero banner image based on role 
+    // will be diffretn for client and driver
     let Headline ="";
     let BannerImg =""
     if (route.params.role === "Client") {

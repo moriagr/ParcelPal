@@ -4,9 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
 
 const EditDeliveryScreen = ({route}) => {
+  //defining the current package info
   const {packageInfo} = route.params;
   console.log('Package Info in EditDeliveryScreen:', packageInfo);
 
+  //using states with current package info as data that may be changed by user input
   const [source, setSource] = useState(packageInfo.source);
   const [destination, setDestination] = useState(packageInfo.destination);
   const [date, setDate] = useState(packageInfo.date);
@@ -15,19 +17,23 @@ const EditDeliveryScreen = ({route}) => {
   const [Driver, setDriver] = useState(packageInfo.Driver);
   const [packageid, setPackageId] = useState(packageInfo.packageid);
 
-
+  //using navigator to go back to home screen once complete
   const navigation = useNavigation();
 
+  // async updating delievrys to the database function
   const saveDelivery2DB = async () => {
     try {
+      //define the current user 
       const currentUser = firebase.auth().currentUser;
 
       if (currentUser) {
+        //define the user id
         const userId = currentUser.uid;
-
+        //define the refrence doc of the deliverys with curretn user (userId)
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries/`);
         const newDeliveryRef = deliveriesRef.doc(packageid);
         
+        //update details in delivery based on state values
         await newDeliveryRef.update({
           source,
           destination,
@@ -39,6 +45,7 @@ const EditDeliveryScreen = ({route}) => {
         });
 
         console.log('Delivery saved to Firestore!');
+        //navigate back to home page
         navigation.goBack();
 
         // Trigger fetch after going back
@@ -53,7 +60,8 @@ const EditDeliveryScreen = ({route}) => {
       console.error('Error saving delivery to Firestore:', error);
     }
   };
-
+  
+  // form input fields
   return (
     <View style={styles.container}>
       <TextInput
@@ -89,6 +97,7 @@ const EditDeliveryScreen = ({route}) => {
   );
 };
 
+//stylesheet
 const styles = StyleSheet.create({
     container: {
       flex: 1,

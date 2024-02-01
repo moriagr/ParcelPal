@@ -4,23 +4,34 @@ import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
 
 const AddDriveScreen = () => {
+  //using states for empty data at the beggining
+  // states will be updated with values the user inputs in to the text fields
   const [source, setSource] = useState('');
   const [packagesIds, setpackagesIds] = useState([]);
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
+
+  //new drive status will be "new drive" by default
+  // this will help us later with clustring drives based on thier status
   const [driveStatus, setDriveStatus] = useState('new drive');
+  // using navigation for go back
   const navigation = useNavigation();
 
+  // async Funcion for saving the drive to the dataBase
   const saveDrive2DB = async () => {
+    
     try {
+      //define currentuse as the user now connected through firebase API function auth()
       const currentUser = firebase.auth().currentUser;
 
       if (currentUser) {
+        //define user id
         const userId = currentUser.uid;
-
+        //define refrence document for the current userId in colection drives
         const drivesRef = firebase.firestore().collection(`users/${userId}/drives`);
         const newDriveRef = drivesRef.doc();
 
+        //seting the data from states
         await newDriveRef.set({
           source,
           destination,
@@ -29,13 +40,14 @@ const AddDriveScreen = () => {
           packagesIds,
         });
 
+        // adding driveid to the data
         const driveid = newDriveRef.id;
-
         await newDriveRef.update({
           driveid,
         });
 
         console.log('Drive saved to Firestore!');
+        // navigator navigates back to home page
         navigation.goBack();
 
       } else {
@@ -46,6 +58,7 @@ const AddDriveScreen = () => {
     }
   };
 
+  //input form
   return (
     <View style={styles.container}>
       <TextInput
@@ -75,6 +88,7 @@ const AddDriveScreen = () => {
   );
 };
 
+// style sheet
 const styles = StyleSheet.create({
     container: {
       flex: 1,

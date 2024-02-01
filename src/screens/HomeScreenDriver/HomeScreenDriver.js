@@ -7,32 +7,35 @@ import firebase from './../../firebase/config.js'
 import { useUserContext } from '../../common/context/UserContext.js';
 
 const HomeScreenDriver = ({ navigation }) => {
+  //use user context
   const { setUser, user } = useUserContext();
 
-
+  // navigate to add drive
   const onAddDrive = () => {
     navigation.navigate('AddDriveScreen');
   }
 
+  // navigate to my drives
   const onMyDrives = () => {
     // Add navigation logic for My Drives
     navigation.navigate('MyDrives');
   }
-
+  // navigate to reviews recived
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
     navigation.navigate('ReviewsRecivedScreen');
   }
-  
+  // navigate to chats
   const onChatScreen = () => {
     navigation.navigate('ChatsScreen');
   }
-
+  // navigate to edit profile
   const onEditProfile = () => {
     // Add navigation logic for Reviews Received
     navigation.navigate('EditProfileScreen');
   }
 
+    // Logout and navigate to login screen
   const onLogout = () => {
     firebase.auth()
     .signOut()
@@ -43,6 +46,7 @@ const HomeScreenDriver = ({ navigation }) => {
     });
   }
 
+  //culculate avg reviews for driver with 2 decimal points
   let avgReview = 0.0;
   if(user?.reviews.length === 0 ){
     avgReview = 0.0;
@@ -51,6 +55,7 @@ const HomeScreenDriver = ({ navigation }) => {
     avgReview = parseFloat(avgReview.toFixed(2));
   }
 
+  // home screen driver
   return (
     <View style={styles.container}>
       <Header />

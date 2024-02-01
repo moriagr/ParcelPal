@@ -35,9 +35,9 @@ const PackageDeliveredButton = ({ onDelivered }) => {
 
 //review button for reviewing delivered packages
 const PackageReviewButton = ({ onReview }) => {
-
+  //using starting state with 1 as min of  1- 5 stars rating value
   const [rating, setRating] = useState(1);
-
+  //setting state using handelpress function
   const handleStarPress = (selectedRating) => {
     setRating(selectedRating);
   };
@@ -62,7 +62,7 @@ const PackageReviewButton = ({ onReview }) => {
   );
 };
 
-// package box 
+// package box for showing relevent buttons based on package status
 const PackageBox = ({ packageInfo, showEditDeleteButtons, showDeliveredButton, showReviewButton, onEdit, onDelete, onDelivered, onReview }) => {
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
@@ -76,21 +76,26 @@ const PackageBox = ({ packageInfo, showEditDeleteButtons, showDeliveredButton, s
   );
 };
 
+
 const PackageSection = ({ title, packages, onFetchDeliveries }) => {
+  //using tates to set modal visability as expand
   const [isExpanded, setIsExpanded] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
 
+    // toggel for expaning the modal
   const toggleExpansion = () => {
     setIsExpanded(!isExpanded);
   };
-
+  // toggel for making the modal visable
   const toggleModal = (packageInfo) => {
     setSelectedPackage(packageInfo);
     setModalVisible(!isModalVisible);
   };
-
+  //use navigotr to go bakc to home screen
   const navigation = useNavigation();
+
+  //handl edit functions navigates to editpackescreen with current packages values
   const handleEdit = () => {
     // Handle edit action
     console.log(`Edit package: ${selectedPackage}`);
@@ -98,11 +103,14 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
     navigation.navigate('EditDeliveryScreen', { packageInfo: selectedPackage, onFetchDeliveries });
   };
 
+  //handling delte button
   const handleDelete = async () => {
     try {
+      //define current user
       const currentUser = firebase.auth().currentUser;
   
       if (currentUser) {
+        //define current user id
         const userId = currentUser.uid;
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
   
@@ -125,18 +133,21 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
     }
   };
 
+  //handel mark as delivered function
   const handleMarkAsDelivered = async () => {
     try {
+      //define current user
       const currentUser = firebase.auth().currentUser;
   
       if (currentUser) {
+        //define current user Id
         const userId = currentUser.uid;
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
   
         // Assuming selectedPackage.packageId is the attribute that uniquely identifies the package
         const deliveryDocRef = deliveriesRef.doc(selectedPackage.packageid);
   
-        // Update the PackageStatus field to "delivered"
+        // Update the PackageStatus field to "delivered" (this will put it in the next flatlist)
         await deliveryDocRef.update({
           packageStatus: "delivered",
         });
@@ -153,13 +164,15 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
     }
   };
   
-
+  //handel review async function
   const handleReview = async (rating) => {
-    // Handle review action
+    
     try {
+      //define user
       const currentUser = firebase.auth().currentUser;
       
       if (currentUser) {
+        //define user iD
         const userId = currentUser.uid;
         
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
@@ -167,14 +180,14 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
         const userDocSnapshot = await userDocRef.get(); 
         const userData = userDocSnapshot.data();
       
-        // Assuming fullName is a field in your user document
+        // define client name
         const clientName = userData.fullName;
       
         console.log('Client Name:', clientName);
 
         // Assuming selectedPackage.packageId is the attribute that uniquely identifies the package
         const deliveryDocRef = deliveriesRef.doc(selectedPackage.packageid);
-        // Update the PackageStatus field to "reviewed to get out of list"
+        // Update the PackageStatus field to "reviewed" to get out of list
         await deliveryDocRef.update({
           packageStatus: "reviewed",
         });
@@ -198,7 +211,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
             rating: rating,
           }),
         });
-
+        // Update the clients's review array to add the review
         console.log(`driver name and rating: ` ,driverName , " ", rating);
         await userDocReff.update({
           reviews: firebase.firestore.FieldValue.arrayUnion({
@@ -219,6 +232,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
     }
   };
 
+  //flags for buttons to show on packageBox
   const showEditDeleteButtons = title === 'Packages waiting for driver';
   const showDeliveredButton = title === 'Packages in transit';
   const showReviewButton = title === 'Packages delivered';
@@ -279,28 +293,33 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
 };
 
 const PackageStatusScreen = () => {
-
+  //states for flatlist based on package status
   const [packagesWaiting, setPackagesWaiting] = useState([]);
   const [packagesInTransit, setPackagesInTransit] = useState([]);
   const [packagesDelivered, setpackagesDelivered] = useState([]);
 
+  //fetch data from firebase
   const fetchDeliveries = async () => {
     try {
+      //define user
       const currentUser = firebase.auth().currentUser;
 
       if (currentUser) {
+        //define userId
         const userId = currentUser.uid;
-
+        //define refrence doc of deliveries
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
 
+        //get snapshot based on packages status
         const snapshotWaiting = await deliveriesRef.where('packageStatus', '==', 'waiting').get();
         const snapshotInTransit = await deliveriesRef.where('packageStatus', '==', 'in transit').get();
         const snapshotDelivered = await deliveriesRef.where('packageStatus', '==', 'delivered').get();
 
+        //define values to map data to
         const waitingDeliveries = snapshotWaiting.docs.map(doc => doc.data());
         const inTransitDeliveries = snapshotInTransit.docs.map(doc => doc.data());
         const deliveredDeliveries = snapshotDelivered.docs.map(doc => doc.data());
-
+        //use set state funtions to save the data as the states
         setPackagesWaiting(waitingDeliveries);
         setPackagesInTransit(inTransitDeliveries);
         setpackagesDelivered(deliveredDeliveries);

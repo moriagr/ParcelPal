@@ -7,48 +7,43 @@ import firebase from '../../firebase/config';
 import { useUserContext } from '../../common/context/UserContext';
 
 const HomeScreen = ({ navigation }) => {
+  // use users context
   const { setUser, user } = useUserContext();
 
+  // navigate to new delivery
   const onNewDelivery = () => {
     navigation.navigate('NewDeliveryScreen');
   }
-
+  // navigate to pick drive
   const onPickDriver = () =>{
     navigation.navigate('PickDriveScreen');
   }
 
-
+  // navigate to packages status
   const onMyPackages = () => {
     // Add navigation logic for My Drives
     navigation.navigate('PackageStatus');
   }
 
-  const onMyPoints = () => {
-    // Add navigation logic for My Points
-    navigation.navigate('LoginDriver');
-  }
-
-  const onMyTips = () => {
-    // Add navigation logic for My Tips
-    navigation.navigate('LoginDriver');
-  }
-
+  // navigate to reviews reciveed
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
     navigation.navigate('ReviewsGivenScreen');
   }
 
+  // navigate to chats
   const onChatScreen = () => {
     navigation.navigate('ChatsScreen');
   }
 
+  // navigate to edit profile
   const onEditProfile = () => {
     // Add navigation logic for Reviews Received
     navigation.navigate('EditProfileScreen');
   }
 
+  // Logout and navigate to login screen
   const onLogout = () => {
-    // Add navigation logic for Log Out
     firebase.auth()
       .signOut()
       .then(() => {

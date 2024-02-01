@@ -1,5 +1,5 @@
 import * as yup from "yup"
-
+// Scheme for validation on editProfileScreen
 export const editValidationScheme = yup
     .object().shape({
         fullName: yup.string().required('Full name is required'),

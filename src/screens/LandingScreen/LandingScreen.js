@@ -5,24 +5,28 @@ import styles from './styles';
 import firebase from './../../firebase/config';
 
 export default function LandingScreen({ navigation }) {
+  //using states for dynamic data in headline of landing page pulled from firebase
   const [driversCount, setDriversCount] = useState(0);
   const [clientsCount, setClientsCount] = useState(0);
   const [totalDeliveries, setTotalDeliveries] = useState(0);
 
+  //navigate to login screen with parameters role as driver
   const onDriverLoginPress = () => {
     navigation.navigate('Login', { role: 'Driver', driversCount: driversCount, deliveriesCount: totalDeliveries, clientsCount:clientsCount});
   };
-
+   //navigate to login screen with parameters role as client
   const onClientLoginPress = () => {
     navigation.navigate('Login', { role: 'Client', driversCount: driversCount, deliveriesCount: totalDeliveries, clientsCount:clientsCount });
   };
 
+  //fetch statistics to use for state using use effect
   useEffect(() => {
     const fetchStatistics = async () => {
       const drivers = await getUsersCountByRole('Driver');
       const clients = await getUsersCountByRole('Client');
       const totalDeliveries = await fetchTotalDeliveries();
 
+      //set states based on how many drivers, clients and succssefull deliverys
       setDriversCount(drivers);
       setClientsCount(clients);
       setTotalDeliveries(totalDeliveries);
@@ -31,6 +35,7 @@ export default function LandingScreen({ navigation }) {
     fetchStatistics();
   }, []);
 
+  //count users base on  role helper function
   const getUsersCountByRole = async (role) => {
     try {
       const usersSnapshot = await firebase.firestore().collection('users').where('role', '==', role).get();
@@ -41,6 +46,7 @@ export default function LandingScreen({ navigation }) {
     }
   };
 
+  //fetch total deliverys function for getting the total amount fo deliverys
   const fetchTotalDeliveries = async () => {
     try {
       let totalDeliveries = 0;
@@ -48,7 +54,7 @@ export default function LandingScreen({ navigation }) {
       // Fetch deliveries for each client
       const clientsSnapshot = await firebase.firestore().collection('users').where('role', '==', 'Client').get();
       const clientDocs = clientsSnapshot.docs;
-
+      //sum alll deliverys
       for (const clientDoc of clientDocs) {
         const clientId = clientDoc.id;
         const clientDeliveriesRef = firebase.firestore().collection(`users/${clientId}/deliveries`);
