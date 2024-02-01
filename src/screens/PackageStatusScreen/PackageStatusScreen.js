@@ -281,6 +281,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
 const PackageStatusScreen = () => {
 
   const [packagesWaiting, setPackagesWaiting] = useState([]);
+  // const [packagesPicked, setPackagesPicked] = useState([]);
   const [packagesInTransit, setPackagesInTransit] = useState([]);
   const [packagesDelivered, setpackagesDelivered] = useState([]);
 
@@ -294,14 +295,17 @@ const PackageStatusScreen = () => {
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
 
         const snapshotWaiting = await deliveriesRef.where('packageStatus', '==', 'waiting').get();
+        // const snapshotPicked = await deliveriesRef.where('packageStatus', '==', 'picked').get();
         const snapshotInTransit = await deliveriesRef.where('packageStatus', '==', 'in transit').get();
         const snapshotDelivered = await deliveriesRef.where('packageStatus', '==', 'delivered').get();
 
         const waitingDeliveries = snapshotWaiting.docs.map(doc => doc.data());
+        // const pickedDeliveries = snapshotPicked.docs.map(doc => doc.data());
         const inTransitDeliveries = snapshotInTransit.docs.map(doc => doc.data());
         const deliveredDeliveries = snapshotDelivered.docs.map(doc => doc.data());
 
         setPackagesWaiting(waitingDeliveries);
+        // setPackagesPicked(pickedDeliveries);
         setPackagesInTransit(inTransitDeliveries);
         setpackagesDelivered(deliveredDeliveries);
       } else {
@@ -321,6 +325,7 @@ const PackageStatusScreen = () => {
   return (
     <View style={styles.container}>
       <PackageSection title="Packages waiting for driver" packages={packagesWaiting} onFetchDeliveries={fetchDeliveries}/>
+      {/* <PackageSection title="Packages picked by driver" packages={packagesPicked} onFetchDeliveries={fetchDeliveries}/> */}
       <PackageSection title="Packages in transit" packages={packagesInTransit} onFetchDeliveries={fetchDeliveries}/>
       <PackageSection title="Packages delivered" packages={packagesDelivered} onFetchDeliveries={fetchDeliveries}/>
     </View>

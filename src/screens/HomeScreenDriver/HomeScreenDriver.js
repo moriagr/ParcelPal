@@ -14,6 +14,10 @@ const HomeScreenDriver = ({ navigation }) => {
     navigation.navigate('AddDriveScreen');
   }
 
+  const onPickPackages= () => {
+    navigation.navigate('PickPackagesScreen');
+  }
+
   const onMyDrives = () => {
     // Add navigation logic for My Drives
     navigation.navigate('MyDrives');
@@ -78,7 +82,7 @@ const HomeScreenDriver = ({ navigation }) => {
             <Text style={styles.actionText}>Add Drive</Text>
           </TouchableOpacity>
 
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={onPickPackages}>
                 <Icon name="archive" size={30} color="#a1c4fd" />
                 <Text style={styles.actionText}>Pick Packages</Text>
             </TouchableOpacity>
