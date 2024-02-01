@@ -27,11 +27,13 @@ const StartDriverButton = ({onStart}) => {
 
 const DriveBox = ({packageInfo,  showEndDriveButton, showStartDriveButton ,onDelivered, onStart }) => {
   const uniquePackageIds = packageInfo.packagesIds
-  ? [...new Set(packageInfo.packagesIds.map(item => item.packageId))]
+  ? packageInfo.packagesIds.reduce((uniqueIds, item) => [...new Set([...uniqueIds, ...item.packageId])], [])
   : [];
+
 const uniqueClientIds = packageInfo.packagesIds
-  ? [...new Set(packageInfo.packagesIds.map(item => item.clientId))]
+  ? packageInfo.packagesIds.reduce((uniqueIds, item) => [...new Set([...uniqueIds, item.clientId])], [])
   : [];
+
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
       <View style={styles.packageInfoContainer}>

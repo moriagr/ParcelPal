@@ -234,7 +234,7 @@ const PickDriveScreen = ({ navigation }) => {
   renderItem={({ item }) => {
     // Calculate unique package and client IDs for the current drive
     const uniquePackageIdsForDrive = (item.packagesIds || []).reduce((uniqueIds, packageItem) => {
-      return [...new Set([...uniqueIds, packageItem.packageId])];
+      return [...new Set([...uniqueIds, ...packageItem.packageId])];
     }, []);
 
     const uniqueClientIdsForDrive = (item.packagesIds || []).reduce((uniqueIds, packageItem) => {
@@ -256,7 +256,7 @@ const PickDriveScreen = ({ navigation }) => {
           {item.source} - {item.destination} : {item.driveStatus}
         </Text>
         <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
-          <Icon name="cubes" size={16} color="#788eec" /> Packages Booked: {uniquePackageIdsForDrive.length}{' '}
+          <Icon name="cubes" size={16} color="#788eec" /> Packages Booked: {uniquePackageIdsForDrive.length}{'       '}
           <Icon name="users" size={16} color="#788eec" /> #Clients: {uniqueClientIdsForDrive.length}
         </Text>
       </TouchableOpacity>
