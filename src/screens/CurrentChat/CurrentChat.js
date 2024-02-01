@@ -121,7 +121,7 @@ export default function Chat({ route }) {
                 _id: userDetails?.id,
                 // avatar: userDetails?.profilePicture
             }}
-            im
+            
 
         />
     );

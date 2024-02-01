@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import styles from './styles';
 
+// TODO: Not using at the moment
+
 const MyPointsScreen = () => {
   // Sample data for points
   const pointsData = [

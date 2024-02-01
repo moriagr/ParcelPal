@@ -10,11 +10,11 @@ export default function LandingScreen({ navigation }) {
   const [totalDeliveries, setTotalDeliveries] = useState(0);
 
   const onDriverLoginPress = () => {
-    navigation.navigate('Login', { role: 'Driver', driversCount: driversCount, deliveriesCount: totalDeliveries, clientsCount:clientsCount});
+    navigation.navigate('Login', { role: 'Driver', driversCount: driversCount, deliveriesCount: totalDeliveries, clientsCount: clientsCount });
   };
 
   const onClientLoginPress = () => {
-    navigation.navigate('Login', { role: 'Client', driversCount: driversCount, deliveriesCount: totalDeliveries, clientsCount:clientsCount });
+    navigation.navigate('Login', { role: 'Client', driversCount: driversCount, deliveriesCount: totalDeliveries, clientsCount: clientsCount });
   };
 
   useEffect(() => {

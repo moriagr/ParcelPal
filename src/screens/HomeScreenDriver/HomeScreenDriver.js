@@ -23,7 +23,7 @@ const HomeScreenDriver = ({ navigation }) => {
     // Add navigation logic for Reviews Received
     navigation.navigate('ReviewsRecivedScreen');
   }
-  
+
   const onChatScreen = () => {
     navigation.navigate('ChatsScreen');
   }
@@ -35,18 +35,18 @@ const HomeScreenDriver = ({ navigation }) => {
 
   const onLogout = () => {
     firebase.auth()
-    .signOut()
-    .then(() => {
-      setUser(null);
-      navigation.navigate('Landing');
-      console.log('User signed out!')
-    });
+      .signOut()
+      .then(() => {
+        setUser(null);
+        navigation.navigate('Landing');
+        console.log('User signed out!')
+      });
   }
 
   let avgReview = 0.0;
-  if(user?.reviews.length === 0 ){
+  if (user?.reviews.length === 0) {
     avgReview = 0.0;
-  }else{
+  } else {
     avgReview = user?.reviews.reduce((sum, review) => sum + review.rating, 0) / user?.reviews.length;
     avgReview = parseFloat(avgReview.toFixed(2));
   }
@@ -73,20 +73,20 @@ const HomeScreenDriver = ({ navigation }) => {
         </View>
         <View style={styles.driveActionsContainer}>
 
-            <TouchableOpacity style={styles.actionButton} onPress={onAddDrive}>
+          <TouchableOpacity style={styles.actionButton} onPress={onAddDrive}>
             <Icon name="road" size={30} color="#a1c4fd" />
             <Text style={styles.actionText}>Add Drive</Text>
           </TouchableOpacity>
 
-            <TouchableOpacity style={styles.actionButton}>
-                <Icon name="archive" size={30} color="#a1c4fd" />
-                <Text style={styles.actionText}>Pick Packages</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton}>
+            <Icon name="archive" size={30} color="#a1c4fd" />
+            <Text style={styles.actionText}>Pick Packages</Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity style={styles.actionButton} onPress={onChatScreen}>
-                <Icon name="comments" size={30} color="#a1c4fd" />
-                <Text style={styles.actionText}>Chat</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton} onPress={onChatScreen}>
+            <Icon name="comments" size={30} color="#a1c4fd" />
+            <Text style={styles.actionText}>Chat</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.menuButtonsContainer}>
           <TouchableOpacity style={styles.menuButton} onPress={onMyDrives}>

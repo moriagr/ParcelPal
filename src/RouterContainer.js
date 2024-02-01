@@ -80,8 +80,8 @@ export default function RouterContainer() {
                         <Stack.Screen name="AddDriveScreen" component={AddDriveScreen} />
                         <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
-                        <Stack.Screen name="CurrentChat" component={CurrentChat}/>
-                        <Stack.Screen name="ReviewsRecivedScreen" component={ReviewsRecivedScreen}/>
+                        <Stack.Screen name="CurrentChat" component={CurrentChat} />
+                        <Stack.Screen name="ReviewsRecivedScreen" component={ReviewsRecivedScreen} />
 
 
                     </>
@@ -97,17 +97,13 @@ export default function RouterContainer() {
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
                         <Stack.Screen name="CurrentChat" component={CurrentChat} />
                         <Stack.Screen name="PickDriveScreen" component={PickDriveScreen} />
-                        <Stack.Screen name="ReviewsGivenScreen" component={ReviewsGivenScreen}/>
+                        <Stack.Screen name="ReviewsGivenScreen" component={ReviewsGivenScreen} />
                     </>
                 ) : (
                     <>
                         <Stack.Screen name="Landing" component={LandingScreen} />
                         <Stack.Screen name="Login" component={LoginScreen} />
                         <Stack.Screen name="Registration" component={RegistrationScreen} />
-                        {/* <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
-                        <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
-                        <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
-                        <Stack.Screen name="MyPoints" component={MyPointsScreen} /> */}
                     </>
                 )}
         </Stack.Navigator>

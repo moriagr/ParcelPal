@@ -9,7 +9,6 @@ import styles from './styles'
 const ChatsScreen = ({ navigation }) => {
     const { user } = useUserContext();
 
-    const [driverMode, setDriverMode] = useState(false);
     const [chatsArray, setChatsArray] = useState(null);
     useLayoutEffect(() => {
         (async () => {
@@ -19,27 +18,33 @@ const ChatsScreen = ({ navigation }) => {
 
                 try {
                     const chatsPromises = chatsSnapshot.docs.map(async (driverDoc) => {
-                        const splitUser = driverDoc.id.split("_");
-                        let getIndexUser = splitUser.indexOf(user.id);
-                        getIndexUser = getIndexUser === 1 ? 0 : 1;
+                        try {
 
-                        if (getIndexUser !== -1) {
-                            const drivesUserRef = await firebase.firestore().collection('users')
-                                .where('id', '==', splitUser[getIndexUser])
-                                .get();
+                            const splitUser = driverDoc.id.split("_");
+                            let getIndexUser = splitUser.indexOf(user.id);
+                            getIndexUser = getIndexUser === 1 ? 0 : 1;
 
-                            const userChatData = drivesUserRef.docs.map((userDoc) => userDoc.data())[0];
+                            if (getIndexUser !== -1) {
+                                const drivesUserRef = await firebase.firestore().collection('users')
+                                    .where('id', '==', splitUser[getIndexUser])
+                                    .get();
 
-                            return {
-                                id: userChatData.id,
-                                email: userChatData.email,
-                                fullName: userChatData.fullName,
-                                phone: userChatData.phone,
-                                profilePicture: userChatData.profilePicture,
-                                role: userChatData.role
-                            };
+                                const userChatData = drivesUserRef.docs.map((userDoc) => userDoc.data())[0];
+
+                                return {
+                                    id: userChatData.id,
+                                    email: userChatData.email,
+                                    fullName: userChatData.fullName,
+                                    phone: userChatData.phone,
+                                    profilePicture: userChatData.profilePicture,
+                                    role: userChatData.role
+                                };
+                            }
+
+                        } catch (error) {
+                            console.log('✌️error --->', error);
+
                         }
-
                         return null;
                     });
 
