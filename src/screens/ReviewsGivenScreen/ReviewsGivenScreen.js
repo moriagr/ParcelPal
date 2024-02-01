@@ -8,9 +8,11 @@ import styles from './styles';
 // ... (import statements remain unchanged)
 
 const ReviewsGivenScreen = () => {
+  //use states for setting points and total ratings
   const [pointsData, setPointsData] = useState([]);
   const [totalRating, setTotalRating] = useState(0);
 
+    //use effect on mount
   useEffect(() => {
     const fetchReviews = async () => {
       const clientId = firebase.auth().currentUser.uid;
@@ -21,9 +23,10 @@ const ReviewsGivenScreen = () => {
 
         if (userData) {
           const pointsData = userData.reviews ?? [];
+          // set state to the array of reviews
           setPointsData(pointsData);
 
-          // Calculate average rating
+          // Calculate total ratings given
           const totalRating = pointsData.reduce((total, review) => total + review.rating, 0);
           setTotalRating(totalRating);
 

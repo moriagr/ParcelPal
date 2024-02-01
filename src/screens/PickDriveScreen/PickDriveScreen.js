@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
 const PickDriveScreen = ({ navigation }) => {
+  //use epety states for avilabel drives, selected packages, selected drives, search & filter
   const [availableDrives, setAvailableDrives] = useState([]);
   const [selectedDrive, setSelectedDrive] = useState(null);
   const [clientPackages, setClientPackages] = useState([]);
@@ -15,15 +16,16 @@ const PickDriveScreen = ({ navigation }) => {
   const [sortOrder, setSortOrder] = useState('asc');
   const [selectedPackages, setSelectedPackages] = useState([]);
 
+  //on mount 
   useEffect(() => {
     // Fetch available drives from the database
     const fetchAvailableDrives = async () => {
       try {
+        //get user drivers
         const role = 'Driver';
-
         const driversRef = firebase.firestore().collection('users').where('role', '==', role);
         const driversSnapshot = await driversRef.get();
-
+        //return drives with status 'new drive'
         const drivesDataPromises = driversSnapshot.docs.map(async (driverDoc) => {
             console.log('Fetching drives for driver:', driverDoc.id);
             const drivesRef = driverDoc.ref.collection('drives');
@@ -33,11 +35,12 @@ const PickDriveScreen = ({ navigation }) => {
             const drivesData = drivesSnapshot.docs.map((driveDoc) => driveDoc.data());
             return drivesData;
         });
-
+        //wait for promise of all avilable drives
         const allDrivesData = await Promise.all(drivesDataPromises);
         const flattenedDrives = allDrivesData.flat();
 
         console.log('Setting drives:', flattenedDrives.length);
+        //set state to the avilable drives
         setAvailableDrives(flattenedDrives);
 
       } catch (error) {
@@ -51,6 +54,7 @@ const PickDriveScreen = ({ navigation }) => {
         
         const clientId = firebase.auth().currentUser.uid;
         const packagesRef = firebase.firestore().collection(`users/${clientId}/deliveries`);
+        //save snapshot of pacages with status waiting
         const snapshot = await packagesRef.where('packageStatus', '==', 'waiting').get();
         const packages = snapshot.docs.map(doc => doc.data());
 
@@ -59,24 +63,27 @@ const PickDriveScreen = ({ navigation }) => {
         console.error('Error fetching client packages:', error);
       }
     };
-
+    
     fetchAvailableDrives();
     fetchClientPackages();
   }, []);
 
+  //set state of search query to query
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
 
+  //set state of filter to what is selected by modal
   const handleFilterChange = (filter) => {
     setSelectedFilter(filter);
     setFilterModalVisible(false);
   };
-
+  // toggel for setting order (ascd / dscd)
   const handleSortOrderChange = (order) => {
     setSortOrder(order);
   };
 
+  // for highting packages seleted toggle
   const togglePackageSelection = (packageid) => {
     const isSelected = selectedPackages.includes(packageid);
 
@@ -86,34 +93,33 @@ const PickDriveScreen = ({ navigation }) => {
       setSelectedPackages([...selectedPackages, packageid]);
     }
   };
-  // TODO ///////////////////////////////////
-  //////////////////////////////////////////
-  /////////////////////////////////////////
+  
+  // asgin packages to drive async function
   const assignPackagesToDrive = async () => {
     
     try {
       if (selectedDrive) {
         let DriverID = 0;
         try {
+          // define drivers
           const driversCollection = firebase.firestore().collection('users').where('role', '==', 'Driver');
-          
           const driversSnapshot = await driversCollection.get();
-      
+          // look throuh all drivers and find drive
           for (const driverDoc of driversSnapshot.docs) {
             const drivesCollection = driverDoc.ref.collection('drives');
             const driveDoc = await drivesCollection.doc(selectedDrive).get();
       
             if (driveDoc.exists) {
-              // Found the driver with the specified driveId
+              // fet drivers ID
               DriverID = driverDoc.id; // Return the driver's ID
             }
           }
-      
-          
+    
         } catch (error) {
           console.error('Error finding driver ID by drive ID:', error);
           return null;
         }
+        //define clients name and drive id
         const driveRef = firebase.firestore().collection(`users/${DriverID}/drives`).doc(selectedDrive);
         const clientId = firebase.auth().currentUser.uid;
         //update amount of packages sent
@@ -124,6 +130,7 @@ const PickDriveScreen = ({ navigation }) => {
         console.log("user current packages", current_packages_sent);
         current_packages_sent+=selectedPackages.length;
         console.log("user sent #", current_packages_sent);
+
         await profileRef.update({
           packagesSent: current_packages_sent,
         });
@@ -131,8 +138,7 @@ const PickDriveScreen = ({ navigation }) => {
         // Update the drive in the database
         console.log("updating driver", clientId, selectedPackages);
         await driveRef.update({
-          //Update drive information based on assigned packages
-          // For example, you might update the available space, list of assigned packages, etc.
+          //Update drive information based on assigned packages for chat
             packagesIds: firebase.firestore.FieldValue.arrayUnion({
               clientId: clientId,
               packageId: selectedPackages,
@@ -177,9 +183,6 @@ const PickDriveScreen = ({ navigation }) => {
       console.error('Error assigning packages to drive:', error);
     }
   };
-  /////////////////////////////////////////////
-  ////////////////////////////////////////////
-  ////////////////////////////////////////////
 
   // Apply filters and sorting based on user input
   const filteredAndSortedDrives = availableDrives

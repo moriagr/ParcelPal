@@ -9,13 +9,14 @@ import { Formik } from 'formik'
 import { registrationValidationScheme } from '../../components/Schemes/LoginRegistrationSchemes.js';
 
 export default function RegistrationScreen({ navigation, route }) {
+    //use user ocntext
     const { setUser } = useUserContext();
 
-    
+    // go to login screen
     const onFooterLinkPress = () => {
         navigation.navigate('Login')
     }
-
+    // upon registration save data to database
     const onRegisterPress = (values) => {
         console.log('✌️values --->', values);
         
@@ -24,7 +25,10 @@ export default function RegistrationScreen({ navigation, route }) {
             .createUserWithEmailAndPassword(values.email, values.password)
             .then((response) => {
                 const uid = response.user.uid
+                //default profile picture
                 const DefaultProfilePicture = require('../../../assets/defaultPP.png');
+
+                //data to save
                 let data = {
                     id: uid,
                     email: values.email,

@@ -7,10 +7,11 @@ import styles from './styles';
 
 // ... (import statements remain unchanged)
 const ReviewsRecivedScreen = () => {
-
+  //use state for setting total and rating points
   const [pointsData, setPointsData] = useState([]);
   const [totalRating, setTotalRating] = useState(0);
 
+    //use effect when mounted
   useEffect(() => {
     const fetchReviews = async () => {
       const driverId = firebase.auth().currentUser.uid;
@@ -25,6 +26,7 @@ const ReviewsRecivedScreen = () => {
 
           // Calculate average rating
           const totalRating = pointsData.reduce((total, review) => total + review.rating, 0) / pointsData.length;
+          //set state of avg ratings
           setTotalRating(totalRating);
 
           console.log("Reviews loaded successfully!");
