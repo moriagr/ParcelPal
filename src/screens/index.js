@@ -20,6 +20,8 @@ export { default as AddDriveScreen } from './AddDriveScreen/AddDriveScreen'
 
 export { default as NewDeliveryScreen } from './NewDeliveryScreen/NewDeliveryScreen'
 
+export { default as PickPackagesScreen } from './PickPackagesScreen/PickPackagesScreen'
+
 export { default as EditProfileScreen } from './EditProfileScreen/EditProfileScreen'
 
 export { default as ReviewsGivenScreen } from './ReviewsGivenScreen/ReviewsGivenScreen'
@@ -33,6 +35,5 @@ export { default as EditDeliveryScreen } from './EditDeliveryScreen/EditDelivery
 export { default as PickDriveScreen } from './PickDriveScreen/PickDriveScreen'
 
 export {default as ReviewsRecivedScreen} from './ReviewsRecivedScreen/ReviewsRecivedScreen'
-
 
 

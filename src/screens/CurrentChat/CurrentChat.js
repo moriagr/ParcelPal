@@ -21,53 +21,71 @@ export default function Chat({ route }) {
     const { user: userDetails } = useUserContext();
     const [currentUserId, setCurrentUserId] = useState(null);
     const [chatNotExist, setChatNotExist] = useState(true);
-    const [otherUser, setOtherUser] = useState();
 
     useLayoutEffect(() => {
         const fetchData = async () => {
             try {
-                setOtherUser(route.params.user);
-                const currentUserId = route.params.user.id;
                 let chatId;
                 // Use the emails of the two users to create a unique chat identifier
                 if (userDetails.role === "Driver") {
-                    chatId = `${userDetails.id}_${currentUserId}`;
+                    chatId = `${userDetails.id}_${route.params.user.id}`;
                 } else {
-                    chatId = `${currentUserId}_${userDetails.id}`;
+                    chatId = `${route.params.user.id}_${userDetails.id}`;
                 }
 
                 setCurrentUserId(chatId);
+                console.log('✌️chatId --->', chatId);
                 const collectionRef = firebase.firestore().collection('chats').doc(chatId);
 
                 // Check if the document exists
                 const docSnapshot1 = await collectionRef.get();
 
+                console.log('✌️docSnapshot1.exists --->', docSnapshot1.exists);
                 if (docSnapshot1.exists) {
                     console.log('Document exists!');
                     setChatNotExist(false);
 
                     // Proceed with the query and other logic
-                    const messageRef = collectionRef.collection('messages');
-
-                    if (messageRef) {
-
-                        const unsubscribe = onSnapshot(messageRef.orderBy('createdAt', 'desc'), querySnapshot => {
-                            if (querySnapshot && querySnapshot.docs) {
-                                setMessages(
-                                    querySnapshot.docs.map(doc => {
-                                        console.log('✌️doc --->', doc.data());
-                                        return {
-                                            _id: doc.data()._id,
-                                            createdAt: doc.data().createdAt.toDate(),
-                                            text: doc.data().text,
-                                            user: doc.data().user
-                                        }
-                                    })
-                                );
-                            }
+                    // const messageRef = collectionRef.collection('messages');
+                    const messagesArray = docSnapshot1.data()?.messages || [];
+                    console.log('✌️messagesArray --->', messagesArray);
+                    if (messagesArray.length > 0) {
+                        // messagesArray.orderBy('createdAt', 'desc')
+                        const sortedMessagesArray = messagesArray.slice().sort((a, b) => {
+                            // Sort in descending order based on createdAt
+                            return b.createdAt.seconds - a.createdAt.seconds || b.createdAt.nanoseconds - a.createdAt.nanoseconds;
                         });
-                        return unsubscribe;
+                        setMessages(
+                            sortedMessagesArray.map(doc => {
+                                // console.log('✌️doc --->', doc.data());
+                                return {
+                                    _id: doc._id,
+                                    createdAt: doc.createdAt.toDate(),
+                                    text: doc.text,
+                                    user: doc.user
+                                }
+                            })
+                        );
                     }
+                    // if (messageRef) {
+
+                    // const unsubscribe = onSnapshot(messageRef.orderBy('createdAt', 'desc'), querySnapshot => {
+                    //     if (querySnapshot && querySnapshot.docs) {
+                    //         setMessages(
+                    //             querySnapshot.docs.map(doc => {
+                    //                 console.log('✌️doc --->', doc.data());
+                    //                 return {
+                    //                     _id: doc.data()._id,
+                    //                     createdAt: doc.data().createdAt.toDate(),
+                    //                     text: doc.data().text,
+                    //                     user: doc.data().user
+                    //                 }
+                    //             })
+                    //         );
+                    //     }
+                    // });
+                    // return unsubscribe;
+                    // }
                 } else {
                     console.log('Document does not exist.');
                     setChatNotExist(true);
@@ -81,27 +99,38 @@ export default function Chat({ route }) {
     }, []);
 
     const onSend = useCallback(async (messages = []) => {
-        setMessages(previousMessages =>
-            GiftedChat.append(previousMessages, messages)
-        );
+        try {
 
-        const { _id, createdAt, text, user } = messages[0];
+            setMessages(previousMessages =>
+                GiftedChat.append(previousMessages, messages)
+            );
 
-        if (chatNotExist) {
-            // Create the chat document if it doesn't exist
-            setDoc(database, doc(currentUserId), {});
-            setChatNotExist(false);
+            const { _id, createdAt, text, user } = messages[0];
+            const newMessage = { _id, createdAt, text, user }
+
+            if (chatNotExist) {
+                // Create the chat document if it doesn't exist
+                firebase.firestore().collection('chats').doc(currentUserId)
+                    .set({
+                        messages: [
+                            newMessage
+                        ]
+                    })
+                setChatNotExist(false);
+            } else {
+                // Add the message to the chat
+                await firebase.firestore().collection('chats').doc(currentUserId).update({
+                    messages: firebase.firestore.FieldValue.arrayUnion({
+                        ...newMessage
+                    }),
+                })
+
+            }
         }
+        catch (error) {
+            console.log('✌️error --->', error);
 
-        // Add the message to the chat
-        const chatRef = firebase.firestore().collection('chats').doc(currentUserId).collection('messages');
-        const newMessage = chatRef.doc()
-        await newMessage.set({
-            _id,
-            createdAt,
-            text,
-            user
-        });
+        }
     }, [currentUserId, chatNotExist]);
 
     return (
@@ -121,7 +150,7 @@ export default function Chat({ route }) {
                 _id: userDetails?.id,
                 // avatar: userDetails?.profilePicture
             }}
-            
+
 
         />
     );

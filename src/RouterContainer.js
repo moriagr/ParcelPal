@@ -19,6 +19,7 @@ import {
     CurrentChat,
     EditDeliveryScreen,
     PickDriveScreen,
+    PickPackagesScreen,
     ReviewsGivenScreen,
     ReviewsRecivedScreen
 } from './screens';
@@ -78,6 +79,7 @@ export default function RouterContainer() {
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
                         <Stack.Screen name="AddDriveScreen" component={AddDriveScreen} />
+                        <Stack.Screen name="PickPackagesScreen" component={PickPackagesScreen} />
                         <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
                         <Stack.Screen name="CurrentChat" component={CurrentChat} />

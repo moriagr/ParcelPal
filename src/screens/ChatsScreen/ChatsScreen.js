@@ -18,6 +18,7 @@ const ChatsScreen = ({ navigation }) => {
 
                 try {
                     const chatsPromises = chatsSnapshot.docs.map(async (driverDoc) => {
+                        console.log('✌️driverDoc --->', await driverDoc);
                         try {
 
                             const splitUser = driverDoc.id.split("_");
@@ -66,8 +67,15 @@ const ChatsScreen = ({ navigation }) => {
                 // Assuming PackagesId is an array in the document
                 const packagesIds = drivesData.packagesIds
                 if (packagesIds) {
-                    const drivesPromises = await packagesIds.map(async (packagesDoc) => {
-                        const userClient = await firebase.firestore().collection('users').where("id", "==", packagesDoc.clientId).get();
+
+                    let unique = packagesIds.reduce(function (acc, curr) {
+                        if (!acc.includes(curr.clientId))
+                            acc.push(curr.clientId);
+                        return acc;
+                    }, []);
+
+                    const drivesPromises = await unique.map(async (currUserId) => {
+                        const userClient = await firebase.firestore().collection('users').where("id", "==", currUserId).get();
                         console.log('✌️userClient --->', userClient.docs);
                         const drivesData = userClient.docs.map((driveDoc) => driveDoc.data())[0];
                         return {
@@ -97,7 +105,7 @@ const ChatsScreen = ({ navigation }) => {
     return (chatsArray ?
         <View>
 
-            {chatsArray.map((data, index) => {
+            {chatsArray.length > 0 ? chatsArray.map((data, index) => {
                 return <TouchableOpacity key={index} style={styles.chatBox} onPress={() => goToChat(data)}>
                     <View style={styles.chatInfoContainer}>
                         <Image
@@ -110,7 +118,8 @@ const ChatsScreen = ({ navigation }) => {
 
                     </View>
                 </TouchableOpacity>
-            })}
+            }) :
+                <Text>No chats yet</Text>}
         </View> :
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <ActivityIndicator size="large" color="#0000ff" />
