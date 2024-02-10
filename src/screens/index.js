@@ -36,4 +36,4 @@ export { default as PickDriveScreen } from './PickDriveScreen/PickDriveScreen'
 
 export {default as ReviewsRecivedScreen} from './ReviewsRecivedScreen/ReviewsRecivedScreen'
 
-
+export {default as ChoosenDeliveriesScreen} from './ChoosenDeliveries/ChoosenDeliveriesScreen'
