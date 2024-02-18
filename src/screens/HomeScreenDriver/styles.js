@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 10,
     borderRadius: 5,
-    marginTop: 200,
+    marginTop: 150,
     marginLeft: -25
   },
   ratingContainer: {

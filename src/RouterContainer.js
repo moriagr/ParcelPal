@@ -21,7 +21,8 @@ import {
     PickDriveScreen,
     PickPackagesScreen,
     ReviewsGivenScreen,
-    ReviewsRecivedScreen
+    ReviewsRecivedScreen,
+    ChoosenDeliveriesScreen
 } from './screens';
 
 
@@ -84,6 +85,7 @@ export default function RouterContainer() {
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
                         <Stack.Screen name="CurrentChat" component={CurrentChat} />
                         <Stack.Screen name="ReviewsRecivedScreen" component={ReviewsRecivedScreen} />
+                        <Stack.Screen name="ChoosenDeliveriesScreen" component={ChoosenDeliveriesScreen} />
 
 
                     </>

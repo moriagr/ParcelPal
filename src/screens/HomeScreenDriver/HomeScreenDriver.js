@@ -25,6 +25,11 @@ const HomeScreenDriver = ({ navigation }) => {
     // Add navigation logic for My Drives
     navigation.navigate('MyDrives');
   }
+
+  const onMyChoosenDeliveries = () => {
+    // Add navigation logic for My Drives
+    navigation.navigate('ChoosenDeliveriesScreen');
+  }
   // navigate to reviews recived
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received
@@ -101,6 +106,10 @@ const HomeScreenDriver = ({ navigation }) => {
         <View style={styles.menuButtonsContainer}>
           <TouchableOpacity style={styles.menuButton} onPress={onMyDrives}>
             <Text style={styles.menuButtonText}>My Drives</Text>
+            <Icon name="chevron-right" size={20} color="#000" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.menuButton} onPress={onMyChoosenDeliveries}>
+            <Text style={styles.menuButtonText}>My Choosen Deliveries</Text>
             <Icon name="chevron-right" size={20} color="#000" />
           </TouchableOpacity>
           {/*<TouchableOpacity style={styles.menuButton} onPress={onMyPoints}>
