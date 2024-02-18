@@ -106,7 +106,7 @@ const AddDriveScreen = () => {
                 fonts: {
                   regular: { fontFamily: "Inter", fontWeight: "Medium" },
                 },
-                colors: { text: "#fff", background: "#fff" , primary: "#52C8CF"},
+                colors: { text: "#fff", background: "#fff" , primary: "#788eec"},
               }}
               onChangeText={setSource}
             />
@@ -119,7 +119,7 @@ const AddDriveScreen = () => {
                 fonts: {
                   regular: { fontFamily: "Inter", fontWeight: "Medium" },
                 },
-                colors: { text: "#fff", background: "#fff" , primary: "#52C8CF"},
+                colors: { text: "#fff", background: "#fff" , primary: "#788eec"},
               }}
               onChangeText={setDestination}
             />
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#52C8CF",
+    backgroundColor: "#788eec",
     paddingHorizontal: 20,
   },
   postGroup: {
