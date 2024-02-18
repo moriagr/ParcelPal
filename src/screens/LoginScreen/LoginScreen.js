@@ -89,15 +89,15 @@ export default function LoginScreen({ navigation, route }) {
     let clients = route.params.clientsCount;
     let totaldeliverys = route.params.deliveriesCount;
 
-    let Headline ="";
-    let BannerImg =""
+    let Headline = "";
+    let BannerImg = ""
     if (route.params.role === "Client") {
         Headline = `Join ${clients} clients with over ${totaldeliverys} successful deliveries`;
         BannerImg = require('../../../assets/client.png');
-      } else { // else is driver
+    } else { // else is driver
         Headline = `Join ${drivers} drivers with over ${totaldeliverys} successful deliveries`;
         BannerImg = require('../../../assets/driver.png');
-      }
+    }
 
     return (
         <View style={styles.container}>

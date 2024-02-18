@@ -23,15 +23,15 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('PackageStatus');
   }
 
-  const onMyPoints = () => {
-    // Add navigation logic for My Points
-    navigation.navigate('LoginDriver');
-  }
+  // const onMyPoints = () => {
+  //   // Add navigation logic for My Points
+  //   navigation.navigate('LoginDriver');
+  // }
 
-  const onMyTips = () => {
-    // Add navigation logic for My Tips
-    navigation.navigate('LoginDriver');
-  }
+  // const onMyTips = () => {
+  //   // Add navigation logic for My Tips
+  //   navigation.navigate('LoginDriver');
+  // }
 
   const onReviewsReceived = () => {
     // Add navigation logic for Reviews Received

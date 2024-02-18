@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button , StyleSheet, Platform } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
 
-const EditDeliveryScreen = ({route}) => {
-  const {packageInfo} = route.params;
+const EditDeliveryScreen = ({ route }) => {
+  const { packageInfo } = route.params;
   console.log('Package Info in EditDeliveryScreen:', packageInfo);
 
   const [source, setSource] = useState(packageInfo.source);
@@ -27,7 +27,7 @@ const EditDeliveryScreen = ({route}) => {
 
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries/`);
         const newDeliveryRef = deliveriesRef.doc(packageid);
-        
+
         await newDeliveryRef.update({
           source,
           destination,
@@ -43,7 +43,7 @@ const EditDeliveryScreen = ({route}) => {
 
         // Trigger fetch after going back
         if (route.params && route.params.onFetchDeliveries) {
-            route.params.onFetchDeliveries();
+          route.params.onFetchDeliveries();
         }
 
       } else {
@@ -90,36 +90,36 @@ const EditDeliveryScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 16,
-    },
-    input: {
-      height: 40,
-      borderColor: 'gray',
-      borderWidth: 1,
-      marginBottom: 12,
-      padding: 8,
-      width: '100%',
-    },
-    postButton: {
-        ...Platform.select({
-          ios: {
-            padding: 15,
-            borderRadius: 8,
-            backgroundColor: 'black',
-          },
-          android: {
-            backgroundColor: '#3498db',
-            padding: 15,
-            borderRadius: 8,
-            elevation: 3,
-            backgroundColor: 'black',
-          },
-        }),
-    },
-  });
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    padding: 8,
+    width: '100%',
+  },
+  postButton: {
+    ...Platform.select({
+      ios: {
+        padding: 15,
+        borderRadius: 8,
+        backgroundColor: 'black',
+      },
+      android: {
+        backgroundColor: '#3498db',
+        padding: 15,
+        borderRadius: 8,
+        elevation: 3,
+        backgroundColor: 'black',
+      },
+    }),
+  },
+});
 
 export default EditDeliveryScreen;

@@ -15,7 +15,7 @@ const CurrentDrivesButton = ({ onDelivered }) => {
   );
 };
 
-const StartDriverButton = ({onStart}) => {
+const StartDriverButton = ({ onStart }) => {
   return (
     <View style={styles.editDeleteButtons}>
       <TouchableOpacity onPress={onStart} style={styles.startbtn}>
@@ -25,21 +25,21 @@ const StartDriverButton = ({onStart}) => {
   );
 }
 
-const DriveBox = ({packageInfo,  showEndDriveButton, showStartDriveButton ,onDelivered, onStart }) => {
+const DriveBox = ({ packageInfo, showEndDriveButton, showStartDriveButton, onDelivered, onStart }) => {
   const uniquePackageIds = packageInfo.packagesIds
-  ? packageInfo.packagesIds.reduce((uniqueIds, item) => [...new Set([...uniqueIds, ...item.packageId])], [])
-  : [];
+    ? packageInfo.packagesIds.reduce((uniqueIds, item) => [...new Set([...uniqueIds, ...item.packageId])], [])
+    : [];
 
-const uniqueClientIds = packageInfo.packagesIds
-  ? packageInfo.packagesIds.reduce((uniqueIds, item) => [...new Set([...uniqueIds, item.clientId])], [])
-  : [];
+  const uniqueClientIds = packageInfo.packagesIds
+    ? packageInfo.packagesIds.reduce((uniqueIds, item) => [...new Set([...uniqueIds, item.clientId])], [])
+    : [];
 
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
       <View style={styles.packageInfoContainer}>
         <View>
-          <Text style={{fontSize: 18, fontWeight:'bold', marginBottom: 2}}>{packageInfo.source} - {packageInfo.destination} </Text> 
-          <Text style={{fontSize: 12, fontWeight:'bold'}}><Icon name="cubes" size={16} color="#788eec" /> Packages: {uniquePackageIds.length }    <Icon name="users" size={16} color="#788eec" /> Clients: {uniqueClientIds.length}</Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 2 }}>{packageInfo.source} - {packageInfo.destination} </Text>
+          <Text style={{ fontSize: 12, fontWeight: 'bold' }}><Icon name="cubes" size={16} color="#788eec" /> Packages: {uniquePackageIds.length}    <Icon name="users" size={16} color="#788eec" /> Clients: {uniqueClientIds.length}</Text>
         </View>
         {showEndDriveButton && <CurrentDrivesButton onDelivered={onDelivered} />}
         {showStartDriveButton && <StartDriverButton onStart={onStart} />}
@@ -65,26 +65,26 @@ const PackageSection = ({ title, packages, onFetchDrives }) => {
   const handleStartDrive = async () => {
     try {
       const currentUser = firebase.auth().currentUser;
-  
+
       if (currentUser) {
         const userId = currentUser.uid;
         const drivesRef = firebase.firestore().collection(`users/${userId}/drives`);
-  
+
         // Assuming selectedPackage.driveid is the attribute that uniquely identifies the drive
         const drivesDocRef = drivesRef.doc(selectedPackage.driveid);
-  
+
         // Update the PackageStatus field to "delivered"
         await drivesDocRef.update({
           driveStatus: "current drive",
         });
-  
+
         console.log(`drive marked as ended: ${selectedPackage.driveid}`);
         //console.log(`drive marked as ended: ${selectedPackage.packagesIds}`);
         setModalVisible(false);
         // trigers a refetch od data to update flatlist
-        
+
         onFetchDrives();
-        
+
       } else {
         console.error('No current user found');
       }
@@ -96,27 +96,27 @@ const PackageSection = ({ title, packages, onFetchDrives }) => {
   const handleEndDrive = async () => {
     try {
       const currentUser = firebase.auth().currentUser;
-  
+
       if (currentUser) {
         const userId = currentUser.uid;
         const drivesRef = firebase.firestore().collection(`users/${userId}/drives`);
-  
+
         // Assuming selectedPackage.driveid is the attribute that uniquely identifies the drive
         const drivesDocRef = drivesRef.doc(selectedPackage.driveid);
-  
+
         // Update the PackageStatus field to "delivered"
         await drivesDocRef.update({
           driveStatus: "past drive",
         });
-  
+
         console.log(`drive marked as ended: ${selectedPackage.driveid}`);
         console.log(`drive marked as ended: ${selectedPackage.driveid.packagesIds}`);
         //console.log(`drive marked as ended: ${selectedPackage.packagesIds}`);
         setModalVisible(false);
         // trigers a refetch od data to update flatlist
-        
+
         onFetchDrives();
-        
+
       } else {
         console.error('No current user found');
       }
@@ -181,9 +181,9 @@ const MyDriveScreen = () => {
   const [NewDrives, setNewDrives] = useState([]);
   const [CurrentDrives, setCurrentDrives] = useState([]);
   const [PastDrives, setPastDrives] = useState([]);
-  
 
-  
+
+
   const fetchDrives = async () => {
     try {
       const currentUser = firebase.auth().currentUser;
@@ -204,7 +204,7 @@ const MyDriveScreen = () => {
         setNewDrives(newDrives);
         setCurrentDrives(currentDrives);
         setPastDrives(pastDrives);
-        
+
 
       } else {
         console.error('No current user found');
@@ -218,13 +218,13 @@ const MyDriveScreen = () => {
     // Fetch deliveries when the component mounts
     fetchDrives();
   }, []);
-  
+
 
   return (
     <View style={styles.container}>
-      <PackageSection title="New Drives" packages={NewDrives} onFetchDrives={fetchDrives}/>
-      <PackageSection title="Current Drives" packages={CurrentDrives} onFetchDrives={fetchDrives}/>
-      <PackageSection title="Past Drives" packages={PastDrives} onFetchDrives={fetchDrives}/>
+      <PackageSection title="New Drives" packages={NewDrives} onFetchDrives={fetchDrives} />
+      <PackageSection title="Current Drives" packages={CurrentDrives} onFetchDrives={fetchDrives} />
+      <PackageSection title="Past Drives" packages={PastDrives} onFetchDrives={fetchDrives} />
     </View>
   );
 };
