@@ -42,14 +42,15 @@ const styles = StyleSheet.create({
     alignItems: 'center', // Remove if causing alignment issues
     justifyContent: 'space-between', // Align items along the row
     marginBottom: 12,
-    width: '100%',
-    position: 'relative', // Set input row position to relative
+    paddingHorizontal: 16
+    // width: '100%',
+    // position: 'relative', // Set input row position to relative
   },
   pickerContainer: {
-    position: 'absolute',
+    // position: 'absolute',
     top: 0,
     right: 0,
-    width: '40%',
+    // width: '40%',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'gray',
     borderWidth: 1,
+    // flex:1
   },
 });
 

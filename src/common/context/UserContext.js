@@ -7,6 +7,9 @@ export const useUserContext = () => useContext(UserContext);
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [driversCount, setDriversCount] = useState(0);
+    const [clientsCount, setClientsCount] = useState(0);
+    const [totalDeliveries, setTotalDeliveries] = useState(0);
 
     useEffect(() => {
     }, []);
@@ -15,7 +18,13 @@ export const UserProvider = ({ children }) => {
         user,
         setUser,
         loading,
-        setLoading
+        setLoading,
+        driversCount,
+        setDriversCount,
+        clientsCount,
+        setClientsCount,
+        totalDeliveries,
+        setTotalDeliveries
     };
 
     return (

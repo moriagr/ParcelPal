@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import firebase from './firebase/config'
-import { ActivityIndicator, View } from 'react-native'
+import { ActivityIndicator, StatusBar, View } from 'react-native'
 import { useUserContext } from './common/context/UserContext';
 
 import {
@@ -72,7 +72,18 @@ export default function RouterContainer() {
     }
 
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#f2f2f2',
+                    shadowColor: "gray",
+                    elevation: 20,
+                    // shadowColor: '#000',
+                    // shadowOffset: { width: 0, height: 2 },
+                    // shadowOpacity: 0.25,
+                    // shadowRadius: 3.84
+                },
+            }}>
             {user ?
                 user.role == "Driver" ? (
                     <>
@@ -94,7 +105,6 @@ export default function RouterContainer() {
                         <Stack.Screen name="HomeClient" component={HomeScreenClient} />
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
-                        {/* <Stack.Screen name="MyPoints" component={MyPointsScreen} /> */}
                         <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
                         <Stack.Screen name="NewDeliveryScreen" component={NewDeliveryScreen} />
                         <Stack.Screen name="EditDeliveryScreen" component={EditDeliveryScreen} />

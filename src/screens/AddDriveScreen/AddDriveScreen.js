@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button} from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import styles from './styles';
-
+import inputStyles from '../inputStyles';
 // Defines a functional component named AddDriveScreen.
 const AddDriveScreen = () => {
 
-  //using states for empty data at the beggining
+  //using states for empty data at the beginning
   // states will be updated with values the user inputs in to the text fields
 
   // Initializes state variables using the useState hook for managing user input data 
   // (source, packagesIds, destination, date, driveStatus).
   const [source, setSource] = useState('');
-  const [packagesIds, setpackagesIds] = useState([]);
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState(new Date());
+  const [error, setError] = useState();
+  const [DateChosen, setDateChosen] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  //new drive status will be "new drive" by default
-  // this will help us later with clustring drives based on thier status
-  const [driveStatus, setDriveStatus] = useState('new drive');
 
   // using navigation for go back
   const navigation = useNavigation();
@@ -36,21 +33,27 @@ const AddDriveScreen = () => {
 
   const handleConfirm = (selectedDate) => {
     setDate(selectedDate);
+    setDateChosen(true)
     hideDatePicker();
   };
 
-  // async Funcion for saving the drive to the dataBase
+  // async Function for saving the drive to the dataBase
   const saveDrive2DB = async () => {
-    
-    try {
-      //define currentuse as the user now connected through firebase API function auth()
-      const currentUser = firebase.auth().currentUser;
 
+    try {
+      setError("")
+      //define currentUser as the user now connected through firebase API function auth()
+      const currentUser = firebase.auth().currentUser;
+      if (!source || !destination || !date || !DateChosen) {
+        setError("All fields must be complete")
+        return
+      }
       if (currentUser) {
         //define user id
         const userId = currentUser.uid;
 
-        //define refrence document for the current userId in colection drives
+
+        //define reference document for the current userId in collection drives
         const drivesRef = firebase.firestore().collection(`users/${userId}/drives`);
 
         // Creates a new document reference for the drive
@@ -58,13 +61,15 @@ const AddDriveScreen = () => {
 
         const dateTimestamp = firebase.firestore.Timestamp.fromDate(date);
 
-        // seting the data from states
+        // setting the data from states
         await newDriveRef.set({
           source,
           destination,
           date: dateTimestamp,
-          driveStatus,
-          packagesIds,
+          // New drive status will be "new drive" by default
+          // This will help us later with clustering drives based on their status
+          driveStatus: 'new drive',
+          packagesIds: [],
         });
 
         // adding driveid to the data
@@ -89,29 +94,37 @@ const AddDriveScreen = () => {
   return (
     <View style={styles.container}>
       <TextInput
-        style={styles.input}
+        style={inputStyles.input}
         placeholder="Source"
         value={source}
         onChangeText={setSource}
       />
       <TextInput
-        style={styles.input}
+        style={inputStyles.input}
         placeholder="Destination"
         value={destination}
         onChangeText={setDestination}
       />
-      <Button title="Select Date" onPress={showDatePicker} />
+      <TouchableOpacity
+        style={[inputStyles.input, { backgroundColor: "white", flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}
+        onPress={showDatePicker}>
+        <Text style={styles.buttonTitle}>{DateChosen ? date.toISOString() : "Select Date"}</Text>
+        <Image source={require("../../../assets/calendar.png")} style={{ width: 30, height: 30 }} />
+      </TouchableOpacity>
+
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="datetime"
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-      <Button
-        title="Post"
-        onPress={saveDrive2DB}
-        style={styles.postButton}
-      />
+      <Text style={{ color: "red" }}>{error}</Text>
+      <TouchableOpacity
+        style={inputStyles.postButton}
+        onPress={saveDrive2DB}>
+        <Text style={styles.buttonTitle}>Post</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };

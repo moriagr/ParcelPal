@@ -11,14 +11,13 @@ import { registrationValidationScheme } from '../../components/Schemes/LoginRegi
 export default function RegistrationScreen({ navigation, route }) {
     const { setUser } = useUserContext();
 
-    
+
     const onFooterLinkPress = () => {
-        navigation.navigate('Login')
+        navigation.navigate('Login', { role: route.params.role})
     }
 
     const onRegisterPress = (values) => {
-        console.log('✌️values --->', values);
-        
+
         firebase
             .auth()
             .createUserWithEmailAndPassword(values.email, values.password)
@@ -37,17 +36,17 @@ export default function RegistrationScreen({ navigation, route }) {
                 if (route.params.role === 'Driver') {
                     // If the role is Driver, add avgReview field
                     data = {
-                      ...data,
-                      reviews: [],
+                        ...data,
+                        reviews: [],
                     };
-                  } else {
+                } else {
                     // If the role is not Driver, add packagesSent field
                     data = {
-                      ...data,
-                      packagesSent: 0,
-                      reviews: [],
+                        ...data,
+                        packagesSent: 0,
+                        reviews: [],
                     };
-                  }
+                }
                 const usersRef = firebase.firestore().collection('users')
 
                 usersRef
@@ -140,7 +139,7 @@ export default function RegistrationScreen({ navigation, route }) {
                                 style={isValid ? styles.button : styles.disableButton}
                                 disabled={!isValid}
                                 onPress={handleSubmit}>
-                                <Text style={styles.buttonTitle}>Create account</Text>
+                                <Text style={styles.buttonTitle}>{route.params.role} Create account</Text>
                             </TouchableOpacity>
                         </>
 

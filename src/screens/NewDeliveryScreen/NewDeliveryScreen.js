@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Button, Platform} from 'react-native';
+import { View, TextInput, Text, Button, Platform, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Picker } from '@react-native-picker/picker';
 import styles from './styles';
+import inputStyles from '../inputStyles';
+
 
 const NewDeliveryScreen = () => {
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState(new Date());
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); 
+  const [DateChosen, setDateChosen] = useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [size, setSize] = useState('');
+  const [error, setError] = useState();
   const [unit, setUnit] = useState('kg');
-  const [packageStatus, setPackageStatus] = useState('waiting');
-  const [Driver, setDriver] = useState('');
   const navigation = useNavigation();
 
   const showDatePicker = () => {
@@ -27,11 +29,13 @@ const NewDeliveryScreen = () => {
 
   const handleConfirm = (selectedDate) => {
     setDate(selectedDate);
+    setDateChosen(true)
     hideDatePicker();
   };
 
   const saveDelivery2DB = async () => {
     try {
+      setError("")
       const currentUser = firebase.auth().currentUser;
 
       if (currentUser) {
@@ -41,15 +45,18 @@ const NewDeliveryScreen = () => {
         const newDeliveryRef = deliveriesRef.doc();
 
         const dateTimestamp = firebase.firestore.Timestamp.fromDate(date);
-        
+        if (!source || !destination || !date || !DateChosen || !size || !unit) {
+          setError("All fields must be complete")
+          return
+        }
         await newDeliveryRef.set({
           source,
           destination,
           date: dateTimestamp,
           size,
           unit,
-          packageStatus,
-          Driver,
+          packageStatus: "waiting",
+          Driver: "",
         });
 
         const packageid = newDeliveryRef.id;
@@ -71,29 +78,34 @@ const NewDeliveryScreen = () => {
 
   return (
     <View style={styles.container}>
-    <TextInput
-      style={styles.input}
-      placeholder="Source"
-      value={source}
-      onChangeText={setSource}
-    />
-    <TextInput
-      style={styles.input}
-      placeholder="Destination"
-      value={destination}
-      onChangeText={setDestination}
-    />
-    <Button title="Select Date" onPress={showDatePicker} />
-    <DateTimePickerModal
-      style={styles.picker}
-      isVisible={isDatePickerVisible}
-      mode="datetime"
-      onConfirm={handleConfirm}
-      onCancel={hideDatePicker}
-    />
-    <View style={styles.inputRow}>
+      <TextInput
+        style={inputStyles.input}
+        placeholder="Source"
+        value={source}
+        onChangeText={setSource}
+      />
+      <TextInput
+        style={inputStyles.input}
+        placeholder="Destination"
+        value={destination}
+        onChangeText={setDestination}
+      />
+      <TouchableOpacity
+        style={[inputStyles.input, { backgroundColor: "white", flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}
+        onPress={showDatePicker}>
+        <Text style={styles.buttonTitle}>{DateChosen ? date.toISOString() : "Select Date"}</Text>
+        <Image source={require("../../../assets/calendar.png")} style={{ width: 30, height: 30 }} />
+      </TouchableOpacity>
+      <DateTimePickerModal
+        style={styles.picker}
+        isVisible={isDatePickerVisible}
+        mode="datetime"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
+      <View style={styles.inputRow}>
         <TextInput
-          style={styles.input}
+          style={[inputStyles.input, { width: "75%" }]}
           placeholder="Package size"
           value={size}
           onChangeText={setSize}
@@ -106,14 +118,15 @@ const NewDeliveryScreen = () => {
 
         >
           <Picker.Item label="kg" value="kg" mode="dropdown" />
-          <Picker.Item label="lbs" value="lbs" mode="dropdown"/>
+          <Picker.Item label="lbs" value="lbs" mode="dropdown" />
         </Picker>
       </View>
-  <Button
-    title="Post"
-    onPress={saveDelivery2DB}
-    style={Platform.OS === 'ios' ? styles.iosPostButton : styles.postButton}
-  />
+      <Text style={{ color: "red" }}>{error}</Text>
+      <TouchableOpacity
+        style={inputStyles.postButton}
+        onPress={saveDelivery2DB}>
+        <Text style={styles.buttonTitle}>Post</Text>
+      </TouchableOpacity>
     </View>
   );
 };

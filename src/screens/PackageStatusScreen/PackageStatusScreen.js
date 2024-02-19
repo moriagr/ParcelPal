@@ -67,7 +67,7 @@ const PackageBox = ({ packageInfo, showEditDeleteButtons, showDeliveredButton, s
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
       <View style={styles.packageInfoContainer}>
-        <Text>{packageInfo.source} - {packageInfo.destination} : {packageInfo.size} </Text>
+        <Text>{packageInfo.source} - {packageInfo.destination} : {packageInfo.size}{packageInfo.unit || "kg"} </Text>
         {showEditDeleteButtons && <EditDeleteButtons onEdit={onEdit} onDelete={onDelete} />}
         {showDeliveredButton && <PackageDeliveredButton onDelivered={onDelivered} />}
         {showReviewButton && <PackageReviewButton onReview={(rating) => onReview(rating)} />}
@@ -101,18 +101,18 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
   const handleDelete = async () => {
     try {
       const currentUser = firebase.auth().currentUser;
-  
+
       if (currentUser) {
         const userId = currentUser.uid;
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
-  
+
         // Assuming selectedPackage.packageid is the attribute that uniquely identifies the package
         const deliveryDocRef = deliveriesRef.doc(selectedPackage.packageid);
         console.log(`Deleting package with ID: , ${selectedPackage.packageid}`);
-        
+
         // Delete the document from the 'deliveries' collection
         await deliveryDocRef.delete();
-  
+
         console.log(`Package deleted: ${selectedPackage.packageid}`);
         setModalVisible(false);
         // Triggers a refetch of data to update flatlist
@@ -128,19 +128,19 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
   const handleMarkAsDelivered = async () => {
     try {
       const currentUser = firebase.auth().currentUser;
-  
+
       if (currentUser) {
         const userId = currentUser.uid;
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
-  
+
         // Assuming selectedPackage.packageId is the attribute that uniquely identifies the package
         const deliveryDocRef = deliveriesRef.doc(selectedPackage.packageid);
-  
+
         // Update the PackageStatus field to "delivered"
         await deliveryDocRef.update({
           packageStatus: "delivered",
         });
-  
+
         console.log(`Package marked as delivered: ${selectedPackage.packageid}`);
         setModalVisible(false);
         // trigers a refetch od data to update flatlist
@@ -152,24 +152,24 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
       console.error('Error marking package as delivered:', error);
     }
   };
-  
+
 
   const handleReview = async (rating) => {
     // Handle review action
     try {
       const currentUser = firebase.auth().currentUser;
-      
+
       if (currentUser) {
         const userId = currentUser.uid;
-        
+
         const deliveriesRef = firebase.firestore().collection(`users/${userId}/deliveries`);
         const userDocRef = firebase.firestore().collection('users').doc(userId);
-        const userDocSnapshot = await userDocRef.get(); 
+        const userDocSnapshot = await userDocRef.get();
         const userData = userDocSnapshot.data();
-      
+
         // Assuming fullName is a field in your user document
         const clientName = userData.fullName;
-      
+
         console.log('Client Name:', clientName);
 
         // Assuming selectedPackage.packageId is the attribute that uniquely identifies the package
@@ -178,7 +178,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
         await deliveryDocRef.update({
           packageStatus: "reviewed",
         });
-  
+
         // Fetch the driver's document from the users collection
         const driverDocSnapshot = await firebase.firestore().collection('users').doc(selectedPackage.Driver).get();
         const driverDocRef = driverDocSnapshot.ref;
@@ -186,12 +186,12 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
 
         const DriverData = driverDocSnapshot.data();
         const driverName = DriverData.fullName;
-      
+
         console.log('Driver Name:', driverName);
 
-        
+
         // Update the driver's review array to add the review 
-        console.log(`client name and rating: ` ,clientName , " ", rating);
+        console.log(`client name and rating: `, clientName, " ", rating);
         await driverDocRef.update({
           reviews: firebase.firestore.FieldValue.arrayUnion({
             customerName: clientName,
@@ -199,14 +199,14 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
           }),
         });
 
-        console.log(`driver name and rating: ` ,driverName , " ", rating);
+        console.log(`driver name and rating: `, driverName, " ", rating);
         await userDocReff.update({
           reviews: firebase.firestore.FieldValue.arrayUnion({
             DriverName: driverName,
             rating: rating,
           }),
         });
-  
+
         console.log(`Package reviewed: ${selectedPackage.packageid}`);
         setModalVisible(false);
         // trigers a refetch of data to update flatlist
@@ -226,7 +226,7 @@ const PackageSection = ({ title, packages, onFetchDeliveries }) => {
 
   return (
     <View style={styles.sectionContainer}>
-      <TouchableOpacity onPress={toggleExpansion} style={styles.sectionContent}>
+      <TouchableOpacity onPress={toggleExpansion} style={[styles.sectionContent, isExpanded ? { height: 45 } : {}]}>
         <Text style={styles.sectionTitle}>{title}</Text>
         <Icon name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color="black" />
       </TouchableOpacity>
@@ -324,10 +324,10 @@ const PackageStatusScreen = () => {
 
   return (
     <View style={styles.container}>
-      <PackageSection title="Packages waiting for driver" packages={packagesWaiting} onFetchDeliveries={fetchDeliveries}/>
+      <PackageSection title="Packages waiting for driver" packages={packagesWaiting} onFetchDeliveries={fetchDeliveries} />
       {/* <PackageSection title="Packages picked by driver" packages={packagesPicked} onFetchDeliveries={fetchDeliveries}/> */}
-      <PackageSection title="Packages in transit" packages={packagesInTransit} onFetchDeliveries={fetchDeliveries}/>
-      <PackageSection title="Packages delivered" packages={packagesDelivered} onFetchDeliveries={fetchDeliveries}/>
+      <PackageSection title="Packages in transit" packages={packagesInTransit} onFetchDeliveries={fetchDeliveries} />
+      <PackageSection title="Packages delivered" packages={packagesDelivered} onFetchDeliveries={fetchDeliveries} />
     </View>
   );
 };

@@ -2,11 +2,11 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const windowHeight = Dimensions.get('window').height;
 
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingTop: 20,
+    paddingTop: 0,
   },
   sectionContainer: {
     flex: 1,
@@ -30,13 +30,21 @@ const styles = StyleSheet.create({
   chatBox: {
     borderWidth: 1,
     borderColor: 'lightblue',
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
     marginTop: 10,
     borderRadius: 5,
   },
+  sectionContainer: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: 'lightgray',
+  },
   chatInfoContainer: {
     flexDirection: 'row',
-    alignItems:'center',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   editDeleteButtons: {
@@ -67,7 +75,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
     padding: 0,
   },
-  reviewbtn:{
+  reviewbtn: {
     backgroundColor: '#788eec',
     height: 25,
     borderRadius: 5,
@@ -85,12 +93,12 @@ const styles = StyleSheet.create({
     // borderColor: '#788eec',
     borderWidth: 2
   },
-  reviewText:{
+  reviewText: {
     color: 'white',
     fontWeight: 'bold',
     alignItems: "center",
   },
-  markbtn:{
+  markbtn: {
     backgroundColor: '#788eec',
     height: 25,
     borderRadius: 5,
@@ -101,5 +109,3 @@ const styles = StyleSheet.create({
     paddingTop: 2
   }
 });
-
-export default styles;

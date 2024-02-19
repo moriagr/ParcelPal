@@ -3,18 +3,24 @@ import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import firebase from './../../firebase/config';
+import { useUserContext } from '../../common/context/UserContext';
 
 export default function LandingScreen({ navigation }) {
-  const [driversCount, setDriversCount] = useState(0);
-  const [clientsCount, setClientsCount] = useState(0);
-  const [totalDeliveries, setTotalDeliveries] = useState(0);
-
+  // const [driversCount, setDriversCount] = useState(0);
+  // const [clientsCount, setClientsCount] = useState(0);
+  // const [totalDeliveries, setTotalDeliveries] = useState(0);
+  const { driversCount,
+    setDriversCount,
+    clientsCount,
+    setClientsCount,
+    totalDeliveries,
+    setTotalDeliveries } = useUserContext();
   const onDriverLoginPress = () => {
-    navigation.navigate('Login', { role: 'Driver', driversCount: driversCount, deliveriesCount: totalDeliveries, clientsCount: clientsCount });
+    navigation.navigate('Login', { role: 'Driver' });
   };
 
   const onClientLoginPress = () => {
-    navigation.navigate('Login', { role: 'Client', driversCount: driversCount, deliveriesCount: totalDeliveries, clientsCount: clientsCount });
+    navigation.navigate('Login', { role: 'Client' });
   };
 
   useEffect(() => {

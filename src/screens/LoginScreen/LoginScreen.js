@@ -10,7 +10,10 @@ import { Formik } from 'formik';
 import { loginValidationScheme } from '../../components/Schemes/LoginRegistrationSchemes';
 
 export default function LoginScreen({ navigation, route }) {
-    const { setUser } = useUserContext();
+    const { setUser, driversCount,
+        clientsCount,
+        totalDeliveries,
+    } = useUserContext();
     const [loading, setLoading] = useState(false);
 
     const onFooterLinkPress = () => {
@@ -85,17 +88,13 @@ export default function LoginScreen({ navigation, route }) {
 
     }
 
-    let drivers = route.params.driversCount;
-    let clients = route.params.clientsCount;
-    let totaldeliverys = route.params.deliveriesCount;
-
     let Headline = "";
     let BannerImg = ""
     if (route.params.role === "Client") {
-        Headline = `Join ${clients} clients with over ${totaldeliverys} successful deliveries`;
+        Headline = `Join ${clientsCount} clients with over ${totalDeliveries} successful deliveries`;
         BannerImg = require('../../../assets/client.png');
     } else { // else is driver
-        Headline = `Join ${drivers} drivers with over ${totaldeliverys} successful deliveries`;
+        Headline = `Join ${driversCount} drivers with over ${totalDeliveries} successful deliveries`;
         BannerImg = require('../../../assets/driver.png');
     }
 
@@ -148,7 +147,7 @@ export default function LoginScreen({ navigation, route }) {
                                 style={isValid ? styles.button : styles.disableButton}
                                 disabled={!isValid}
                                 onPress={handleSubmit}>
-                                <Text style={styles.buttonTitle}>Log in {loading ? ". . ." : ""}</Text>
+                                <Text style={styles.buttonTitle}>{route.params.role} Log in {loading ? ". . ." : ""}</Text>
                             </TouchableOpacity>
                         </>)}
                 </Formik>

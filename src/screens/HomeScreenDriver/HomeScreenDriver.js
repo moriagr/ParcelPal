@@ -112,14 +112,6 @@ const HomeScreenDriver = ({ navigation }) => {
             <Text style={styles.menuButtonText}>My Choosen Deliveries</Text>
             <Icon name="chevron-right" size={20} color="#000" />
           </TouchableOpacity>
-          {/*<TouchableOpacity style={styles.menuButton} onPress={onMyPoints}>
-            <Text style={styles.menuButtonText}>My Points</Text>
-            <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.menuButton} onPress={onMyTips}>
-            <Text style={styles.menuButtonText}>My Tips</Text>
-            <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>*/}
           <TouchableOpacity style={styles.menuButton} onPress={onReviewsReceived}>
             <Text style={styles.menuButtonText}>Reviews Received</Text>
             <Icon name="chevron-right" size={20} color="#000" />

@@ -4,15 +4,7 @@ import React, {
     useCallback
 } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
-import {
-    collection,
-    addDoc,
-    orderBy,
-    query,
-    onSnapshot
-} from 'firebase/firestore';
-import firebase, { auth, database } from '../../firebase/config';
-// import firebase from './../../firebase/config'
+import firebase from '../../firebase/config';
 import { useUserContext } from '../../common/context/UserContext';
 
 export default function Chat({ route }) {
@@ -34,13 +26,10 @@ export default function Chat({ route }) {
                 }
 
                 setCurrentUserId(chatId);
-                console.log('✌️chatId --->', chatId);
                 const collectionRef = firebase.firestore().collection('chats').doc(chatId);
 
                 // Check if the document exists
                 const docSnapshot1 = await collectionRef.get();
-
-                console.log('✌️docSnapshot1.exists --->', docSnapshot1.exists);
                 if (docSnapshot1.exists) {
                     console.log('Document exists!');
                     setChatNotExist(false);
@@ -67,25 +56,6 @@ export default function Chat({ route }) {
                             })
                         );
                     }
-                    // if (messageRef) {
-
-                    // const unsubscribe = onSnapshot(messageRef.orderBy('createdAt', 'desc'), querySnapshot => {
-                    //     if (querySnapshot && querySnapshot.docs) {
-                    //         setMessages(
-                    //             querySnapshot.docs.map(doc => {
-                    //                 console.log('✌️doc --->', doc.data());
-                    //                 return {
-                    //                     _id: doc.data()._id,
-                    //                     createdAt: doc.data().createdAt.toDate(),
-                    //                     text: doc.data().text,
-                    //                     user: doc.data().user
-                    //                 }
-                    //             })
-                    //         );
-                    //     }
-                    // });
-                    // return unsubscribe;
-                    // }
                 } else {
                     console.log('Document does not exist.');
                     setChatNotExist(true);

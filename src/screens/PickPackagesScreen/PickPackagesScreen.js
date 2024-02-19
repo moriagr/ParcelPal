@@ -197,8 +197,8 @@ const PickPackagesScreen = ({ navigation }) => {
                 {item.source} - {item.destination} : {item.packageStatus}
               </Text>
               <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
-                <Icon name="cube" size={16} color="#788eec" /> Package Size: {item.size}{' '}
-                <Icon name="dollar" size={16} color="#788eec" /> Fee: {item.fee}
+                <Icon name="cube" size={16} color="#788eec" /> Package Size: {item.size}{item.unit || "kg"}{' '}
+                {/* <Icon name="dollar" size={16} color="#788eec" /> Fee: {item.fee} */}
               </Text>
             </TouchableOpacity>
           )}

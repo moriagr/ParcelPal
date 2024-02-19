@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import CurrentChat from "../CurrentChat/CurrentChat";
 import { useUserContext } from "../../common/context/UserContext";
 import firebase from './../../firebase/config';
-import { ActivityIndicator, Image, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import styles from './styles'
 
 
@@ -106,27 +106,53 @@ const ChatsScreen = ({ navigation }) => {
         navigation.navigate("CurrentChat", { user: data })
     }
 
-    return (chatsArray ?
-        <View>
+    return (
+        <View style={styles.container}>
 
-            {chatsArray.length > 0 ? chatsArray.map((data, index) => {
-                return <TouchableOpacity key={index} style={styles.chatBox} onPress={() => goToChat(data)}>
-                    <View style={styles.chatInfoContainer}>
-                        <Image
-                            source={data?.profilePicture}
-                            style={styles.profileImage}
-                        />
-                        <Text>{data.fullName}</Text>
-                        <Text>{data.phone}</Text>
-                        <Text>{data.email}</Text>
+            {chatsArray ?
+                <View style={styles.sectionContainer}>
+                    {chatsArray.length > 0 ?
+                        <FlatList
+                            data={chatsArray}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity style={styles.chatBox} onPress={() => goToChat(item)}>
+                                    <View style={styles.chatInfoContainer}>
+                                        <Image
+                                            source={item?.profilePicture}
+                                            style={styles.profileImage}
+                                        />
+                                        <Text>{item.fullName}</Text>
+                                        <Text>{item.phone}</Text>
+                                        <Text>{item.email}</Text>
 
-                    </View>
-                </TouchableOpacity>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                        /> :
+                        <Text>No chats yet</Text>}
+                    {/* {chatsArray.length > 0 ? 
+            chatsArray.map((data, index) => {
+                return (
+                    <TouchableOpacity key={index} style={styles.chatBox} onPress={() => goToChat(data)}>
+                        <View style={styles.chatInfoContainer}>
+                            <Image
+                                source={data?.profilePicture}
+                                style={styles.profileImage}
+                            />
+                            <Text>{data.fullName}</Text>
+                            <Text>{data.phone}</Text>
+                            <Text>{data.email}</Text>
+
+                        </View>
+                    </TouchableOpacity>)
             }) :
-                <Text>No chats yet</Text>}
-        </View> :
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <ActivityIndicator size="large" color="#0000ff" />
+                <Text>No chats yet</Text>} */}
+                </View> :
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            }
         </View>
     )
 }

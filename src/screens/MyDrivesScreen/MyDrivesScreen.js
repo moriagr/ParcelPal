@@ -109,9 +109,6 @@ const PackageSection = ({ title, packages, onFetchDrives }) => {
           driveStatus: "past drive",
         });
 
-        console.log(`drive marked as ended: ${selectedPackage.driveid}`);
-        console.log(`drive marked as ended: ${selectedPackage.driveid.packagesIds}`);
-        //console.log(`drive marked as ended: ${selectedPackage.packagesIds}`);
         setModalVisible(false);
         // trigers a refetch od data to update flatlist
 
@@ -130,7 +127,7 @@ const PackageSection = ({ title, packages, onFetchDrives }) => {
 
   return (
     <View style={styles.sectionContainer}>
-      <TouchableOpacity onPress={toggleExpansion} style={styles.sectionContent}>
+      <TouchableOpacity onPress={toggleExpansion} style={[styles.sectionContent, isExpanded ? { height: 45 } : {}]}>
         <Text style={styles.sectionTitle}>{title}</Text>
         <Icon name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color="black" />
       </TouchableOpacity>

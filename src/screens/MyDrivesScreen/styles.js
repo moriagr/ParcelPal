@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   sectionContainer: {
-    flex: 1,
+    maxHeight: "40%",
     borderBottomWidth: 1,
     borderBottomColor: 'lightgray',
   },
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    height: 45, // Set a fixed height for the header within each section
+    height: 50, // Set a fixed height for the header within each section
     paddingHorizontal: 16,
   },
   arrowIcon: {
@@ -50,12 +50,12 @@ const styles = StyleSheet.create({
     marginTop: 2, // Centered position for the modal
     padding: 20,
   },
-  reviewText:{
+  reviewText: {
     color: 'white',
     fontWeight: 'bold',
     alignItems: "center",
   },
-  markbtn:{
+  markbtn: {
     backgroundColor: '#ff7700',
     height: 50,
     borderRadius: 5,
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     paddingTop: 2
   },
-  startbtn:{
+  startbtn: {
     backgroundColor: 'green',
     height: 50,
     borderRadius: 5,
