@@ -21,7 +21,7 @@ const EditDeliveryScreen = ({ route }) => {
   const [packageStatus, setPackageStatus] = useState(packageInfo.packageStatus);
   const [Driver, setDriver] = useState(packageInfo.Driver);
   const [packageid, setPackageId] = useState(packageInfo.packageid);
-  const [unit, setUnit] = useState(packageInfo.unit||"kg");
+  const [unit, setUnit] = useState(packageInfo.unit || "kg");
 
 
   const navigation = useNavigation();

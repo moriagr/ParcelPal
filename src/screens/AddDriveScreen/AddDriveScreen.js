@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import styles from './styles';
-import inputStyles from '../inputStyles';
+
+import { TextInput, Button } from "react-native-paper";
+import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
+import { View, Text } from "react-native";
+
 // Defines a functional component named AddDriveScreen.
 const AddDriveScreen = () => {
 
@@ -18,24 +21,34 @@ const AddDriveScreen = () => {
   const [date, setDate] = useState(new Date());
   const [error, setError] = useState();
   const [DateChosen, setDateChosen] = useState(false);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  // const [isFocus, setIsFocus] = useState(false);
+  // const [selectedTime, setSelectedTime] = useState(null);
 
   // using navigation for go back
   const navigation = useNavigation();
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
+  // const showTimePicker = () => {
+  //   setIsFocus(true)
+  //   setDatePickerVisibility(true);
+  // };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
+  // const hideTimePicker = () => {
+  //   setDatePickerVisibility(false);
+  //   setIsFocus(false);
+  // };
 
   const handleConfirm = (selectedDate) => {
     setDate(selectedDate);
     setDateChosen(true)
-    hideDatePicker();
   };
+
+  // const handleTimeConfirm = (selectedDate) => {
+  //   setSelectedTime(selectedDate);
+  //   setIsFocus(false)
+  //   // setDateChosen(true)
+  //   hideTimePicker();
+  // };
 
   // async Function for saving the drive to the dataBase
   const saveDrive2DB = async () => {
@@ -92,41 +105,89 @@ const AddDriveScreen = () => {
 
   //input form
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={inputStyles.input}
-        placeholder="Source"
-        value={source}
-        onChangeText={setSource}
-      />
-      <TextInput
-        style={inputStyles.input}
-        placeholder="Destination"
-        value={destination}
-        onChangeText={setDestination}
-      />
-      <TouchableOpacity
-        style={[inputStyles.input, { backgroundColor: "white", flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}
-        onPress={showDatePicker}>
-        <Text style={styles.buttonTitle}>{DateChosen ? date.toISOString() : "Select Date"}</Text>
-        <Image source={require("../../../assets/calendar.png")} style={{ width: 30, height: 30 }} />
-      </TouchableOpacity>
+    <View style={styles.frame2}>
+      <View style={styles.inputs}>
+        <TextInput
+          style={[styles.sourceInput, styles.inputFlexBox, { borderWidth: 0, borderColor: 'transparent', width: "100%" } // Set borderWidth to 0 and borderColor to transparent
+          ]}
+          placeholder="Source"
+          mode="flat"
+          placeholderTextColor="#a9a9a9"
+          
+          theme={{
+            fonts: {
+              regular: { fontWeight: "Medium" },
+            },
+            colors: { text: "#fff", background: "#fff", primary: "#788eec" },
+          }}
+          onChangeText={setSource}
+        />
+        <TextInput
+          style={[styles.destinationInput, styles.inputFlexBox, { width: "100%" }]}
+          placeholder="Destination"
+          mode="flat"
+          placeholderTextColor="#a9a9a9"
+          theme={{
+            fonts: {
+              regular: { fontWeight: "Medium" },
+            },
+            colors: { text: "#fff", background: "#fff", primary: "#788eec" },
+          }}
+          onChangeText={setDestination}
+        />
+        <RNKDatepicker
+          style={[styles.dateInput, { width: "100%" }]}
+          label={() => (
+            <Text style={styles.dateInputDatePickerLabel}>Date & Time</Text>
+          )}
+          caption={() => (
+            <Text style={styles.dateInputDatePickerCaption}>
+              Select date
+            </Text>
+          )}
+          placeholder={() => (
+            <Text style={styles.dateInputDatePickerPlaceHolder}>
+              Date
+            </Text>
+          )}
+          date={date}
+          onSelect={handleConfirm}
+          status="basic"
+          controlStyle={styles.dateInputDatePickerValue}
+        />
 
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="datetime"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
-      <Text style={{ color: "red" }}>{error}</Text>
-      <TouchableOpacity
-        style={inputStyles.postButton}
-        onPress={saveDrive2DB}>
-        <Text style={styles.buttonTitle}>Post</Text>
-      </TouchableOpacity>
+        {/* <View style={[styles.container, { width: "100%" }]}> */}
+        {/* <TouchableOpacity
+          style={[styles.sourceInput, styles.inputFlexBox, { width: "100%", borderWidth: 1, borderRadius: 5, borderColor: "rgba(0, 0, 0, 0.05)" }, isFocus ? { borderColor: "#788eec" } : {}]}
+          onPress={showTimePicker}>
+          <Text style={[styles.dateInputDatePickerPlaceHolder, { fontSize: 16, width: "100%" }]}
+          >{selectedTime ? selectedTime.toLocaleTimeString() : "Select Time"}</Text>
+        </TouchableOpacity> */}
 
+        {/* <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="time"
+          Display="clock"
+          onConfirm={handleTimeConfirm}
+          onCancel={hideTimePicker}
+        /> */}
+        <Text style={{ color: "red" }}>{error}</Text>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.postButton}
+          mode="contained"
+          labelStyle={styles.postButtonBtn}
+          contentStyle={styles.postButtonBtn1}
+          onPress={saveDrive2DB}
+        >
+          Post
+        </Button>
+      </View>
     </View>
   );
 };
+
 
 export default AddDriveScreen;
