@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, TextInput, Modal, Alert } from 'react-native';
+import {TouchableOpacity, FlatList, TextInput, Modal, Alert } from 'react-native';
 import firebase from './../../firebase/config';
-import styles from './styles';
+// import styles from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Button as RNEButton } from "@rneui/themed";
+import { TextInput, Button } from "react-native-paper";
+import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
+import { Padding, FontFamily, Border } from "../../../GlobalStyles";
+import { View, StyleSheet, Text, ScrollView, Pressable } from "react-native";
 
 const PickPackagesScreen = ({ navigation }) => {
   const [availablePackages, setAvailablePackages] = useState([]);
@@ -205,13 +212,57 @@ const PickPackagesScreen = ({ navigation }) => {
         />
 
       </View>
-      <View style={styles.reviewbtn}>
-        <TouchableOpacity onPress={choosePackages}>
-          <Text style={styles.reviewText}>{selectedPackages.length === 0 ? "Choose package" : "Choose " + selectedPackages.length + " packages"}</Text>
-        </TouchableOpacity>
+
+      <View style={styles.buttonContainer}>
+        <Button
+          style={styles.chooseButton}
+          mode="contained"
+          labelStyle={styles.chooseButtonBtn}
+          contentStyle={styles.chooseButtonBtn1}
+          onPress={choosePackages}
+        >
+        {selectedPackages.length === 0 ? "Choose package" : "Choose " + selectedPackages.length + " packages"}
+        </Button>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  chooseButton: {
+    marginTop: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#788eec",
+    paddingHorizontal: 20,
+
+    // borderRadius: 5,  // Adjust the border radius according to your preference
+    // borderWidth: 2,  // Border width
+    // borderColor: '#FF6347',  // Border color
+    // padding: 10,
+    // alignItems: 'center',
+  },
+  chooseButtonBtn: {
+    color: "#292929",
+    fontSize: 18,
+    fontWeight: "500",
+    fontFamily: "Inter-Medium",
+    paddingHorizontal: 12,
+  },
+  chooseButtonBtn1: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  buttonContainer: {
+    paddingHorizontal: 20,
+    alignItems: "center",
+  },
+  reviewText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FF6347',  // Text color
+  },
+});
 
 export default PickPackagesScreen;
