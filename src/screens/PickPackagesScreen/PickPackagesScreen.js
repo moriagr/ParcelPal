@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Modal, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Modal, Alert, I18nManager } from 'react-native';
 import firebase from './../../firebase/config';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
@@ -135,11 +135,14 @@ const PickPackagesScreen = ({ navigation }) => {
   };
    
   
-  // Apply filters and sorting based on user input
+  // Apply filters on the availablePackages
   const filteredPackages = availablePackages
     .filter(packageItem => packageItem.source.toLowerCase().includes(searchSource.toLowerCase()))
     .filter(packageItem => packageItem.destination.toLowerCase().includes(searchDestination.toLowerCase()))
     .filter(packageItem => packageItem.packageStatus === 'waiting');
+
+  // Determine the arrow icon direction based on layout direction
+  const arrowIconDirection = I18nManager.isRTL ? 'arrow-left' : 'arrow-right';
 
   return (
     <View style={{ margin: 15 }}>
@@ -172,7 +175,7 @@ const PickPackagesScreen = ({ navigation }) => {
               ]}
             >
               <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 3 }}>
-              {item.source}  <Icon name="arrow-right" size={12} color="#000" />  {item.destination}
+              {item.source}  <Icon name={arrowIconDirection} size={12} color="#000" />  {item.destination}
               </Text>
 
               <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 3 }}>
