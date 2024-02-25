@@ -166,7 +166,7 @@ const PickPackagesScreen = ({ navigation }) => {
               style={[
                 styles.packageBox,
                 {
-                  borderColor: selectedPackages.includes(item) ? '#788eec' : 'transparent',
+                  borderColor: selectedPackages.includes(item) ? '#4b6cb7' : 'transparent',
                   borderWidth: selectedPackages.includes(item) ? 2 : 0,
                 },
               ]}

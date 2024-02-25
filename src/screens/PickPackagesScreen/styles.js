@@ -19,14 +19,14 @@ export default StyleSheet.create({
       marginTop: 30,
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: "#788eec",
+      backgroundColor: "#4b6cb7",
       paddingHorizontal: 20,
     },
     chooseButtonBtn: {
       color: 'white',
       fontSize: 18,
       fontWeight: "500",
-      fontFamily: "Inter-Medium",
+    //   fontFamily: "Inter-Medium",
       paddingHorizontal: 12,
     },
     chooseButtonBtn1: {

@@ -25,7 +25,7 @@ export default StyleSheet.create({
   },
   dateInputDatePickerValue: {},
   postButtonBtn: {
-    color: "#292929",
+    color: 'white',
     fontSize: 18,
     fontWeight: "500",
     // fontFamily: "Inter-Medium",
@@ -56,8 +56,6 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    // borderRadius: 20, // Adjust as needed
-    // borderRadius: Border.br_xl,
   },
   frame1: {
     width: 232,
@@ -71,13 +69,10 @@ export default StyleSheet.create({
   sourceInput: {
     paddingHorizontal: 8,
     backgroundColor: "white",
-    // borderRadius: Border.br_xl,
-
   },
   destinationInput: {
     paddingHorizontal: 8,
     marginTop: 10,
-    // borderRadius: Border.br_6xl,
     backgroundColor: "white"
   },
   dateInput: {
@@ -93,7 +88,7 @@ export default StyleSheet.create({
     marginTop: 30,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#788eec",
+    backgroundColor: "#4b6cb7",
     paddingHorizontal: 20,
   },
   postGroup: {
@@ -116,7 +111,7 @@ export default StyleSheet.create({
     width: "100%",
     overflow: "hidden",
     padding: 16,
-    justifyContent: 'center', // Ensure centering within container
+    justifyContent: 'center',
     alignSelf: "stretch",
 
   },

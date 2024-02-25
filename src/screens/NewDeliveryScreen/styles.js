@@ -1,68 +1,142 @@
-// import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
+import { Padding, FontFamily, Border } from "../../../GlobalStyles";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 12,
+export default StyleSheet.create({
+  backBtn: {
     padding: 10,
-    width: '60%',
-    borderRadius: 10,
-    fontSize: 16,
-  },
-  postButton: {
-    padding: 15,
-    borderRadius: 8,
-    backgroundColor: 'blue',
-    marginTop: 12,
-  },
-  iosInput: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  iosPostButton: {
-    backgroundColor: 'green',
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
   },
   inputRow: {
-    flexDirection: 'row', // Ensure this is set to 'row'
-    alignItems: 'center', // Remove if causing alignment issues
-    justifyContent: 'space-between', // Align items along the row
+    flexDirection: 'row',
+    alignItems: 'center', 
+    justifyContent: 'space-between',
     marginBottom: 12,
-    paddingHorizontal: 16
-    // width: '100%',
-    // position: 'relative', // Set input row position to relative
   },
-  pickerContainer: {
-    // position: 'absolute',
-    top: 0,
-    right: 0,
-    // width: '40%',
-    height: '100%',
+  backBtn1: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+  dateInputDatePickerLabel: {
+    color: "rgba(0, 0, 0, 0)",
+  },
+  dateInputDatePickerCaption: {
+    color: "rgba(0, 0, 0, 0)",
+  },
+  dateInputDatePickerPlaceHolder: {
+    fontWeight: "500",
+    // fontFamily: "Inter-Medium",
+    color: "#a9a9a9",
+    fontSize: 12,
+  },
+  dateInputDatePickerValue: {},
+  postButtonBtn: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: "500",
+    // fontFamily: "Inter-Medium",
+    paddingHorizontal: 12,
+  },
+  postButtonBtn1: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  postGroupScrollViewContent: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "flex-start",
+  },
+  frameFlexBox: {
+    justifyContent: "center",
+    alignSelf: "stretch",
+  },
+  inputFlexBox: {
+    maxHeight: 50,
+    minWidth: 200,
+    paddingVertical: Padding.p_xs,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  frame1: {
+    width: 232,
+    height: 50,
+    flexDirection: "row",
+    overflow: "hidden",
+  },
+  frame: {
+    overflow: "hidden",
+  },
+  sourceInput: {
+    paddingHorizontal: 8,
+    backgroundColor: "white",
+
+  },
+  destinationInput: {
+    paddingHorizontal: 8,
+    marginTop: 10,
+    backgroundColor: "white"
+  },
+  sizeInput: {
+    paddingHorizontal: 8,
+    marginTop: 10,
+    backgroundColor: "white"
+  },
+  dateInput: {
+    marginTop: 10,
+  },
+  inputs: {
+    paddingHorizontal: 24,
+    alignSelf: "stretch",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  postButton: {
+    marginTop: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#4b6cb7",
+    paddingHorizontal: 20,
+  },
+  postGroup: {
+    alignSelf: "center",
+    flex: 1, // Added
+    backgroundColor: "#f1f1f1",
+    shadowColor: "rgba(0, 0, 0, 0.25)",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 4,
+    elevation: 4,
+    shadowOpacity: 1,
+    padding: 15,
+    borderRadius: Border.br_6xl,
+  },
+  frame2: {
+    marginTop: 20,
+    overflow: "hidden",
     justifyContent: 'center',
-    alignItems: 'center',
+    alignSelf: "stretch",
+  },
+  addDrive: {
+    backgroundColor: "#fff",
+    width: "100%",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    alignItems: "center",
+    overflow: "hidden",
+  },
+  buttonContainer: {
+    paddingHorizontal: 20,
+    alignItems: "center",
   },
   picker: {
-    width: '35%',
-    height: '60%',
-    borderRadius: 10,
+    marginTop: 10,
+    width: "30%",
+    fontSize:16,
     borderColor: 'gray',
-    borderWidth: 1,
-    // flex:1
+    borderWidth: 0,
   },
 });
-
-// export default styles;

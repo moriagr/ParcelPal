@@ -1,54 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import firebase from './../../firebase/config'
-import DateTimePickerModal from "react-native-modal-datetime-picker";
 import styles from './styles';
-
 import { TextInput, Button } from "react-native-paper";
 import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
-import { View, Text } from "react-native";
+import { View, Text, Keyboard, TouchableWithoutFeedback } from "react-native";
 
 // Defines a functional component named AddDriveScreen.
 const AddDriveScreen = () => {
 
-  //using states for empty data at the beginning
-  // states will be updated with values the user inputs in to the text fields
-
-  // Initializes state variables using the useState hook for managing user input data 
-  // (source, packagesIds, destination, date, driveStatus).
+  // Initializes state variables for managing user input data 
   const [source, setSource] = useState('');
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState(new Date());
   const [error, setError] = useState();
   const [DateChosen, setDateChosen] = useState(false);
-  // const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  // const [isFocus, setIsFocus] = useState(false);
-  // const [selectedTime, setSelectedTime] = useState(null);
 
   // using navigation for go back
   const navigation = useNavigation();
-
-  // const showTimePicker = () => {
-  //   setIsFocus(true)
-  //   setDatePickerVisibility(true);
-  // };
-
-  // const hideTimePicker = () => {
-  //   setDatePickerVisibility(false);
-  //   setIsFocus(false);
-  // };
 
   const handleConfirm = (selectedDate) => {
     setDate(selectedDate);
     setDateChosen(true)
   };
-
-  // const handleTimeConfirm = (selectedDate) => {
-  //   setSelectedTime(selectedDate);
-  //   setIsFocus(false)
-  //   // setDateChosen(true)
-  //   hideTimePicker();
-  // };
 
   // async Function for saving the drive to the dataBase
   const saveDrive2DB = async () => {
@@ -103,6 +77,7 @@ const AddDriveScreen = () => {
   };
 
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <View style={styles.frame2}>
       <View style={styles.inputs}>
         <TextInput
@@ -116,7 +91,7 @@ const AddDriveScreen = () => {
             fonts: {
               regular: { fontWeight: "Medium" },
             },
-            colors: { text: "#fff", background: "#fff", primary: "#788eec" },
+            colors: { text: "#fff", background: "#fff", primary: "#4b6cb7" },
           }}
           onChangeText={setSource}
         />
@@ -129,7 +104,7 @@ const AddDriveScreen = () => {
             fonts: {
               regular: { fontWeight: "Medium" },
             },
-            colors: { text: "#fff", background: "#fff", primary: "#788eec" },
+            colors: { text: "#fff", background: "#fff", primary: "#4b6cb7" },
           }}
           onChangeText={setDestination}
         />
@@ -168,6 +143,7 @@ const AddDriveScreen = () => {
         </Button>
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 
