@@ -1,7 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 import { Padding, FontFamily, Border } from "../../../GlobalStyles";
 
-// style sheet
 export default StyleSheet.create({
   backBtn: {
     padding: 10,

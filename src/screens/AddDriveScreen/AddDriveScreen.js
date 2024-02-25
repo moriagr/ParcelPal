@@ -65,7 +65,6 @@ const AddDriveScreen = () => {
         //define user id
         const userId = currentUser.uid;
 
-
         //define reference document for the current userId in collection drives
         const drivesRef = firebase.firestore().collection(`users/${userId}/drives`);
 
@@ -103,12 +102,11 @@ const AddDriveScreen = () => {
     }
   };
 
-  //input form
   return (
     <View style={styles.frame2}>
       <View style={styles.inputs}>
         <TextInput
-          style={[styles.sourceInput, styles.inputFlexBox, { borderWidth: 0, borderColor: 'transparent', width: "100%" } // Set borderWidth to 0 and borderColor to transparent
+          style={[styles.sourceInput, styles.inputFlexBox, { borderWidth: 0, borderColor: 'transparent', width: "100%" }
           ]}
           placeholder="Source"
           mode="flat"
@@ -155,22 +153,6 @@ const AddDriveScreen = () => {
           status="basic"
           controlStyle={styles.dateInputDatePickerValue}
         />
-
-        {/* <View style={[styles.container, { width: "100%" }]}> */}
-        {/* <TouchableOpacity
-          style={[styles.sourceInput, styles.inputFlexBox, { width: "100%", borderWidth: 1, borderRadius: 5, borderColor: "rgba(0, 0, 0, 0.05)" }, isFocus ? { borderColor: "#788eec" } : {}]}
-          onPress={showTimePicker}>
-          <Text style={[styles.dateInputDatePickerPlaceHolder, { fontSize: 16, width: "100%" }]}
-          >{selectedTime ? selectedTime.toLocaleTimeString() : "Select Time"}</Text>
-        </TouchableOpacity> */}
-
-        {/* <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode="time"
-          Display="clock"
-          onConfirm={handleTimeConfirm}
-          onCancel={hideTimePicker}
-        /> */}
         <Text style={{ color: "red" }}>{error}</Text>
       </View>
 
@@ -188,6 +170,5 @@ const AddDriveScreen = () => {
     </View>
   );
 };
-
 
 export default AddDriveScreen;

@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {TouchableOpacity, FlatList, TextInput, Modal, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Modal, Alert } from 'react-native';
 import firebase from './../../firebase/config';
-// import styles from './styles';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
-
-import { SafeAreaView } from "react-native-safe-area-context";
-import { Button as RNEButton } from "@rneui/themed";
 import { TextInput, Button } from "react-native-paper";
-import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
-import { Padding, FontFamily, Border } from "../../../GlobalStyles";
-import { View, StyleSheet, Text, ScrollView, Pressable } from "react-native";
 
 const PickPackagesScreen = ({ navigation }) => {
   const [availablePackages, setAvailablePackages] = useState([]);
   const [selectedPackages, setSelectedPackages] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchSource, setSearchSource] = useState('');
+  const [searchDestination, setSearchDestination] = useState('');
   const [filterModalVisible, setFilterModalVisible] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('all');
-  const [sortOrder, setSortOrder] = useState('asc');
 
   useEffect(() => {
     const fetchAvailablePackages = async () => {
@@ -116,78 +108,54 @@ const PickPackagesScreen = ({ navigation }) => {
     }
   };
 
-  const handleSearch = (query) => {
-    setSearchQuery(query);
+  const handleSourceSearch = (query) => {
+    setSearchSource(query);
   };
 
-  const handleFilterChange = (filter) => {
-    setSelectedFilter(filter);
-    setFilterModalVisible(false);
-  };
-
-  const handleSortOrderChange = (order) => {
-    setSortOrder(order);
+  const handleDestinationSearch = (query) => {
+    setSearchDestination(query);
   };
 
   const togglePackageSelection = (packageData) => {
-    const isSelected = selectedPackages.some((selectedPackage) => selectedPackage.packagid === packageData.packagid);
-
+    const isSelected = selectedPackages.some((selectedPackage) => selectedPackage.packageid === packageData.packageid);
+  
+    console.log('Is selected:', isSelected);
+    console.log('Before toggle:', selectedPackages);
+  
     if (isSelected) {
-      setSelectedPackages(selectedPackages.filter((selectedPackage) => selectedPackage.packagid !== packageData.packagid));
+      setSelectedPackages(selectedPackages.filter((selectedPackage) => selectedPackage.packageid !== packageData.packageid));
     } else {
       setSelectedPackages([...selectedPackages, packageData]);
     }
+  
+    console.log('After toggle:', selectedPackages);
   };
-
+   
+  
   // Apply filters and sorting based on user input
-  const filteredAndSortedPackages = availablePackages
-    .filter(packageItem => packageItem.source.toLowerCase().includes(searchQuery.toLowerCase()))
-    .filter(packageItem => selectedFilter === 'all' || packageItem.packageStatus === selectedFilter)
-    .sort((a, b) => sortOrder === 'asc' ? a.destination.localeCompare(b.destination) : b.destination.localeCompare(a.destination));
+  const filteredPackages = availablePackages
+    .filter(packageItem => packageItem.source.toLowerCase().includes(searchSource.toLowerCase()))
+    .filter(packageItem => packageItem.destination.toLowerCase().includes(searchDestination.toLowerCase()))
+    .filter(packageItem => packageItem.packageStatus === 'waiting');
 
   return (
     <View style={{ margin: 15 }}>
       <TextInput
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1, margin: 0, padding: 5 }}
-        placeholder="Search packages by source"
-        value={searchQuery}
-        onChangeText={handleSearch}
+        style={[styles.textInput, styles.inputFlexBox, { borderWidth: 0, borderColor: 'transparent', width: "100%" } ]}
+        placeholder="Search by source"
+        value={searchSource}
+        onChangeText={handleSourceSearch}
       />
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10, marginTop: 10 }}>
-        <TouchableOpacity onPress={() => setFilterModalVisible(true)}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#788eec' }}>Filter: {selectedFilter}</Text>
-        </TouchableOpacity>
+      <TextInput
+        style={[styles.textInput, styles.inputFlexBox, { borderWidth: 0, borderColor: 'transparent', width: "100%" } ]}
+        placeholder="Search by destination"
+        value={searchDestination}
+        onChangeText={handleDestinationSearch}
+      />
 
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={filterModalVisible}
-          onRequestClose={() => setFilterModalVisible(false)}
-        >
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ backgroundColor: 'white', padding: 30, borderRadius: 10, elevation: 5 }}>
-              <TouchableOpacity onPress={() => handleFilterChange('all')}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#788eec', margin: 10 }}>All</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleFilterChange('waiting')}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#788eec', margin: 10 }}>Waiting</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => handleFilterChange('in transit')}>
-                <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#788eec', margin: 10 }}>In Transit</Text>
-              </TouchableOpacity>
-              {/* Add more filter options based on your package statuses */}
-            </View>
-          </View>
-        </Modal>
-
-        <TouchableOpacity onPress={() => handleSortOrderChange(sortOrder === 'asc' ? 'desc' : 'asc')}>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#788eec' }}>Sort: {sortOrder === 'asc' ? 'Ascending' : 'Descending'}</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ marginTop: 0, marginBottom: 10, height: 260 }}>
-        <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Available Packages:</Text>
+      <View style={{ marginTop: 10, marginBottom: 10, height: '60%' }}>
         <FlatList
-          data={filteredAndSortedPackages}
+          data={filteredPackages}
           keyExtractor={(item) => item.packagid}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -195,22 +163,23 @@ const PickPackagesScreen = ({ navigation }) => {
               style={[
                 styles.packageBox,
                 {
-                  borderColor: selectedPackages.includes(item) ? '#ff7700' : 'lightblue',
-                  borderWidth: selectedPackages.includes(item) ? 2 : 1,
+                  borderColor: selectedPackages.includes(item) ? '#788eec' : 'transparent',
+                  borderWidth: selectedPackages.includes(item) ? 2 : 0,
                 },
               ]}
             >
-              <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 3 }}>
-                {item.source} - {item.destination} : {item.packageStatus}
+              <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 3 }}>
+                {item.source} - {item.destination}
+              </Text>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 3 }}>
+                {item.packageStatus}
               </Text>
               <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
-                <Icon name="cube" size={16} color="#788eec" /> Package Size: {item.size}{item.unit || "kg"}{' '}
-                {/* <Icon name="dollar" size={16} color="#788eec" /> Fee: {item.fee} */}
+                Package Size: {item.size}{item.unit || "kg"}{' '}
               </Text>
             </TouchableOpacity>
           )}
         />
-
       </View>
 
       <View style={styles.buttonContainer}>
@@ -224,45 +193,9 @@ const PickPackagesScreen = ({ navigation }) => {
         {selectedPackages.length === 0 ? "Choose package" : "Choose " + selectedPackages.length + " packages"}
         </Button>
       </View>
+      
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  chooseButton: {
-    marginTop: 30,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#788eec",
-    paddingHorizontal: 20,
-
-    // borderRadius: 5,  // Adjust the border radius according to your preference
-    // borderWidth: 2,  // Border width
-    // borderColor: '#FF6347',  // Border color
-    // padding: 10,
-    // alignItems: 'center',
-  },
-  chooseButtonBtn: {
-    color: "#292929",
-    fontSize: 18,
-    fontWeight: "500",
-    fontFamily: "Inter-Medium",
-    paddingHorizontal: 12,
-  },
-  chooseButtonBtn1: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 20,
-  },
-  buttonContainer: {
-    paddingHorizontal: 20,
-    alignItems: "center",
-  },
-  reviewText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#FF6347',  // Text color
-  },
-});
 
 export default PickPackagesScreen;

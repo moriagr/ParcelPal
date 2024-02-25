@@ -1,19 +1,52 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
+import { Padding, FontFamily, Border } from "../../../GlobalStyles";
 
-// const styles = StyleSheet.create({
-//     reviewbtn: {
-//       marginTop: 15,
-//       backgroundColor: 'transparent',
-//       borderRadius: 5,  // Adjust the border radius according to your preference
-//       borderWidth: 2,  // Border width
-//       borderColor: '#FF6347',  // Border color
-//       padding: 10,
-//       alignItems: 'center',
-//     },
-//     reviewText: {
-//       fontSize: 18,
-//       fontWeight: 'bold',
-//       color: '#FF6347',  // Text color
-//     },
-//   });
-  
+export default StyleSheet.create({
+    textInput: {
+      paddingHorizontal: 8,
+      backgroundColor: "white",
+    },
+    inputFlexBox: {
+      marginBottom: 10,
+      maxHeight: 50,
+      minWidth: 200,
+      paddingVertical: Padding.p_xs,
+      justifyContent: "space-between",
+      flexDirection: "row",
+      alignItems: "center",
+    },
+    chooseButton: {
+      marginTop: 30,
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: "#788eec",
+      paddingHorizontal: 20,
+    },
+    chooseButtonBtn: {
+      color: 'white',
+      fontSize: 18,
+      fontWeight: "500",
+      fontFamily: "Inter-Medium",
+      paddingHorizontal: 12,
+    },
+    chooseButtonBtn1: {
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: 20,
+    },
+    buttonContainer: {
+      paddingHorizontal: 20,
+      alignItems: "center",
+    },
+    text: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#FF6347',  // Text color
+    },
+    packageBox: {
+      padding: 10,
+      marginTop: 10,
+      borderRadius: 10,
+      backgroundColor: 'white',
+    },
+  });

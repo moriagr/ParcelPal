@@ -90,8 +90,20 @@ export default function RouterContainer() {
                         <Stack.Screen name="HomeDriver" component={HomeScreenDriver} />
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
-                        <Stack.Screen name="AddDriveScreen" component={AddDriveScreen} />
-                        <Stack.Screen name="PickPackagesScreen" component={PickPackagesScreen} />
+                        <Stack.Screen 
+                            name="AddDriveScreen" 
+                            component={AddDriveScreen} 
+                            options={{
+                                title: 'Add New Drive',
+                            }}
+                        />
+                        <Stack.Screen 
+                            name="PickPackagesScreen" 
+                            component={PickPackagesScreen} 
+                            options={{
+                                title: 'Pick Packages',
+                            }}
+                        />
                         <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
                         <Stack.Screen name="CurrentChat" component={CurrentChat} />
@@ -106,7 +118,13 @@ export default function RouterContainer() {
                         <Stack.Screen name="PackageStatus" component={PackageStatusScreen} />
                         <Stack.Screen name="MyDrives" component={MyDrivesScreen} />
                         <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
-                        <Stack.Screen name="NewDeliveryScreen" component={NewDeliveryScreen} />
+                        <Stack.Screen 
+                            name="NewDeliveryScreen" 
+                            component={NewDeliveryScreen} 
+                            options={{
+                                title: 'Add New Package',
+                            }}
+                        />
                         <Stack.Screen name="EditDeliveryScreen" component={EditDeliveryScreen} />
                         <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
                         <Stack.Screen name="CurrentChat" component={CurrentChat} />
