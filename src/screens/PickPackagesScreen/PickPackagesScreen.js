@@ -4,6 +4,7 @@ import firebase from './../../firebase/config';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput, Button } from "react-native-paper";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const PickPackagesScreen = ({ navigation }) => {
   const [availablePackages, setAvailablePackages] = useState([]);
@@ -26,7 +27,9 @@ const PickPackagesScreen = ({ navigation }) => {
 
           const deliveriesData = deliveriesSnapshot.docs.map((deliveryDoc) => {
             const deliveryData = deliveryDoc.data();
-            return { ...deliveryData, clientId };
+            const { date } = deliveryData; // Assuming date is a field in your Firestore document
+            return { ...deliveryData, date, clientId };
+            // return { ...deliveryData, clientId };
           });
 
           return deliveriesData;
@@ -169,14 +172,17 @@ const PickPackagesScreen = ({ navigation }) => {
               ]}
             >
               <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 3 }}>
-                {item.source} - {item.destination}
+              {item.source}  <Icon name="arrow-right" size={12} color="#000" />  {item.destination}
               </Text>
+
               <Text style={{ fontSize: 12, fontWeight: 'bold', marginBottom: 3 }}>
-                {item.packageStatus}
+              Date: {item.date ? new Date(item.date.seconds * 1000).toLocaleDateString() : 'N/A'}
               </Text>
+
               <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
-                Package Size: {item.size}{item.unit || "kg"}{' '}
+                Package Size: {item.size} {item.unit || "kg"}{' '}
               </Text>
+
             </TouchableOpacity>
           )}
         />
@@ -190,7 +196,7 @@ const PickPackagesScreen = ({ navigation }) => {
           contentStyle={styles.chooseButtonBtn1}
           onPress={choosePackages}
         >
-        {selectedPackages.length === 0 ? "Choose package" : "Choose " + selectedPackages.length + " packages"}
+        {selectedPackages.length <= 1 ? "Choose package" : "Choose " + selectedPackages.length + " packages"}
         </Button>
       </View>
       
