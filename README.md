@@ -1,6 +1,6 @@
  <p>&nbsp;</p>
 <p align="center">
- <img width="800" height="200" src = https://github.com/moriagr/ParcelPal/blob/main/assets/ParcelPal.png
+ <img width="800" height="150" src = https://github.com/moriagr/ParcelPal/blob/main/assets/ParcelPal.png
 </p>
 <p>&nbsp;</p>
 
