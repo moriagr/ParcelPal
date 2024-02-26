@@ -3,6 +3,7 @@
  <img width="800" height="400" src = https://github.com/moriagr/ParcelPal/blob/main/assets/ParcelPal.png
 </p>
 <p>&nbsp;</p>
+
 ParcelPal is a cross-platform mobile application designed for both Android and iOS devices.<br>
 The app addresses the growing demand for efficient and reliable package delivery services.<br>
 The app provides a seamless platform for both drivers and clients to connect and facilitate the delivery of packages.<br>
