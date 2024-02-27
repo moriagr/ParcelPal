@@ -18,5 +18,9 @@ $ npm install -g expo-cli
 ```
 In order to run the simulator and then You can choose which operating system
 ```
-expo start
+$ expo start
 ```
+
+<p>&nbsp;</p>
+<p align="center">
+   <img width="200" height="400" src = https://github.com/moriagr/ParcelPal/blob/main/assets/giphy.gif>
