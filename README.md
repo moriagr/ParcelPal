@@ -5,9 +5,8 @@
 <p>&nbsp;</p>
 
 ## Description:
-ParcelPal is a cross-platform mobile application designed for both Android and iOS devices.<br>
-The app addresses the growing demand for efficient and reliable package delivery services.<br>
-The app provides a seamless platform for both drivers and clients to connect and facilitate the delivery of packages.<br>
+ParcelPal is a mobile app designed for both Android and iOS devices <br>
+The goal is to connect people who want to send packages for free with drivers traveling near the destination <br>
 
 ## Technolegies:
 Our code works with Expo- react native as the client and Firebase as the database.
