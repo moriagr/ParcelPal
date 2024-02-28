@@ -1,7 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
-import { getFirestore } from 'firebase/firestore';
+// import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
     databaseURL: 'https://parcelpal-85e75-default-rtdb.firebaseio.com',
@@ -18,11 +18,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 // }
 // Initialize Auth and provide persistence
-const auth = firebase.auth();
 // auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); // Use LOCAL for AsyncStorage
 
-export { auth };
+export const auth = firebase.auth();
 
-export const database = getFirestore();
+export const database =firebase.firestore();
 
 export default firebase;
