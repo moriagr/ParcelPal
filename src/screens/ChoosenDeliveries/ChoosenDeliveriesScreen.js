@@ -6,13 +6,19 @@ import firebase from './../../firebase/config'
 
 
 const DriveBox = ({ packageInfo }) => {
+  let date;
+  try {
+    date = (packageInfo.date.toDate()).toLocaleDateString();
+  } catch (error) {
+    date = packageInfo.date.toString()
+  }
 
   return (
     <TouchableOpacity style={styles.packageBox} onPress={() => console.log('View details', packageInfo)}>
       <View style={styles.packageInfoContainer}>
         <View>
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 3 }}><Icon name="home" size={20} color="#788eec" /> {packageInfo.source}    <Icon name="arrows-h" size={20} color="#788eec" />    <Icon name="street-view" size={20} color="#788eec" /> {packageInfo.destination} </Text>
-          <Text style={{ fontSize: 14, fontWeight: 'bold' }}><Icon name="calendar" size={18} color="#788eec" /> {packageInfo.date}     <Icon name="balance-scale" size={18} color="#788eec" /> {packageInfo.size} </Text>
+          <Text style={{ fontSize: 14, fontWeight: 'bold' }}><Icon name="calendar" size={18} color="#788eec" /> {date}     <Icon name="balance-scale" size={18} color="#788eec" /> {packageInfo.size} </Text>
           <Text style={{ fontSize: 11, marginBottom: 2 }}>client name: {packageInfo.clientName}</Text>
         </View>
       </View>
@@ -74,7 +80,7 @@ const ChoosenDeliveriesScreen = () => {
         const allChosenDeliveriesData = await Promise.all(chosenDeliveriesPromise);
 
         // Filter out null values
-        const filteredChosenDeliveries = allChosenDeliveriesData.filter((chat) => chat !== null);
+        const filteredChosenDeliveries = allChosenDeliveriesData.filter((data) => data !== null);
         setMyChoosenDeliveries(filteredChosenDeliveries);
 
       } else {
