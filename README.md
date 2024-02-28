@@ -23,11 +23,13 @@ To run the simulator:
 ```
 $ expo start
 ```
-Then choose which operating system you want to run the app on (android - a, ios - i).
+Then choose which operating system you want to run the app on (android - a, ios - i). <br>
 
-<p>&nbsp;</p>
-<p align="center">
-   <img width="200" height="400" src = https://github.com/moriagr/ParcelPal/blob/main/assets/giphy.gif>
+# See app preview:
+| Add drive| Add Packages|
+| -- | -- |
+|<img width="200" height="350" src="https://github.com/moriagr/ParcelPal/blob/main/assets/gifmk7843.gif"> <br>| <img width="200" height="350" src="https://github.com/moriagr/ParcelPal/blob/main/assets/gifmk8879.gif?raw=true"><br> |
 
-
-
+| Pick Pakages|
+| -- |
+|<img width="200" height="350" src="https://github.com/moriagr/ParcelPal/blob/main/assets/gifmk5084.gif"> <br> |
