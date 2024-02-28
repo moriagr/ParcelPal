@@ -25,6 +25,10 @@ $ expo start
 ```
 Then choose which operating system you want to run the app on (android - a, ios - i). <br>
 
+# Tools:
+
+Android studio, Firebase, node.js, expo-cli. <br>
+
 # How to use:
 
 ### The client publishes a package
