@@ -27,9 +27,12 @@ Then choose which operating system you want to run the app on (android - a, ios 
 
 # How to use:
 
+### The client publishes a package
 | Add drive|
 | -- |
 |<img width="200" height="350" src="https://github.com/moriagr/ParcelPal/blob/main/assets/gifmk7843.gif"> <br>|
+
+### The driver chooses a package
 
 | Pick Pakages|
 | -- |
